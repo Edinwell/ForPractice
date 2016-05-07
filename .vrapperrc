@@ -1,0 +1,12 @@
+set scrolloff=5
+set clipboard=unnamed,autoselect
+highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=#666666
+au BufNewFile,BufRead * match ZenkakuSpace /　/
+
+inoremap jj <Esc>
+ 
+nnoremap 0 o<Esc>
+nnoremap <C-0> O<Esc>
+nnoremap ~ ~h
+nnoremap <Space>j :tabn<CR>
+nnoremap <Space>k :tabp<CR>
