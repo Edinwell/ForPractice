@@ -41,8 +41,17 @@ syntax enable
 
 " Key bindings-------------------------
 inoremap jj <Esc>
-nnoremap 0 o<Esc>
+nnoremap <Space> o<Esc>
 nnoremap ~ ~h
+
+" Settings ----------------------------
+colorscheme wombat256
+
+augroup HighlightTrailingSpaces
+  autocmd!
+  autocmd VimEnter,WinEnter,ColorScheme * highlight TrailingSpaces term=underline guibg=Gray ctermbg=Gray
+  autocmd VimEnter,WinEnter * match TrailingSpaces /\s\+$/
+augroup END
 
 " Settings ----------------------------
 colorscheme wombat256
