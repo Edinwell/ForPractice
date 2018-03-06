@@ -1,0 +1,38 @@
+[core]
+	excludesfile = ~/.gitignore_global
+	quotepath = false  # Enable Japanese.
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	# cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"  # Set sourcetree as mergetool(disable).
+	trustExitCode = true
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+[user]
+	name = Edinwell
+	email = moderato11@gmail.com
+[push]
+  default = current  # Create remote branch as same name local working branch.
+[merge]
+  ff = false  # Merge branch with non-fast forward option by default.
+[commit]
+	template = /Users/kin/.stCommitMsg
+[rebase]
+	autostash = true
+[alias]
+  pr = remote prune origin
+  gr = log --graph --date-order -C -M --pretty=format:\"%C(red)%h%Creset %C(cyan)%ad%Creset %C(yellow)%an%Creset %Cgreen%d%Creset %s\" --all --date=short
+  sb = submodule
+  br = branch
+  st = status
+  co = checkout
+  cm = commit
+  sb-all = submodule foreach --recursive
+  now = rev-parse --abbrev-ref HEAD
+  fe = fetch
+  fe-all = fetch --recurse-submodules
+  nm = branch --no-merged
+  diff-all = submodule foreach --recursive git diff
+  up-all = submodule update --recursive
+[credential]
+	helper = cache
