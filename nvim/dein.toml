@@ -12,13 +12,11 @@ hook_add = '''
 source ~/.config/nvim/plugins/lightline.rc.vim
 '''
 
-# Linter ===================
 [[plugins]]
-repo = 'w0rp/ale'
+repo = 'tpope/vim-fugitive'
 hook_add = '''
-source ~/.config/nvim/plugins/ale.rc.vim
+source ~/.config/nvim/plugins/fugitive.rc.vim
 '''
-
 # Filer ====================
 [[plugins]]
 repo = 'scrooloose/nerdtree'
@@ -26,12 +24,20 @@ hook_add = '''
 source ~/.config/nvim/plugins/nerdtree.rc.vim
 '''
 
-# Terminal =================
+# Word process =============
 [[plugins]]
-repo = 'Shougo/vimproc.vim'
-if = "!has('nvim')"
-build = 'make'
+repo = 'tpope/vim-endwise'
 
-# Snippet ==================
+[[plugins]]
+repo = 'Townk/vim-autoclose'
+
+# Checker ==================
+[[plugins]]
+repo = 'w0rp/ale'
+hook_add = '''
+source ~/.config/nvim/plugins/ale.rc.vim
+'''
+
+# Snippets =================
 [[plugins]]
 repo = 'Shougo/neosnippet-snippets'
