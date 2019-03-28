@@ -31,6 +31,7 @@ set hls
 
 " Key bindings-------------------------
 inoremap jj <Esc>
+inoremap kk <Esc>la
 nnoremap <Space> o<Esc>
 nnoremap ~ ~h
 

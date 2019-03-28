@@ -1,6 +1,17 @@
 # dein.toml
 # Utils ====================
 [[plugins]]
+repo = 'Shougo/context_filetype.vim'
+
+[[plugins]]
+repo = 'autozimu/LanguageClient-neovim'
+rev = 'next'
+build = 'bash install.sh'
+hook_add = '''
+source ~/.config/nvim/plugins/LanguageClient-neovim.rc.vim
+'''
+
+[[plugins]]
 repo = 'Shougo/dein.vim'
 
 [[plugins]]
@@ -30,14 +41,3 @@ repo = 'tpope/vim-endwise'
 
 [[plugins]]
 repo = 'Townk/vim-autoclose'
-
-# Checker ==================
-[[plugins]]
-repo = 'w0rp/ale'
-hook_add = '''
-source ~/.config/nvim/plugins/ale.rc.vim
-'''
-
-# Snippets =================
-[[plugins]]
-repo = 'Shougo/neosnippet-snippets'

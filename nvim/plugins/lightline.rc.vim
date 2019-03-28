@@ -7,6 +7,7 @@ let g:lightline = {
 			\ 'filepath': 'FilePath'
 				\ }
 		\ }
+
 function! FilePath()
     return winwidth(0) > 40 ? expand("%:s") : expand("%:t")
 endfunction
