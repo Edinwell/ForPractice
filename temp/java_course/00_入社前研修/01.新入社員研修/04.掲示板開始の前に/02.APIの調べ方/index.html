@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="ja">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+	<title>APIの調べ方</title>
+	<link rel="stylesheet" type="text/css" href="../../../css/main.css">
+</head>
+<body>
+<a name="top"/>
+
+<center>
+<h2>APIの調べ方</h2>
+</center>
+<hr>
+
+<a name="first"/>
+<p class="midasi0">はじめに</p>
+このドキュメントを読むにあたっては、<br>
+<ol>
+	<li>クラスとは何かを理解できている</li>
+	<li>javaではAPIとして便利なクラス、メソッドが多数用意されている事が理解できている</li>
+</ol>
+必要があります。<br>
+さて、その用意されているメソッドについては<br>
+<span class="important">Java プラットフォーム API 仕様(通称：APIリファレンス、APIまたはJavaDoc)</span><br>
+というドキュメントを読むことで理解できます。<br>
+<br>
+このドキュメントは、オンラインで見ることも、ダウンロードすることもできます。<br>
+最初の内は、非常によく参照することになるので、ダウンロードしておくと便利でしょう。<br>
+<br>
+では以下のURLにアクセスしてドキュメントをダウンロードしてみましょう<br><br>
+<a href="http://www.oracle.com/technetwork/jp/java/java-sun-1440465-ja.html" target="_blank">http://www.oracle.com/technetwork/jp/java/java-sun-1440465-ja.html</a>
+<br>
+<br>
+<b>図1 ダウンロードページ</b><br>
+<img src="image/image001.png" alt="ダウンロードページ　図1">
+<p>
+
+図1の 赤丸のをクリックするとダウンロードすることが出来ます。<br>
+<br>
+ダウンロードせずに、オンラインでドキュメントを見たい場合は、下記リンクから参照することが出来ます。<br>
+<br>
+<a href="http://docs.oracle.com/javase/jp/8/api/" target="_blank">http://docs.oracle.com/javase/jp/8/api/</a>
+<br>
+<!--APIを調べる-->
+<a name="second"/>
+<p class="midasi0">APIを調べる</p>
+<div align="right"><a href="#top">[top]</a></div><br>
+ダウンロードしたファイルを解凍し、%解凍したディレクトリ%\index.htmlを開きます。<br>
+または、下記のオンラインドキュメントを表示しても同じ画面になります。<br>
+<br>
+<a href="http://docs.oracle.com/javase/jp/8/api/" target="_blank">http://docs.oracle.com/javase/jp/8/api/</a>
+<br><br>
+（説明ではオンラインドキュメントを使用していますが、上述のようにDLしたものと同じです）<br>
+<br>
+<b>図2 Javaドキュメントトップ</b><br>
+<img src="image/image003.png" alt="Javaトップ　図2">
+<br><br>
+右の図の Java SE API と書かれたリンクをクリックします。<br>
+すると以下のような画面になります。<br>
+<br><b>図4 API仕様トップ</b><br>
+<img src="image/image007.png" alt="API仕様トップ　図4">
+<br><br>
+この画面はフレームで表示されています。それぞれのフレームは以下のようになっています。<br>
+<i>左上のフレームにはパッケージの一覧。<br>
+左下にはクラスの一覧。<br>
+右のフレームはメインの情報</i><br>
+<br>
+目的のクラスを探す場合には左下のクラス一覧から探します。<br>
+パッケージがわかっている場合は、左上のパッケージ一覧から該当パッケージを選択すると、<br>
+左下のクラス一覧がパッケージに属するクラス一覧に変わるので探しやすくなります。<br><br>
+<table border=1 bgcolor="aliceblue" cellspacing=0 cellpadding=2>
+<tr>
+<td>ここをブックマークに登録してもかまいませんが、<br>
+先ほどのJavaトップページには色々と有用な情報がありますので、<br>
+先ほどのページをブックマークに登録してもいいと思います。</td>
+</tr>
+</table>
+<br>
+<br>
+<!--実際に調べる-->
+<a name="third"/>
+<p class="midasi0">実際にAPIを調べる</p>
+それでは、実際にAPIの調べ方をみてみましょう。<br>
+ここでは、なじみの深いであろう、Integerクラスを見てみます。<br>
+<br>
+左下のクラス一覧からIntegerを探し、クリックすると<br>
+右のフレームにIntegerの情報が表示されます。<br>
+<br>
+<b>図5 Integerを探す</b><br>
+<img src="image/image009.png" alt="Integerを探す　図5">
+<br>
+<br>
+では順にIntegerクラスを見ていきます。<br><br>
+<b>図6 階層表示</b><br>
+<img src="image/image011.png" alt="階層表示　図6"><br>
+<br>
+このクラスはObjectのサブクラスであるNumberクラスのサブクラスで、<br>
+ComparableインタフェースとSerializableインタフェースを実装していることがわかります。<br>
+<br>
+<b>図7 クラス宣言部</b><br>
+<img src="image/image013.png" alt="クラス宣言部　図7"><br>
+<br>
+クラスの説明があり、<span class="important">intの処理時に役立つクラス</span>である事がわかります。<br>
+また、intの値をオブジェクトとして使用する際に使えるクラスであることもわかります。<br>
+<br>
+<b>図8 概要</b><br>
+<img src="image/image015.png" alt="概要　図8"><br>
+<br>Integerクラスのフィールド、コンストラクタ、メソッドの概要と続きます。<br>
+メソッドはたくさんあり、全て見切れませんので、ここでは、<br>
+今までも何度か使用してきたであろう、parseIntメソッドの概要を見てみましょう。<br>
+<br>
+<b>図9 parseInt概要</b><br>
+<img src="image/image017.png" alt="parseInt概要　図9"><br>
+<br>
+一言でparseIntメソッドといっても二つあることがわかります。<br>
+<ul>
+
+	<li>引数がひとつのメソッドは、<br>
+文字列を10進数の整数値であるものとして解析しintの値を返してくれるstaticメソッドです。<br></li>
+	<li>引数がふたつのメソッドは、<br>
+第二引数を基数として解析し、intの値を返してくれるstaticメソッドですが、<br>
+ここでは横道にそれてしまうのでこれ以上は触れません。<br></li>
+</ul>
+
+
+
+<br>
+<span class="important">これでparseIntメソッドがわかったと安心してはいけません。</span><br>
+メソッド名をクリックして、もっと詳しい情報を見てみましょう。<br>
+
+<br>
+<b>図10 parseInt詳細</b><br>
+<img src="image/image019.png" alt="parseInt詳細　図10"><br>
+<br>
+さらに詳しい情報が記載されています。<br>
+ここで気をつけなくてはいけないのは発生する可能性のある例外についての記載で、<br>
+必要に応じてプログラムで処理しなくてはなりません。<br>
+<br>
+
+<br>
+<a name="next"/>
+<p class="midasi0">次への第一歩</p>
+はじめに断っておくと、このAPI全てを覚える必要ありません。<br>
+調べながらプログラミングを行うのが普通です。<br>
+必要なクラスやメソッドについては何度も使用しているうちに覚えていきます。<br>
+<br>
+今回はIntegerクラスを見ていきましたが、<br>
+Integerクラスはintの値に関する操作で使えそうだというのを先ほど知りました。<br>
+覚えていれば、必要な時にひょっとしたらIntegerクラスに便利なメソッドがあるのでは？<br>
+と<span class="important">予想する事</span>が出来ます。<br>
+Javaでは、まず、自分がやりたい処理は、<br>
+<span class="important">きっと誰かが前に同じ事をやっていてAPIとして公開されているだろう</span>と疑います。<br>
+そして、まずAPIを調べるという作業を行います。<br>
+<br>
+何かにつけてAPIを調べる癖をつけておくのは使えるプログラマになるための第一歩です。<br>
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+</body>
+</html>

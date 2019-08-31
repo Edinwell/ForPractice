@@ -1,0 +1,174 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<title>自分の実装にテストを加える</title>
+<link rel="stylesheet" type="text/css" href="../../css/main.css">
+</head>
+<body>
+<center>
+<h2>カバレッジの確認</h2>
+</center>
+
+
+<p class="midasi0">カバレッジの確認</p>
+
+ユーティリティクラスの JUnit テスト実施が終わりました。<br>
+コーディングした JUnit テストケースが全て緑になりましたが、果たしてそれでテスト終了なのでしょうか？<br>
+<br>
+ここでは、「テスト終了」の目安として、コード・カバレッジを使用することにします。<br>
+「カバレッジ」は、コードの命令や分岐がテスト中にどのくらい網羅されたかを示す指標です。<br>
+<br>
+しかし、直交表や JUnit のコードを見るだけでは、カバレッジ状況を判断する事は困難です。<br>
+<br>
+JUnit では、カバレッジをグラフィカルに見るためのツールとして、djUnit が用意されています。<br>
+ここでは、djUnit の簡単な説明と、Eclipse への導入、使用方法を紹介します。<br><br>
+
+<div class="comment">
+djUnit は最新バージョンが Eclipse 3.5 用であるなど最近はあまり使用されていません。<br>
+この研修では、djUnit を使いますが、プロジェクトでは、Jacoco 等、他のカバレッジツールの使用も<br>
+検討してください。<br>
+</div>
+
+<p class="midasi1">djUnit</p>
+
+実際にdjUnitの画面を見てみましょう。<br>
+下の図が、djUnitのカバレッジ状況を表すビューです。<br>
+<br>
+プロジェクト全体、パッケージごと、各Javaファイルごとのカバレッジが表示されています。<br>
+緑がカバーされている割合で、赤が未カバーの割合です。<br>
+
+
+現在、全体的なカバレッジが98%ですので、網羅率100%まであと少しの状況を表しています。
+<br>
+<br>
+
+<p><img src="images/1.jpg" >  <br>
+
+
+
+
+<br>
+ここで、赤くなっている「dao.RSDAOFactory」のリンクを押すと、ソースコードにジャンプすることができます。<br>
+その際のコード内の様子が下の画像です。<br>
+丸で囲んだ部分に、緑と赤のバーがまじったアイコンがあり、コードに黄色い下線が引かれています。<br>
+この部分が、テスト実行時に実行されていないコードになります。<br>
+
+<p><img src="images/2.jpg" >  <br>
+
+
+<br>
+どのようなツールか想像できましたか？
+<br>
+後どのくらいテストを書けばよいかの目安となるグラフを表示し、テストが終了していないのはどこかを教えてくれる便利なツールです。
+<br>
+
+<p class="midasi1">djUnit を使用するための Eclipse の設定</p>
+
+<ol>
+<li><span class="bold">※ Eclipse の version が 4.4 (Luna) 以降の場合</span><br>
+<br>
+djUnit プラグインをインストールするには、まず、"Eclipse 2.0 style plugin Support プラグイン" をインストール必要があります。<br>
+<br>
+Eclipse のメニューから Help &gt; Install New Software... を選択します。<br>
+<br>
+<img src="images/djunit_install_1.png" width="60%"><br>
+<br>
+Work with で、「The Eclipse Project Updates - http://download.eclipse.org/eclipse/updates/4.5」を選択し、<br>
+「Eclipse Tests, Tools, Examples, and Extras &gt; Eclipse 2.0 Style Plugin Support」を選択して Next ボタンを押します。<br>
+<br>
+<img src="images/djunit_install_2.png" height="60%"><br>
+<br>
+後は、画面の指示に従い、プラグインをインストールしてください。<br>
+<br>
+</li>
+<li><span class="bold">djUnit プラグインをインストールします</span><br>
+<br>
+Eclipse のメニューから Help &gt; Install New Software... を選択します。<br>
+<br>
+<img src="images/djunit_install_1.png" width="60%"><br>
+<br><br>
+djUnit プラグインの更新サイトを登録するために、Add ボタンを押します。<br>
+<br>
+<img src="images/djunit_install_3.png" width="60%"><br>
+<br>
+下記の情報を入力して OK ボタンを押します。<br>
+<br>
+<table>
+<tr>
+<th>Name</th>
+<td>djUnit ※好きな名前で構いません</td>
+</tr>
+<tr>
+<th>Location</th>
+<td>http://works.dgic.co.jp/djunit/update/3.5.x/site.xml</td>
+</tr>
+</table>
+<br>
+<img src="images/djunit_install_4.png" width="60%"><br>
+<br>
+今、追加したサイトが Work with で選択されていることを確認して<br>
+「djUnit plugin &gt; djUnit plugin for Eclipse 3.5.x」を選択して Next ボタンを押します。<br>
+<br>
+<img src="images/djunit_install_5.png" width="60%"><br>
+<br>
+後は、画面の指示に従い、プラグインをインストールしてください。<br>
+<br>
+</li>
+<li><span class="bold">djUnit がインストールできたことを確認します</span><br>
+<br>
+下記のように djUnit の実行表示が現れていればプラグインの設定が完了できています。<br>
+<br>
+<img src="images/4.jpg"><br>
+<br>
+</li>
+</ol>
+<br>
+
+
+
+<p class="midasi1">djUnitを使用したテストの実施</p>
+
+テストクラスを右クリック→[実行]→[djUnitテスト]
+<br>
+<br>
+<img src="images/4_3.png" /><br>
+<br>
+<div class="comment">
+JDK8 で djUnit を実行すると java.lang.VerifyError もしくは initializationError が出るかと思います。<br>
+<br>
+この Error は djUnit が JDK8 に対応していないためですが、テスト実行時の VM 引数に -noverify オプションを付けることで回避できます。<br>
+<br>
+同じテストの実行であれば、２回目以降の設定は不要ですが、違うテストを実行するたびに設定しないといけないため<br>
+少し面倒ですが下記の手順で -noverfy オプションを付けて実行してください。<br>
+<br>
+<span class="bold">手順</span>
+<br>
+（一度実行して Error が出た後）Eclipse の「実行」メニューアイコンの隣の下向きアイコンをクリックして、メニューから「Run Configurations...」を選択する。<br>
+<br>
+<img src="images/run_config.png" width="60%" /><br>
+<br>
+左側のツリーで実行する対象を選択した状態で、右側の Arguments タブの「VM arguments:」に<br>
+「-noverify」と入力して Run ボタンを押下する。<br>
+<br>
+<img src="images/noverify.png" width="80%" /><br>
+<br>
+
+</div>
+<br>
+<br>
+下記は実行結果です。カバレッジは52%ほど。テストも失敗しています。まだまだというところです。<br>
+
+<br>
+<img src="images/4_4.png" />
+
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+
+</body>
+</html>

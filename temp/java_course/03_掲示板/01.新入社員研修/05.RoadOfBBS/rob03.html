@@ -1,0 +1,951 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31J">
+<title>～掲示板への道～</title>
+<link rel="stylesheet" type="text/css" href="../../css/main.css">
+</head>
+<body>
+<center>
+<h2>～掲示板への道～</h2>
+<h1>3.JDBCでデータベース"MySQL"アプリケーション編</h1>
+</center>
+<hr>
+
+<br>
+ここでは、サーバサイドから一歩引いて、コマンドプロンプト上での
+ Java アプリケーションで、データベースのアクセスを試みます。
+<br>
+Java でデータベースにアクセスするには「<span class="important">JDBC</span>」を用います。具体的には、「java.sql」パッケージのクラスライブラリです。
+<br>
+
+ここでは<a target="_blank" href="../04.掲示板開始の前に/05.Java,Tomcat,MySQLインストールマニュアル/index.html#mysql">事前準備でインストールした</a>「MySQL」を用います。
+<br><br>
+<br>
+<p class="midasi0">テストデータを準備する</p>
+
+それでは早速、MySQLサーバーを起動して、<br>
+クライアントからデータベース、および簡単なテーブルを作成し、<br>
+何件かのレコードを入れてみましょう。<br>
+<br><br>
+
+<div class="desc1">１．MySQLサーバーを起動してください。（手順通りにインストールした場合は、常に起動しています。）</div>
+<div class="desc1">２．MySQLコマンドクライアントを起動します。</div>
+<p>
+新しいコマンドプロンプトを立ち上げ、 
+<b>mysql -u root -p --default-character-set=cp932</b> と打った後、パスワードを入力すると
+<br><br>
+<pre class="console">
+C:\hoge&gt;mysql -u root --default-character-set=cp932
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 1 to server version: 4.0.13-max-debug
+
+Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
+
+mysql&gt;
+</pre>
+<br>
+と表示され mysql（コマンドラインツール）が起動します。<br>
+以下、このコマンドプロンプト上での作業になります。<br>
+<br>
+ここで MySQL のサーバーとクライアントの違いをしっかりと確認しておきましょう。<br>
+<br>
+<img src="image/mysql.png">
+<br><br>
+サーバーは<span class="important">常に起動</span>していて、クライアントからの<span class="important">要求を待ち受けています</span>。<br>
+ここで要求といっているのは、<br>
+<br>
+　・テーブル作成<br>
+　・テーブルへのデータの登録<br>
+　・テーブルへのデータの取得<br>
+<br>
+等、データベースができること全てを指します。<br>
+<br>
+MySQL の核はサーバーですが、サーバーだけでは成り立ちません。<br>
+MySQL に要求をだすためのクライアントが必要だからです。<br>
+<br>
+<span class="important">クライアントはひとつではありません。</span><br>
+Java アプリケーションから要求を出す場合は、Java アプリケーションがクライアントになり、<br>
+CSE などの DB のツールを使う場合は、そのツールがクライアントとなります。<br>
+mysql コマンドで起動するコマンドラインツールもクライアントの一つです。<br>
+mysql は、最も基本的な MySQL のクライアントです。<br>
+</p>
+
+<div class="desc1">３．データベースを作成します。</div>
+<p>
+（紛らわしいですが、MySQL全体もデータベースと呼び、その中にこれからつくるものもデータベースと呼びます。）
+<br><br>
+<xmp class="source">
+create database BBS;
+</xmp>
+<br>
+と打ってみてください。
+<br><br>
+<pre class="console">
+mysql&gt; create database BBS;
+Query OK, 1 row affected (0.07 sec)
+
+mysql&gt;
+</pre>
+<br>
+と表示されれば、データベース「BBS」の作成成功です。確認のため、<br>
+<br>
+<xmp class="source">
+show databases;
+</xmp>
+<br>
+と打ってみて表示されていればOKです。<br>
+これからはこのデータベース「BBS」を使用していくので、<br>
+<br>
+<xmp class="source">
+use BBS;
+</xmp>
+<br>
+と打ってデータベースを切り替えておいてください。さらに確認のために、<br>
+<br>
+<xmp class="source">
+show tables;
+</xmp>
+<br>
+と打って見てください。<br>
+空であるとの通知がされます（当然です）。以下のような表示になっていると思います。<br>
+<br><br>
+<pre class="console">
+mysql&gt; use BBS;
+Database changed
+
+mysql&gt; show tables;
+Empty set (0.00 sec)
+
+mysql&gt;
+</pre>
+</p>
+<div class="desc1">４．テーブルを作成します。</div>
+<p>
+<span class="filename">テーブル名：メッセージテーブル</span>
+<table class="db">
+<tr><th>列名</th><th>型</th><th>制約</th></tr>
+<tr><td>ID</td><td>integer</td><td>主キー</td></tr>
+<tr><td>NAME</td><td>varchar(20)</td><td>NOT NULL</td></tr>
+<tr><td>SUBJECT</td><td>varchar(40)</td><td>NOT NULL</td></tr>
+<tr><td>CONTENT</td><td>varchar(60)</td><td>NOT NULL</td></tr>
+</table>
+<br>
+上記のようなテーブルを作るため、<br>
+<br>
+<xmp class="source">
+create table MESSAGE_TABLE (
+	ID integer primary key,
+	NAME varchar(20) not null,
+	SUBJECT varchar(40) not null,
+	CONTENT varchar(60) not null
+);
+</xmp>
+<br>
+と打ってください。そして<br>
+<br>
+<xmp class="source">
+show tables;
+</xmp>
+<br>
+で確認してみます。以下のような表示になっていると思います。<br>
+<br>
+<xmp class="console">
+mysql create table MESSAGE_TABLE (
+    ->  ID integer primary key,
+    ->  NAME varchar(20) not null,
+    ->  SUBJECT varchar(40) not null,
+    ->  CONTENT varchar(60) not null
+    -> );
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> show tables;
++---------------+
+| Tables_in_bbs |
++---------------+
+| message_table |
++---------------+
+1 row in set (0.00 sec)
+
+mysql>
+</xmp>
+<br>
+<xmp class="source">
+desc MESSAGE_TABLE;
+</xmp>
+<br>
+としてテーブルの情報を確認してみてください。BBS_ID を“主キー”に設定しました。<br>
+</p>
+<div class="desc1">５．さみしいので、2件ほどデータを入れておきましょう。</div>
+<p>
+<xmp class="source">
+insert into MESSAGE_TABLE values(0, '若井', 'こんにちは', 'はじめまして');
+insert into MESSAGE_TABLE values(1, '岩井', 'いわいです', 'よろしく');
+</xmp>
+<br>
+と続けて入力してください。「Query OK, 1 row affected (0.12 sec)」と表示されれば挿入成功です。改めて<br>
+<br>
+<xmp class="source">
+select * from MESSAGE_TABLE;
+</xmp>
+<br>
+として確認してみましょう。<br>
+</p>
+以上で一旦このコマンドプロンプトは放置しておいてください。
+Java でこのデータベースにアクセスする作業に移りたいと思います。<br>
+<br><br>
+<p class="midasi0">ドライバの用意</p>
+Java アプリケーションがデータベースと接続するためには、<span class="important">ドライバ</span>と呼ばれるものが必要です。<br>
+手順通りに MySQL をインストールした場合は、<br>
+<br>
+C:\Program Files (x86)\MySQL\Connector.J 5.1<br>
+<br>
+に mysql-connector-java-5.1.35-bin.jar があるのでこれを使用します。これがドライバです。<br>
+<br>
+上記ファイルが存在しない場合、MySQL のインストール時に、ドライバを選択し忘れた可能性が高いです。<br>
+この場合、以下の手順に従って、ドライバを用意してください。<br><br>
+
+<div class="desc1">１．下記サイトより mysql-connector-java-5.1.6.tar.gz をダウンロードしてください。</div>
+ダウンロード元： <a href="http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.36.tar.gz">http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.36.tar.gz</a><br>
+<br>
+<div class="desc1">２．ダウンロードした mysql-connector-java-5.1.36.tar.gz を解凍します。</div>
+<p>解凍して出来たディレクトリ mysql-connector-java-5.1.36 の中にある
+mysql-connector-java-5.1.36-bin.jar をみつけてください。これがドライバです。
+</p>
+<br>
+ドライバを手に入れたら、次の手順でこのドライバを Java アプリケーションから使用できるようにします。<br>
+<br>
+<div class="desc1">１．このドライバ（JARファイル）を、<span class="important">C:\mysql\lib</span> ディレクトリを作成してこのディレクトリの中に入れてください。</div>
+<a name="jdbc_classpath"></a>
+<div class="desc1">２．環境変数 CLASSPATH を設定します</div>
+<p>
+環境変数 <span class="important">CLASSPATH</span> に 
+<span class="important">C:\mysql\lib\mysql-connector-java-5.1.36-bin.jar</span> を
+追加します。（セミコロンでつなげるのを忘れずに！）
+</p>
+<br><br>
+<p class="midasi0">Javaアプリケーションの作成</p>
+それではいよいよ、このテーブルにアクセスする Java アプリケーションを作成します。<br>
+<br>
+<p class="midasi1">データを取得するアプリケーション</p>
+まず、投稿内容を表すクラス Message を作成します。
+<br><br>
+<span class="filename">%CATALINA_HOME%\webapps\bbs\WEB-INF\classes\jp\co\insightech\Message.java</span>
+<xmp class="source">
+package jp.co.insightech;
+
+/**
+ * 投稿メッセージ.
+ */
+public class Message {
+
+	private int id;
+
+	private String name;
+
+	private String subject;
+
+	private String content;
+
+	/**
+	 * コンストラクタ.
+	 */
+	public Message() {
+	}
+
+	/**
+	 * IDを設定します.
+	 *
+	 * @param id ID
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/**
+	 * IDを取得します.
+	 *
+	 * @return ID
+	 */
+	public int getId() {
+		return this.id;
+	}
+
+	/**
+	 * 投稿者名を設定します.
+	 *
+	 * @param name 投稿者名
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * 投稿者名を取得します.
+	 *
+	 * @return 投稿者名
+	 */
+	public String getName() {
+		return this.name;
+	}
+
+	/**
+	 * 件名を設定します.
+	 *
+	 * @param subject 件名
+	 */
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+	/**
+	 * 件名を取得します.
+	 *
+	 * @return 件名
+	 */
+	public String getSubject() {
+		return this.subject;
+	}
+
+	/**
+	 * 投稿内容を設定します.
+	 *
+	 * @param content 投稿内容
+	 */
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	/**
+	 * 投稿内容を取得します.
+	 *
+	 * @return 投稿内容
+	 */
+	public String getContent() {
+		return this.content;
+	}
+
+}
+</xmp>
+<br>
+次は、メインとなるＤＢからデータを取得するクラスです。
+<br><br>
+<span class="filename">%CATALINA_HOME%\webapps\bbs\WEB-INF\classes\jp\co\insightech\SelectTest.java</span>
+<xmp class="source">
+package jp.co.insightech;
+
+import java.sql.*;
+import java.util.Vector;
+
+/**
+ * データベースからデータを取得するテストアプリケーション.
+ */
+public class SelectTest {
+
+	/**
+	 * メインメソッド.
+	 *
+	 * @param args 引数
+	 */
+	public static void main(String[] args) {
+		try {
+			SelectTest test = new SelectTest();
+			Vector messageList = test.getMessageList();
+
+			test.show(messageList);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+  
+	/**
+	 * 投稿メッセージの一覧を表示します.
+	 *
+	 * @param messageList 投稿メッセージの一覧
+	 */
+	private void show(Vector messageList) {
+		for (int i = 0; i < messageList.size(); i++) {
+			Message message = (Message) messageList.get(i);
+
+			System.out.println(message.getId() + ":");
+			System.out.println("\t名前:" + message.getName());
+			System.out.println("\t件名:" + message.getSubject());
+			System.out.println("\t内容:" + message.getContent());
+		}
+	}
+
+	/**
+	 * 投稿メッセージの一覧を取得します.
+	 *
+	 * @return 投稿メッセージの一覧
+	 * @throws Exception
+	 */
+	private Vector getMessageList() throws Exception {
+		Vector messageList = new Vector();
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = this.getConnection();
+
+			String sql = "SELECT * FROM MESSAGE_TABLE ORDER BY ID DESC";
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+				Message message = new Message();
+
+				int    id      = rs.getInt("ID");
+				String name    = rs.getString("NAME");
+				String subject = rs.getString("SUBJECT");
+				String content = rs.getString("CONTENT");
+
+				message.setId(id);
+				message.setName(name);
+				message.setSubject(subject);
+				message.setContent(content);
+				messageList.add(message);
+			}
+
+		} finally {
+			this.close(rs);
+			this.close(pstmt);
+			this.close(conn);
+		}
+
+		return messageList;
+	}
+  
+	/**
+	 * DBと接続します.
+	 *
+	 * @throws Exception
+	 */
+	private Connection getConnection() throws Exception {
+		Class.forName("org.gjt.mm.mysql.Driver");
+		Connection conn = DriverManager.getConnection
+			("jdbc:mysql://localhost/BBS?useUnicode=true&characterEncoding=MS932", "root", "設定したパスワード");
+		return conn;
+	}
+
+	/**
+	 * コネクションを切断します.
+	 *
+	 * @param conn コネクション
+	 * @throws SQLException
+	 */
+	private void close(Connection conn) throws SQLException {
+		if (conn != null) {
+			conn.close();
+		}
+	}
+
+	/**
+	 * Statement を破棄します.
+	 *
+	 * @param stmt Statement
+	 * @throws SQLException
+	 */
+	private void close(Statement stmt) throws SQLException {
+		if (stmt != null) {
+			stmt.close();
+		}
+	}
+
+	/**
+	 * ResultSet を破棄します.
+	 *
+	 * @param rs ResultSet
+	 * @throws SQLException
+	 */
+	private void close(ResultSet rs) throws SQLException {
+		if (rs != null) {
+			rs.close();
+		}
+	}
+}
+</xmp>
+<br>
+長いですね。。。<br>
+こんなに長いと何かすっきりしないという感覚は重要です。<br>
+ちょっとクラスを分割しましょう。<br>
+<br>
+<span class="filename">%CATALINA_HOME%\webapps\bbs\WEB-INF\classes\jp\co\insightech\SelectTest.java</span>
+<xmp class="source">
+package jp.co.insightech;
+
+import java.util.Vector;
+
+/**
+ * データベースからデータを取得するテストアプリケーション.
+ */
+public class SelectTest {
+
+	/**
+	 * メインメソッド.
+	 *
+	 * @param args 引数
+	 */
+	public static void main(String[] args) {
+		try {
+			MessageDao dao = new MessageDao();
+			Vector messageList = dao.getMessageList();
+      
+			SelectTest test = new SelectTest();
+			test.show(messageList);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+  
+	/**
+	 * 投稿メッセージの一覧を表示します.
+	 *
+	 * @param messageList 投稿メッセージの一覧
+	 */
+	private void show(Vector messageList) {
+		for (int i = 0; i < messageList.size(); i++) {
+      		Message message = (Message) messageList.get(i);
+
+			System.out.println(message.getId() + ":");
+			System.out.println("\t名前:" + message.getName());
+			System.out.println("\t件名:" + message.getSubject());
+			System.out.println("\t内容:" + message.getContent());
+		}
+	}
+}
+</xmp>
+<br>
+<span class="filename">%CATALINA_HOME%\webapps\bbs\WEB-INF\classes\jp\co\insightech\MessageDao.java</span>
+<xmp class="source">
+package jp.co.insightech;
+
+import java.sql.*;
+import java.util.Vector;
+
+/**
+ * MESSAGE_TABLE からデータを取得するため Data Access Object クラス.
+ */
+public class MessageDao {
+
+	/**
+	 * 投稿メッセージの一覧を取得します.
+	 *
+	 * @return 投稿メッセージの一覧
+	 * @throws Exception
+	 */
+	public Vector getMessageList() throws Exception {
+		Vector messageList = new Vector();
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = this.getConnection();
+
+			String sql = "SELECT * FROM MESSAGE_TABLE ORDER BY ID DESC";
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+				Message message = new Message();
+
+				int    id      = rs.getInt("ID");
+				String name    = rs.getString("NAME");
+				String subject = rs.getString("SUBJECT");
+				String content = rs.getString("CONTENT");
+
+				message.setId(id);
+				message.setName(name);
+				message.setSubject(subject);
+				message.setContent(content);
+				messageList.add(message);
+			}
+
+		} finally {
+			this.close(rs);
+			this.close(pstmt);
+			this.close(conn);
+		}
+
+		return messageList;
+	}
+  
+	/**
+	 * DBと接続します.
+	 *
+	 * @throws Exception
+	 */
+	private Connection getConnection() throws Exception {
+		Class.forName("org.gjt.mm.mysql.Driver");
+		Connection conn = DriverManager.getConnection
+			("jdbc:mysql://localhost/BBS?useUnicode=true&characterEncoding=MS932", "root", "設定したパスワード");
+		return conn;
+	}
+
+	/**
+	 * コネクションを切断します.
+	 *
+	 * @param conn コネクション
+	 * @throws SQLException
+	 */
+	private void close(Connection conn) throws SQLException {
+		if (conn != null) {
+			conn.close();
+		}
+	}
+
+	/**
+	 * Statement を破棄します.
+	 *
+	 * @param stmt Statement
+	 * @throws SQLException
+	 */
+	private void close(Statement stmt) throws SQLException {
+		if (stmt != null) {
+			stmt.close();
+		}
+	}
+
+	/**
+	 * ResultSet を破棄します.
+	 *
+	 * @param rs ResultSet
+	 * @throws SQLException
+	 */
+	private void close(ResultSet rs) throws SQLException {
+		if (rs != null) {
+			rs.close();
+		}
+	}
+}
+</xmp>
+<br>
+分割した方には、「MessageDao」という名前を付けました。<br>
+ここではこれ以上深くは触れませんが、（Javaの）世の中には、<br>
+DAO（Data Access Object）と呼ばれるものがあり、それにのっとって名前を付けました。<br>
+<br>
+ただ、そんなもの（DAO）は重要ではありません。重要なのは、<br>
+<br>
+<span class="important">・長すぎるクラスは何かおかしい</span><br>
+<span class="important">・１つのクラスが複数の役割を持っているのはおかしい</span><br>
+<span class="important">・データベースにアクセスする役割は専用のクラスに持たせると気持ちいい</span><br>
+<br>
+という感覚です。この感覚を磨いてください。<br>
+<br>
+では、コマンドプロンプトで実行してみましょう。<br>
+このアプリケーションは、データベーステーブルの中にあるデータを表示するものです。
+<br><br>
+<pre class="console">
+C:\tomcat\webapps\bbs\WEB-INF\classes>javac jp\co\insightech\*.java
+注意:jp\co\insightech\MessageDao.javaの操作は、未チェックまたは安全ではありません。
+注意:詳細は、-Xlint:uncheckedオプションを指定して再コンパイルしてください。
+
+C:\tomcat\webapps\bbs\WEB-INF\classes>java jp.co.insightech.SelectTest
+1:
+&nbsp;&nbsp;&nbsp;&nbsp;名前:岩井
+&nbsp;&nbsp;&nbsp;&nbsp;件名:いわいです
+&nbsp;&nbsp;&nbsp;&nbsp;内容:よろしく
+0:
+&nbsp;&nbsp;&nbsp;&nbsp;名前:若井
+&nbsp;&nbsp;&nbsp;&nbsp;件名:こんにちは
+&nbsp;&nbsp;&nbsp;&nbsp;内容:はじめまして
+</pre>
+
+ポイントは、
+<ul>
+	<li>java.sql パッケージの 
+		<span class="important">Connection, Statement, ResultSet クラス</span>
+	</li>
+	<li><span class="important">
+		Class.forName("org.gjt.mm.mysql.Driver");</span> の箇所
+	</li>
+	<li>
+		DriverManager.getConnection("jdbc:mysql://localhost/<span class="important">BBS</span>?useUnicode=true&characterEncoding=MS932","root","設定したパスワード");
+	</li>
+	<li>
+		Statement インスタンスの <span class="important">executeQuery メソッド</span>
+	</li>
+	<li>
+		SQL文「<span class="important">SELECT * FROM BBS_TABLE ORDER BY BBS_ID DESC</span>」
+	</li>
+	<li>ResultSet インスタンスの 
+		<span class="important">getInt, getString メソッドとその引数</span>
+	</li>
+</ul>
+などです。<br><br>
+<img src="image/question.gif"> APIドキュメント、SQLの参考書などを参照してください。
+<br><br>
+<div class="comment">
+コンパイルした際に、<br>
+<br>
+注意:jp\co\insightech\MessageDao.javaの操作は、未チェックまたは安全ではありません。<br>
+注意:詳細は、-Xlint:uncheckedオプションを指定して再コンパイルしてください。<br>
+<br>
+という警告が表示されたと思います。<br>
+この警告は、<br>
+<br>
+			Vector messageList = test.getMessageList();<br>
+<br>
+のように、Vector をジェネリクスの型を指定せずに使用していることが原因です。<br>
+本来は、<br>
+<br>
+			Vector&lt;Message&gt; messageList = test.getMessageList();<br>
+<br>
+のように使用するのが正しい姿です。<br>
+ジェネリクスについては後の研修で学びますので、この段階では警告が<br>
+出るままで構いません。<br>
+</div>
+<br><br>
+<br>
+<p class="midasi1">データを挿入するアプリケーション</p>
+次に、データを1件分挿入するアプリケーションを作成します。
+<br><br>
+<span class="filename">%CATALINA_HOME%\webapps\bbs\WEB-INF\classes\jp\co\insightech\InsertTest.java</span>
+<xmp class="source">
+package jp.co.insightech;
+
+import java.sql.*;
+
+/**
+ * データベースにデータを登録するテストアプリケーション.
+ */
+public class InsertTest {
+
+	/**
+	 * メインメソッド.
+	 *
+	 * @param args 引数
+	 */
+	public static void main(String[] args) {
+		try {
+			MessageDao dao = new MessageDao();
+
+			// (1) データベースに1件分レコードを挿入します
+			String id      = args[0];
+			String name    = args[1];
+ 			String subject = args[2];
+			String content = args[3];
+    
+			Message message = new Message();
+			message.setId(Integer.parseInt(id));
+			message.setName(name);
+			message.setSubject(subject);
+			message.setContent(content);
+    
+			dao.registerMessage(message);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+</xmp>
+<br>
+<span class="filename">%CATALINA_HOME%\webapps\bbs\WEB-INF\classes\jp\co\insightech\MessageDao.java</span>
+<xmp class="source">
+import java.sql.*;
+
+public class MessageDao {
+</xmp>
+<xmp class="modified_source">
+	前につくったものに次のメソッドを追加してください。
+</xmp>
+<xmp class="source">
+	/**
+	 * 投稿メッセージを登録します.
+	 * 
+	 * @param article 登録する投稿メッセージ
+	 * @throws Exception
+	 */
+	public void registerMessage(Message message) throws Exception {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			conn = this.getConnection();
+
+			pstmt = conn.prepareStatement("INSERT INTO MESSAGE_TABLE VALUES(?,?,?,?)");
+      
+			pstmt.setInt(1, message.getId());
+			pstmt.setString(2, message.getName());
+			pstmt.setString(3, message.getSubject());
+			pstmt.setString(4, message.getContent());
+    
+			int i = pstmt.executeUpdate();
+
+		} finally {
+			this.close(pstmt);
+			this.close(conn);
+		}
+	}
+}
+</xmp>
+<br>
+コマンドプロンプトで実行してみます。<br>
+<span class="important">
+このアプリケーションは、文字未入力チェックはしていません。<br>
+また、ID番号もすでにある番号を指定するとエラーが発生します。<br>
+注意してください。
+</span>
+<br><br>
+<pre class="console">
+C:\tomcat\webapps\bbs\WEB-INF\classes>javac jp\co\insightech\*.java
+
+C:\tomcat\webapps\bbs\WEB-INF\classes>java jp.co.insightech.InsertTest 2 インサイト こんばんは おやすみ
+
+C:\tomcat\webapps\bbs\WEB-INF\classes>
+
+</pre>
+データが1件分挿入されたか確認してみます。<br>
+さきほど放置しておいた MySQL のコンソールにて、<br>
+<br>
+<xmp class="source">
+select * from BBS_TABLE;
+</xmp>
+<br>
+として3件分のレコードを確認しましょう。<br>
+<br>
+
+ポイントは、
+<ul>
+<li>
+	<img src="image/question.gif"> PreparedStatementの使い方<br>
+</li>
+<li>
+	<img src="image/question.gif"> ResultSetの使い方<br>
+</li>
+<li>
+	<img src="image/question.gif"> SQL文<br>
+</li>
+</ul>
+などです。<br>
+
+
+次章では、この2つのアプリケーションをサーブレットに組み込みんでいきます。
+<br><br>
+
+なお、mysql（コマンドラインツール） を終了する場合は、<br>
+<br>
+<xmp class="source">
+quit
+</xmp>
+<br>
+と打ってください。<br>
+
+<br>
+<br>
+<div class="comment">
+java.sql.Connection、java.sql.PreparedStatement、java.sql.ResultSet 等を<br>
+使ったプログラムは、上記のプログラムように、try の finally 節で、作成したリソースを必ず close する<br>
+必要があります。<br>
+close し忘れてしまうと、作成されたものが残り続けてしまい、メモリリーク等の大問題となってしまいます。<br>
+<br>
+Java 7.0 からは、リソース付き try 文という機能が追加され、この機能を使うと、close し忘れがおこらないように<br>
+よりスマートに記述できるようになりました。<br>
+<br>
+研修では、リソース付き try 文は使用しませんが、リソース付き try 文を使った MessageDao を下記に記載しておきます。<br>
+close が自動で行われるので、コードも大分すっきりします。<br>
+</div>
+<br><br>
+<span class="filename">リソース付き try 文を使った MessageDao.java</span>
+<xmp class="source">
+package jp.co.insightech;
+
+import java.sql.*;
+import java.util.Vector;
+
+/**
+ * MESSAGE_TABLE からデータを取得するため Data Access Object クラス.
+ */
+public class MessageDao {
+
+	/**
+	 * 投稿メッセージの一覧を取得します.
+	 *
+	 * @return 投稿メッセージの一覧
+	 * @throws Exception
+	 */
+	public Vector getMessageList() throws Exception {
+		Vector messageList = new Vector();
+
+		String sql = "SELECT * FROM MESSAGE_TABLE ORDER BY ID DESC";
+
+		try (Connection conn = this.getConnection();
+			 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while(rs.next()) {
+					Message message = new Message();
+
+					int    id      = rs.getInt("ID");
+					String name    = rs.getString("NAME");
+					String subject = rs.getString("SUBJECT");
+					String content = rs.getString("CONTENT");
+
+					message.setId(id);
+					message.setName(name);
+					message.setSubject(subject);
+					message.setContent(content);
+					messageList.add(message);
+				}
+			}
+		}
+
+		return messageList;
+	}
+
+	/**
+	 * 投稿メッセージを登録します.
+	 * 
+	 * @param article 登録する投稿メッセージ
+	 * @throws Exception
+	 */
+	public void registerMessage(Message message) throws Exception {
+		
+		try (Connection conn = this.getConnection();
+			 PreparedStatement pstmt = conn.prepareStatement("INSERT INTO MESSAGE_TABLE VALUES(?,?,?,?)")) {
+      
+			pstmt.setInt(1, message.getId());
+			pstmt.setString(2, message.getName());
+			pstmt.setString(3, message.getSubject());
+			pstmt.setString(4, message.getContent());
+    
+			int i = pstmt.executeUpdate();
+		}
+	}
+
+	/**
+	 * DBと接続します.
+	 *
+	 * @throws Exception
+	 */
+	private Connection getConnection() throws Exception {
+		Class.forName("org.gjt.mm.mysql.Driver");
+		Connection conn = DriverManager.getConnection
+			("jdbc:mysql://localhost/BBS?useUnicode=true&characterEncoding=MS932", "root", "設定したパスワード");
+		return conn;
+	}
+
+}
+</xmp>
+
+</div>
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+
+</body>
+</html>

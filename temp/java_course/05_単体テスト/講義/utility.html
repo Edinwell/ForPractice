@@ -1,0 +1,246 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MVC施設予約の単体テスト</title>
+<link rel="stylesheet" type="text/css" href="../../css/main.css">
+</head>
+
+<body>
+
+<center>
+<h2>ユーティリティメソッドの単体テスト</h2>
+</center>
+<hr>
+
+<p class="midasi0">ユーティリティメソッドの単体テスト</p>
+
+まずは、独立性が高そうなユーティリティ 用のメソッドから単体テストを開始することにします。<br>
+ユーティリティメソッドについては、テスト項目に関してはさほど難しいことはないと思いますので、<br>
+ここでは、直交表の記入方法や、テストクラスに対する JavaDoc 作成の規則について詳細に見ていくことにします。<br>
+<br>
+MVC施設予約でのユーティリティメソッドは以下のような一覧となります。<br>
+各メソッドに対して、エクセルのシートを分け、直交表を１つずつ作成します。<br>
+テスト対象となるのは、public なメソッドのみです。<br>
+<br>
+<table border="1">
+	<tr>
+		<th>クラス名</th>
+		<th>メソッド名</th>
+		<th>可視性</th>
+		<th>テスト対象</th>
+	</tr>
+
+	<tr>
+		<td>jp.co.insightech.util.ReserveUtils</td>
+		<td>boolean isPast(Calendar)</td>
+		<td>public</td>
+		<td align="center">○</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>Reserve getReserve(int, int, Vector)</td>
+		<td>public</td>
+		<td align="center">○</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>Calendar getToday()</td>
+		<td>private</td>
+		<td align="center">-</td>
+	</tr>
+</table>
+<br>
+public なユーティリティメソッドは2つですので、直交表を2シート分作成することになります。<br>
+
+
+<p class="midasi1">ユーティリティメソッドの直交表</p>
+直交表の記入規則を以下のように設定します。<br>
+<ol>
+	<li>テストの説明は、メソッド上部の JavaDoc をそのまま記入</li>
+	<li>更新日、更新者を必ず記入</li>
+	<li>クラス名は完全クラス名（パッケージ込み）を記入</li>
+	<li>メソッド名は、アクセス修飾詞を除く、シグネチャ全てを記入</li>
+	<li>テスト項目の連番が、テスト項目数と合致するように記入</li>
+	<li>備考があれば欄外に記入</li>
+	<li>できるだけセルの結合はしないで記入（修正しづらくなるため）</li>
+	<li>罫線等が消えてしまった場合は引きなおして記入</li>
+</ol>
+<br>
+今回、直交表はあくまでパターン洗い出しに使用する資料ですが、<br>
+基本的に開発で作成するドキュメントは全てが納品物となる可能性があります。<br>
+「納品物」＝「商品」 ですので、大きく様式を変更してしまったり、可読性の低いものにしてはいけません。<br>
+また、誤字・脱字、未記入欄や、細かい部分のレイアウト崩れなどもないように気を配ります。<br>
+<br>
+1つのメソッドについて、直交表を作成してみました。<br>
+このユーティリティメソッドでは、先述の境界値テストの観点からチェックを行っています。<br>
+上記の直交表記入のルールに沿っているかどうかをチェックします。<br>
+<br>
+<img src="images/03_decision0.png" width="80%" /><br>
+<br>
+特に問題がなさそうですので、次に進みます。<br>
+
+<p class="midasi1">テストクラスの JavaDoc</p>
+
+次に、テストクラスを作成し、実際にテストを行っていきますが、<br>
+今回は、テストクラスに記述されている JavaDoc を単体テスト仕様書として扱うことにしていますので、<br>
+最初に、テスト仕様を JavaDoc として記入してしまいます。<br>
+<br>
+以下のような規則に沿って記入します。<br>
+<ol>
+	<li>&lt;pre&gt;タグで全体を囲う</li>
+	<li>【概要】、【条件】、【実行】 、【結果】を順番に記入する</li>
+	<li>【概要】では、このテストケースの説明 （他のテストケースとのパターンの違いがわかるように） を簡潔に記入する</li>
+	<li>【実行】、他のメソッドの呼び出しの記述部分は{@link}タグを使用する</li>
+	<li>各項目の見出しとして ・（全角の中点）を使用する</li>
+	<li>全角スペースは使用しない （文字種テストで条件に挙げるような場合を除く）</li>
+</ol>
+通常、このような細かなことを注意されることはあまりありません。<br>
+ドキュメントを作成する際には、その場にある見本に沿って記述することが普通です。<br>
+<br>
+<br>
+<pre class="source">
+	/**
+	 * &lt;pre&gt;
+	 * 【概要】
+	 * ・過去の日付のとき、trueが返ること.
+	 *
+	 * 【条件】
+	 * ・引数 :	cal = 2013-06-09を表すCalendarクラス
+	 *
+	 * 【実行】
+	 * ・{@link ReserveUtils#isPast(Calendar)}
+	 *
+	 * 【結果】
+	 * ・戻り値 : true
+	 * &lt;/pre&gt;
+	 */
+	@Test
+	public void testIsPastWhenYesterday() {
+		fail("まだ実装されていません。");
+	}
+</pre><br>
+<br>
+メソッド名は、テストを表すような名前をつけるのが慣例です。<br>
+「isPast」 メソッドのテストですので、「testIsPast」 という部分は共通になります。<br>
+その後ろに、「WhenYesterday」のように、【概要】を 端的に表すような名前をつけます。<br>
+<br>
+
+<p class="midasi2">Eclipse の設定変更</p>
+
+ 今回、&lt;pre&gt; タグを使用しているため、<br>
+テストクラス内でフォーマットをかけると、JavaDoc が右に半角スペースひとつずつずれていってしまいます。<br>
+これを避けるために、Eclipse 上で以下のような設定を実施してください。<br>
+<br>
+プロジェクトを右クリック → [プロパティ] → [Javaコード・スタイル] → [フォーマッター]<br>
+<br>
+<img src="images/03_setting0.png" width="80%"><br>
+<br>
+[プロジェクト固有の設定を可能にする] にチェック → [表示](Edit)<br>
+<br>
+<img src="images/03_setting1.png" width="80%"><br>
+<br>
+ポップアップ画面で、[コメント]タブを選択、[Java コード・スニペットをフォーマット]のチェックを外す → [OK]<br>
+<br>
+<img src="images/03_setting2.png" width="80%"><br>
+<br>
+プロパティ画面に戻ったら、[OK] で設定終了です。<br>
+<br>
+
+<p class="midasi1">JUnit テスト</p>
+単体テスト仕様書としての JavaDoc の記入が終了したら、実際のテストの中身を実装していきます。<br>
+ユーティリティクラスの JUnit の内容については、<a href="../usage.html">JUnitの使い方</a>が参考になりますので、ここでは割愛します。<br>
+上記の直交表についての、テストクラスは以下のようになりました。<br>
+<br>
+<pre class="source">
+	/**
+	 * &lt;pre&gt;
+	 * 【概要】
+	 * ・昨日の日付は過去と判断されること.
+	 *
+	 * 【条件】
+	 * ・引数 : cal = 2013-06-09を表すCalendarクラス
+	 *
+	 * 【実行】
+	 * ・{@link ReserveUtils#isPast(Calendar)}
+	 *
+	 * 【結果】
+	 * ・戻り値 : true
+	 * &lt;/pre&gt;
+	 */
+	@Test
+	public void testisPastWhenYesterday() {
+		Calendar cal = Calendar.getInstance();
+		cal.set(2013, 5, 9);
+		assertTrue(ReserveUtils.isPast(cal));
+	}
+
+	/**
+	 * &lt;pre&gt;
+	 * 【概要】
+	 * ・今日の日付は過去でないと判断されること.
+	 *
+	 * 【条件】
+	 * ・引数 : cal = 2013-06-10を表すCalendarクラス
+	 *
+	 * 【実行】
+	 * ・{@link ReserveUtils#isPast(Calendar)}
+	 *
+	 * 【結果】
+	 * ・戻り値 : false
+	 * &lt;/pre&gt;
+	 */
+	@Test
+	public void testisPastWhenToday() {
+		Calendar cal = Calendar.getInstance();
+		cal.set(2013, 5, 10);
+		assertFalse(ReserveUtils.isPast(cal));
+	}
+
+	/**
+	 * &lt;pre&gt;
+	 * 【概要】
+	 * ・明日の日付は過去でないと判断されること.
+	 *
+	 * 【条件】
+	 * ・引数 : cal = 2013-06-11を表すCalendarクラス
+	 *
+	 * 【実行】
+	 * ・{@link ReserveUtils#isPast(Calendar)}
+	 *
+	 * 【結果】
+	 * ・戻り値 : false
+	 * &lt;/pre&gt;
+	 */
+	@Test
+	public void testisPastWhenToday() {
+		Calendar cal = Calendar.getInstance();
+		cal.set(2013, 5, 11);
+		assertFalse(ReserveUtils.isPast(cal));
+	}
+</pre><br>
+※実際にこのテストクラスをテストしてみると、失敗すると思います。<br>
+「現在の日付」がテストするときによって変わってしまうためですね。<br>
+これを解決するためにはモックオブジェクト等を用いますが、その説明は Dao クラスのテスト以降に行います。<br>
+今回このテストを実行するなら、cal.set() の部分をそれぞれテストする日付に合わせて書き換えてください。<br>
+<br>
+他のメソッドについても同じように、<br>
+<ol>
+<li>直交表の作成</li>
+<li>空メソッドの実装と、JavaDoc（テスト仕様） の記入</li>
+<li>テストメソッドの実装</li>
+</ol>
+という手順を繰り返して、全ての public メソッドに対する実装を行います。<br>
+<br>
+尚、テストクラスはメソッドごとではなく、クラスごとに作成しますので、<br>
+複数のメソッドをもつクラスのテストを実施する場合は、全てのメソッドに対するテストケースを１つのテストクラスの中に記述します。<br>
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+
+</body>
+</html>

@@ -1,0 +1,344 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31J">
+<title>～掲示板への道～</title>
+<link rel="stylesheet" type="text/css" href="../../css/main.css">
+</head>
+<body>
+<center>
+<h2>～掲示板への道～</h2>
+<h1>7.クロスサイトスクリプティングへの対応編</h1>
+</center>
+
+<hr>
+
+<p class="midasi0">クロスサイトスクリプティング</p>
+ここまでで作成した掲示板には<span class="important">クロスサイトスクリプティング</span>と呼ばれる<span class="important">重大な欠陥</span>があります。
+<br>
+次の図のように、HTMLのタグを入力して見てください。
+<br><br>
+<img src="image/escape1.png" alt="入力欄に HTML のタグを入力してみる">
+<br><br>
+送信ボタンを押すと次のようになってしまうはずです。
+<br><br>
+<img src="image/escape2.png" alt="悪意のある入力で、表示が崩れてしまった">
+<br><br>
+ここでは、入力をかなり容赦しましたので、テーブルの表示が崩れてしまうだけで済みましたが、<br>
+もっといろいろなタグが入力された時のことを想像してみてください。<br>
+（JavaScriptに馴染みがなく、あまり酷い想像ができない人は、クロスサイトスクリプティングでいろいろ調べてみてください。）<br>
+<br>
+クロスサイトスクリプティングに対処するには、危険な文字を<span class="important">エスケープ（変換）</span>してあげる必要があります。<br>
+次の表は、エスケープが必要な文字の一覧です。<br>
+<br>
+<table class="db">
+<tr>
+	<th>エスケープ対象の文字</th><th>エスケープされた文字</th>
+</tr>
+<tr>
+	<td>&lt;</td><td>&amp;lt;</td>
+</tr>
+<tr>
+	<td>&gt;</td><td>&amp;gt;</td>
+</tr>
+<tr>
+	<td>&amp;</td><td>&amp;amp;</td>
+</tr>
+<tr>
+	<td>&quot;</td><td>&amp;quot;</td>
+</tr>
+</table>
+<br><br>
+<p class="midasi1">エスケープ用のメソッドを作成する</p>
+クロスサイトスクリプティングの怖さが分かったところで、エスケープ用のメソッドを作成しましょう。<br>
+<br>
+<span class="filename">%CATALINA_HOME%\webapps\bbs\WEB-INF\classes\jp\co\insightech\WebUtils.java</span>
+<xmp class="source">
+package jp.co.insightech;
+
+import java.util.*;
+
+public class WebUtils {
+	
+	/**
+	 * HTMLのエスケープを行います.
+	 * 
+	 * @param str 文字列
+	 * @return エスケープ後の文字列
+	 */
+	public static String escapeStr(String str){
+		if(str == null) {
+			return null;
+		}
+
+		char[] ch = str.toCharArray();
+		StringBuilder sb = new StringBuilder();
+		
+		for(int i=0; i<ch.length; i++){
+			if (ch[i] == '<') {
+				sb.append("&lt;");
+			} else if (ch[i] == '>') {
+				sb.append("&gt;");
+			} else if (ch[i] == '&') {
+				sb.append("&amp;");
+			} else if (ch[i] == '\"') {
+				sb.append("&quot;");
+			} else {
+				sb.append(ch[i]);
+			}
+		}
+	
+		return sb.toString();
+	}
+
+}
+</xmp>
+<br><br>
+<img src="image/question.gif"> このメソッドはなぜ <span class="important">static</span> メソッドなのでしょうか。明確に答えられない人は今一度ここで復習しておきましょう<br>
+<br><br>
+<p class="midasi1">～～Utils というクラス名</p>
+ここでは、WebUtils というクラスを新たに作成しました。<br>
+これから皆さんはこのような <span class="important">～～Utils</span> などという名前を持ったクラスにたくさん出会うことでしょう。<br>
+ですが、この名前には、センスがありません。<br>
+<br>
+果たしてこの WebUtils というクラスは何をしてくれるクラスなのでしょうか。<br>
+今の段階では、エスケープ用のメソッドが一つあるだけです。命名者（私ですが）は今後このクラスに<br>
+便利な Utility メソッドをたくさん作るつもりでこの名前を付けたのでしょう。<br>
+<br>
+ですが、一度このような名前のクラスを作ってしまうと、行き場のないメソッドはなんでもかんでもこの<br>
+クラスに集まってくるようになってしまいます。<br>
+その結果、このクラスは肥大化し見るも無残な<span class="important">ごちゃ混ぜクラスと化してしまう</span>のです。<br>
+<br>
+ということで、<span class="important">～～Utils</span> などという安易な名前をつけるのは出来るだけ<span class="important">避けて</span>ください。<br>
+クラスを作る場合はその<span class="important">クラスに与える役割</span>をよく考えて、その<span class="important">役割を表す名前</span>をつける必要があります。<br>
+このクラスの場合で言えば、例えば <span class="important">Escape</span> というクラス名を付けるべきです。<br>
+<br>
+ここでは、この説明をしたかったがために、あえて WebUtils と付けて見ました。<br>
+まーこのまま続けましょう。<br>
+<br>
+<br>
+<p class="midasi1">どこでエスケープ処理を呼び出すか</p>
+エスケープ用のメソッドは作りました。さて、このメソッドをどこで呼び出しましょう？<br>
+候補としては、<br>
+<br>
+　・サーブレットでパラメータを取得した時<br>
+　・DBにデータを登録する時<br>
+　・DBからデータを取得した時<br>
+　・画面（JSP）に表示する時<br>
+<br>
+ぐらいが考えられます。<br>
+さてどこがいいですか？<br>
+<br>
+答えは「<span class="important">画面（JSP）に表示する時</span>」です。<br>
+データベースに入っているデータは、Webアプリケーションだけが使用するとは限りません。<br>
+従って、DBには入力されたままのデータを入れておくべきです。<br>
+<br>
+画面に表示してしまうのが危険なだけですので、「画面（JSP）に表示する時」
+<span class="important">だけ</span>変換するのが最も望ましい処理となります。<br>
+<br>
+それでは、エスケープ処理を bbs.jsp に組み入れましょう。<br><br>
+<span class="filename">%CATALINA_HOME%\webapps\bbs\WEB-INF\bbs.jsp</span>
+<xmp class="source">
+<%@ page contentType="text/html; charset=MS932" %>
+<%@ page import="jp.co.insightech.*" %>
+<%@ page import="java.util.*" %>
+
+<%
+  Vector messageList = (Vector) request.getAttribute("MESSAGE_LIST");
+%>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+	<title>掲示板</title>
+</head>
+<body>
+
+<form action="./top" method="POST">
+
+	<table border="1">
+		<tr>
+			<td>名前</td>
+			<td><input type="text" name="name"></td>
+		</tr>
+		<tr>
+			<td>件名</td>
+			<td><input type="text" name="subject"></td>
+		</tr>
+		<tr>
+    		<td>メッセージ</td>
+			<td><input type="text" name="content"></td>
+  		</tr>
+	</table>
+	<input type="submit" name="sendMessage" value="送信">
+
+</form>
+
+<%
+for (int i = 0; i < messageList.size(); i++) {
+	Message message = (Message) messageList.get(i);
+%>
+	<table border=1>
+</xmp>
+<xmp class="modified_source">
+		<tr><td>名前</td><td><%=  WebUtils.escapeStr(message.getName()) %></td></tr>
+		<tr><td>件名</td><td><%=  WebUtils.escapeStr(message.getSubject()) %></td></tr>
+		<tr><td>メッセージ</td><td><%= WebUtils.escapeStr(message.getContent()) %></td></tr>
+</xmp>
+<xmp class="source">
+	</table><br>
+<%
+}
+%>
+
+
+</body>
+</html>
+</xmp>
+<br><br>
+これでクロスサイトスクリプティングの対応が完了しました。<br>
+もう一度画面を表示してみてください。<br>
+次の図のように、入力したタグがそのまま表示されるようになったはずです。<br>
+<br>
+<img src="image/escape3.png">
+<br><br><br>
+<p class="midasi0">メッセージを複数行入力できるようにする</p>
+さて、ついでに、メッセージを複数行入力できるようにテキストボックスからテキストエリアに変更しましょう。<br>
+<br>
+<img src="image/textarea.png">
+<br><br>
+変更が必要なのは bbs.jsp のみです。<br>
+<br>
+<span class="filename">%CATALINA_HOME%\webapps\bbs\WEB-INF\bbs.jsp</span>
+<xmp class="source">
+<%@ page contentType="text/html; charset=MS932" %>
+<%@ page import="jp.co.insightech.*" %>
+<%@ page import="java.util.*" %>
+
+<%
+  Vector messageList = (Vector) request.getAttribute("MESSAGE_LIST");
+%>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+	<title>掲示板</title>
+</head>
+<body>
+
+<form action="./top" method="POST">
+
+	<table border="1">
+		<tr>
+			<td>名前</td>
+			<td><input type="text" name="name"></td>
+		</tr>
+		<tr>
+			<td>件名</td>
+			<td><input type="text" name="subject"></td>
+		</tr>
+		<tr>
+    		<td>メッセージ</td>
+</xmp>
+<xmp class="modified_source">
+			<td><textarea name="content" rows="5" cols="20"></textarea></td>
+</xmp>
+<xmp class="source">
+  		</tr>
+	</table>
+	<input type="submit" name="sendMessage" value="送信">
+
+</form>
+
+<%
+for (int i = 0; i < messageList.size(); i++) {
+	Message message = (Message) messageList.get(i);
+%>
+	<table border=1>
+		<tr><td>名前</td><td><%=  WebUtils.escapeStr(message.getName()) %></td></tr>
+		<tr><td>件名</td><td><%=  WebUtils.escapeStr(message.getSubject()) %></td></tr>
+		<tr><td>メッセージ</td><td><%= WebUtils.escapeStr(message.getContent()) %></td></tr>
+	</table><br>
+<%
+}
+%>
+
+
+</body>
+</html>
+</xmp>
+<br><br>
+
+では実行してみましょう。次の図のように入力して<br>
+<br>
+<img src="image/textarea2.png">
+<br><br>
+送信ボタンを押すと、結果は・・・
+<br><br>
+<img src="image/textarea3.png">
+<br><br>
+思ったとおり改行されていません・・・。<br>
+理想は次のようになることです。<br>
+<br>
+<img src="image/textarea4.png">
+<br><br>
+最初に「ついでに」と言った意味が分かりましたか？<br>
+これを解決するには、先ほど作った WebUtils#escapeStr を変更すればよいのです。
+<br><br>
+<span class="filename">%CATALINA_HOME%\webapps\bbs\WEB-INF\classes\jp\co\insightech\WebUtils.java</span>
+<xmp class="source">
+package jp.co.insightech;
+
+import java.util.*;
+
+public class WebUtils {
+	
+	/**
+	 * HTMLのエスケープを行います.
+	 * 
+	 * @param str 文字列
+	 * @return エスケープ後の文字列
+	 */
+	public static String escapeStr(String str){
+		if(str == null) {
+			return null;
+		}
+
+		char[] ch = str.toCharArray();
+		StringBuilder sb = new StringBuilder();
+		
+		for(int i=0; i<ch.length; i++){
+			if (ch[i] == '<') {
+				sb.append("&lt;");
+			} else if (ch[i] == '>') {
+				sb.append("&gt;");
+			} else if (ch[i] == '&') {
+				sb.append("&amp;");
+			} else if (ch[i] == '\"') {
+				sb.append("&quot;");
+</xmp>
+<xmp class="modified_source">
+			} else if (ch[i] == '\n') {
+				sb.append("<br>");
+</xmp>
+<xmp class="source">
+			} else {
+				sb.append(ch[i]);
+			}
+		}
+	
+		return sb.toString();
+	}
+
+}
+</xmp>
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+
+</body>
+</html>

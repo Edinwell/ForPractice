@@ -1,0 +1,468 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="../../../css/main.css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+
+<center>
+<h2>例外との正しい付き合い方</h2>
+</center>
+<hr>
+
+<p class="midasi0">例外の追い方</p>
+
+ここでは、思い通りにいかない！エラーが出た！などの際に、どこが悪いのかを調査する方法を学んでいきます。<br>
+以下のようなクラスを用意します。<br>
+<br>
+
+<xmp class="source">
+package stack;
+
+public class TraceSample1 {
+	public static void main(String[] args) {
+		int i = Integer.parseInt(args[0]);
+		System.out.println(20 / i);
+	}
+}
+</xmp>
+<br>
+このクラスをコマンドライン引数なしで実行すると、<br>
+
+<pre class="console">
+C:\test>java stack.TraceSample1
+Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: 0
+        at stack.TraceSample1.main(TraceSample1.java:5)
+</pre>
+
+と例外が発生し、プログラムが異常終了します。<br>
+<br>
+では、表示された例外を見てみましょう。<br>
+どんな情報が読み取れるかというと、<br>
+<ul>
+	<li>java.lang.ArrayIndexOutOfBoundsExceptionである。</li>
+	<li>stack.TraceSample1クラス内で発生した。</li>
+	<li>発生箇所は5行目である。</li>
+	<li>mainメソッド内で発生した。</li>
+</ul>
+<br>
+といったことが読み取れます。<br>
+<br>
+実際に5行目では何をしているかというと、<br>
+<br>
+<xmp class="source">
+		int i = Integer.parseInt(args[0]);
+</xmp>
+<br>
+
+
+コマンドライン引数の１つめの文字列をintに変換しようとしています。<br>
+<br>
+次に、<br><br>
+java.lang.ArrayIndexOutOfBoundsException<br>
+<br>
+とはどのようなクラスでしょうか？知らない場合、自信が無い場合はAPIドキュメントを探しましょう。<br>
+以下APIからの抜粋です。<br>
+<br>
+<xmp class="source">
+public class ArrayIndexOutOfBoundsException 
+extends IndexOutOfBoundsException
+
+不正なインデックスを使って配列がアクセスされたことを示すためにスローされます。
+つまり、インデックスが負または、配列のサイズ以上の場合です。 
+
+導入されたバージョン: 
+	JDK1.0 
+関連項目: 
+	直列化された形式
+</xmp>
+<br>
+とあります。<br>
+つまり、コマンドライン引数を渡していないのに、<br>
+配列の0番目を取得しようとしているので例外が発生しているわけです。<br>
+<br>
+<div class="comment">
+ポイント<br>
+＊	例外は「クラス:メッセージ」といった文字列表現を持っています。<br>
+</div>
+<br>
+では、気を取り直して、引数を指定してみます。<br>
+今度は次のように実行してみます。<br>
+<br>
+<pre class="console">
+C:\test>java stack.TraceSample1 0.5
+Exception in thread "main" java.lang.NumberFormatException: For input string: "0.5"
+        at java.lang.NumberFormatException.forInputString(NumberFormatException.java:48)
+        at java.lang.Integer.parseInt(Integer.java:477)
+        at java.lang.Integer.parseInt(Integer.java:518)
+        at stack.TraceSample1.main(TraceSample1.java:5)
+</pre>
+今度はスタックトレースが長くなりました。<br>
+<br>
+まずはどのような例外が発生したのかを見ます。<br>
+<br>
+java.lang.NumberFormatException<br>
+<br>
+という例外が発生し、メッセージは<br>
+<br>
+For input string: "0.5"<br>
+<br>
+0.5が渡されたといっています。<br>
+<br>
+java.lang.NumberFormatException<br>
+<br>
+とはどのようなクラスでしょうか？しつこいようですが、知らない場合、自信が無い場合はAPIドキュメントを探しましょう。<br>
+（もっともこれは例外に限った話ではありませんが・・・）<br>
+<br>
+<xmp class="source">
+public class NumberFormatException 
+extends IllegalArgumentException
+
+アプリケーションが文字列を数値型に変換しようとしたとき、文字列の形式が正しくない場合にスローされます。 
+
+導入されたバージョン: 
+	JDK1.0 
+関連項目: 
+	Integer.toString(), 直列化された形式
+</xmp>
+<br>
+続いて、プログラムのどこで発生したかを見ます。<br>
+<br>
+スタックトレースの中から、自分のクラスを探します。<br>
+<br>
+一番下を見ると、stack.TraceSample1の5行目で、mainメソッドの中ということがわかります。<br>
+<br>
+5行目は先ほどと同じで、コマンドライン引数の１つめの文字列をintに変換しようとしています。<br>
+0.5のようにintに変換できないような値が渡されると、<br>
+IntegerクラスのparseIntメソッド内で例外が発生するのがその後のスタックトレースから読み取れます。<br>
+あらためて、IntegerのparseIntメソッドのAPIを見ると、<br>
+<br>
+<xmp class="source">
+～抜粋～
+	戻り値: 
+	10 進数の引数で表される整数値 
+	例外: 
+	NumberFormatException - 文字列が構文解析可能な整数型を含まない場合
+</xmp>
+<br>
+となっています。<br>
+<br>
+<div class="comment">
+ポイント<br>
+＊	スタックトレースというくらいですから、情報は時系列にそって下が古く、<br>
+上に行くほど新しい情報になります。順に追っていく場合には下から追っていけばいいですし、<br>
+逆に結局どこで？というアプローチの場合は、上の方から見るといった手順で原因を調査します。<br>
+</div>
+<br>
+では、次のように実行するとどうなるでしょうか？<br>
+<br>
+<pre class="console">
+C:\test>java stack.TraceSample1 0
+Exception in thread "main" java.lang.ArithmeticException: / by zero
+        at stack.TraceSample1.main(TraceSample1.java:6)
+</pre>
+今度はどのような例外が発生したでしょうか？<br>
+<br>
+java.lang.ArithmeticException<br>
+<br>
+という例外で、メッセージが、<br>
+/ by zero
+<br>
+となっていますので、<br>
+0で割っているのがまずいことがわかります。<br>
+今回はメッセージで読み取れたからいいですが、<br>
+このメッセージでわからなかった場合はやはり、APIドキュメントを読みます。<br>
+<br>
+<xmp class="source">
+public class ArithmeticException 
+extends RuntimeException
+
+算術計算で例外的条件が発生した場合にスローされます。たとえば、整数を「ゼロで除算」するとこのクラスのインスタンスがスローされます。 
+
+導入されたバージョン: 
+	JDK1.0 
+
+関連項目: 
+	直列化された形式
+</xmp>
+<br>
+と今まで見てきたように、例外というのは有用な情報を持っています。スタックトレースが追えないと、<br>
+障害やバグの調査が出来ない・・・となってしまいます。<br>
+<br><br>
+
+<p class="midasi0">例外との付き合い方</p>
+
+ここでは、正しい例外との付き合い方を学んでいきます。<br>
+以下はファイルの内容を表示するプログラムです。<br>
+<br>
+<xmp class="source">
+package stack;
+import java.io.BufferedReader;
+import java.io.FileReader;
+public class TraceSample2 {
+    public void print(String filename) {
+        BufferedReader reader = new BufferedReader(new FileReader(filename));
+        while (true) {
+            String line= reader.readLine();
+            if (line == null) {
+                break;
+            }
+            System.out.println(line);
+        }
+        reader.close();
+   }
+    public static void main(String[] args) {
+        new TraceSample2().print(args[0]);
+    }
+}
+</xmp>
+<br>
+さて、今度はこのクラスですが、コンパイルをしようとすると、以下のようなエラーが出てしまいます。<br>
+<br>
+<pre class="console">
+C:\test >javac stack\TraceSample2.java
+stack\TraceSample2.java:8: 例外 java.io.FileNotFoundException は報告されません。
+スローするにはキャッチまたは、スロー宣言をしなければなりません。
+        BufferedReader reader = new BufferedReader(new FileReader(filename));
+                                                   ^
+stack\TraceSample2.java:11: 例外 java.io.IOException は報告されません。スローす
+るにはキャッチまたは、スロー宣言をしなければなりません。
+            String str = reader.readLine();
+                                        ^
+stack\TraceSample2.java:19: 例外 java.io.IOException は報告されません。スローす
+るにはキャッチまたは、スロー宣言をしなければなりません。
+        reader.close();
+                    ^
+エラー 3 個
+</pre>
+<br>
+とりあえずコンパイルを通るように最低限の例外処理しか<br>
+行わないで修正するとこのようになると思います。<br>
+<br>
+<xmp class="source">
+package stack;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+ 
+public class TraceSample2 {
+    public void print(String filename) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(filename));
+ 
+            while (true) {
+                String line = reader.readLine();
+                if (line == null) {
+                    break;
+                }
+                
+                System.out.println(line);
+            }
+            reader.close();
+        } catch (Exception ex) {}     
+    }
+ 
+    public static void main(String[] args) {
+        new TraceSample2().print(args[0]);
+    }
+}
+</xmp>
+<br>
+さて、ここで、存在しないファイルを指定して、プログラムを実行してみましょう。<br>
+<br>
+<pre class="console">
+C:\test>java stack.TraceSample2 hoge.hoge
+
+C:\test>
+</pre>
+<br>
+普通に終了しました。<br>
+<br>
+存在しないファイルの中身を見ることは出来ないので、<br>
+何も表示されずに終了でOKとしてよいのでしょうか？<br>
+<br>
+これはあまりよい例外処理とは言えません。基本的には例外の情報は捨てないようにしましょう。<br>
+<br>
+ファイルの中身が空で何も表示されないのか、はたまた、<br>
+ファイルが存在しないので例外が発生したかといった情報は大抵の場合、区別する必要があります。<br>
+<br>
+<span class="important">Javaでは例外は無視しないというのが例外との正しい付き合い方となります。</span><br>
+<br>
+
+最低でも以下のようなログ出力は入れましょう。<br>
+（Logの機構がある場合はそれを使用します。）<br>
+<br>
+<xmp class="source">
+	} catch (Exception ex) {
+		ex.printStackTrace();
+	}
+</xmp>
+<br>
+また、前述のように、ファイルがない場合は、表示せずに終了して当然（正常）という場合であれば、<br>
+<span class="important">例外でハンドリングするべきではなく、ロジック内で意図的にハンドリングする必要があります。</span><br>
+<br>
+<xmp class="source">
+package stack;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+ public class TraceSample2 {
+    public void print(String filename) {
+        try {
+        	  File file = new File(filename);
+        	  if(!file.exists()) {
+        	    return;
+        	  }
+           BufferedReader reader = new BufferedReader(new FileReader(file));
+            while (true) {
+                String line = reader.readLine();
+                if (line == null) {
+                    break;
+                }
+                System.out.println(line);
+            }
+            reader.close();
+        } catch (Exception ex) {
+        	    ex.printStackTrace();
+        }     
+    }
+    public static void main(String[] args) {
+        new TraceSample2().print(args[0]);
+    }
+}
+</xmp>
+<br>
+<br>
+<p class="midasi0">例外の追い方（少し難しい場合）</p>
+
+ここではもう少しスタックトレースが長くなった場合の調査について学んでいきます。<br>
+<br>
+以下の例は前の章で使用していたものを少し変えたものです。<br>
+<br>
+<xmp class="source">
+package stack;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+ 
+public class TraceSample2 {
+    public void print(String filename) throws Exception {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(filename));
+             while (true) {
+                String line = reader.readLine();
+                if (line == null) {
+                    break;
+                }
+                System.out.println(line);
+            }
+            reader.close();
+        } catch (FileNotFoundException ex) {
+23：       throw new Exception("例外発生", ex);
+        } catch (IOException e) {
+	    throw new Exception("例外発生", e);
+	}     
+    }
+ 
+    public static void main(String[] args) {
+    	try {
+31：  	    new TraceSample2().print(args[0]);
+    	} catch(Exception e) {
+    	    e.printStackTrace();
+    	}
+    }
+}
+</xmp>
+<br>
+このプログラムを存在しないファイルのパスを引数に実行してみましょう<br>
+<br>
+<pre class="console">
+C:\test>java stack.TraceSample2 hoge.hoge
+java.lang.Exception: 例外発生
+        at stack.TraceSample2.print(TraceSample2.java:23)
+        at stack.TraceSample2.main(TraceSample2.java:31)
+Caused by: java.io.FileNotFoundException: hoge.hoge (指定されたファイルが見つか
+りません。)
+        at java.io.FileInputStream.open(Native Method)
+        at java.io.FileInputStream.<init>(FileInputStream.java:106)
+        at java.io.FileInputStream.<init>(FileInputStream.java:66)
+        at java.io.FileReader.<init>(FileReader.java:41)
+        at stack.TraceSample2.print(TraceSample2.java:11)
+        ... 1 more
+</pre>
+<br>
+となります。さて今までどおり見てみると、<br>
+例外のクラスがjava.lang.Exception<br>
+で、メッセージが例外発生となっています。<br>
+<br>
+自分で書いたソースを追ってみましょう。一番上の行を見ます。<br>
+stack.TraceSample2の23行目の print メソッドを指名しているので、該当部分を見ます。<br>
+23行目では FileNotFoundException を catch して新しい例外クラスとして再び throw しています。<br>
+その Exception が表示されていたわけです。では、そもそも FileNotFoundException はどこで発生したのでしょうか？<br>
+<br>
+さて、このように、発生した例外を別の例外クラスとして再び throw する場合もあります。<br>
+こういった場合に関しては、Caused by 以下の記述の方が追跡の手助けになることも多々あります。<br>
+今回は FileNotFoundException で、なおかつ、hoge.hoge というファイルが見つからないとまで情報が出ています。<br>
+<br>
+このように、スタックトレースが長くなる場合には、必要な情報を見つける力というのも必要となります。<br>
+どうしてもわからない時などで、人に質問などする時は下手にスタックトレースのピックアップをせずに、<br>
+その時に出力されたスタックトレースをまとめて解析の依頼として出す必要があります。<br>
+<br>
+豆知識<br>
+＊	…n moreといった行ですが、これはひとつ上のスタックトレースの下n行が同じという事をあらわします。<br>
+今回は一行ですが、複数行ある場合には行数の省略が目的としてこのような記載となっています。<br>
+省略を省くと以下のようになります。<br>
+<pre class="console">
+C:\test>java stack.TraceSample2 hoge.hoge
+java.lang.Exception: 例外発生
+        at stack.TraceSample2.print(TraceSample2.java:23)
+        at stack.TraceSample2.main(TraceSample2.java:31)
+Caused by: java.io.FileNotFoundException: hoge.hoge (指定されたファイルが見つか
+りません。)
+        at java.io.FileInputStream.open(Native Method)
+        at java.io.FileInputStream.<init>(FileInputStream.java:106)
+        at java.io.FileInputStream.<init>(FileInputStream.java:66)
+        at java.io.FileReader.<init>(FileReader.java:41)
+        at stack.TraceSample2.print(TraceSample2.java:11)
+at stack.TraceSample2.main(TraceSample2.java:31)
+</pre>
+<br>
+<div class="comment">
+ポイント<br>
+＊	例外の扱い方<br>
+ここで先ほど、例外は無視しないといいましたが、では実際どう扱うのか？となると、<br>
+大体以下の３通りの処理があります。<br>
+<br>
+１．例外をキャッチして、その場で例外処理を行い、呼び出したメソッドには例外を伝えない。 <br>
+２．例外をキャッチして、新たな例外を生成して呼び出したメソッドに再スロー。 <br>
+３．例外をキャッチせずに、そのまま呼び出したメソッドに伝える。もしくはキャッチした例外を、<br>
+　　そのまま呼び出したメソッドに再スローする。 <br>
+<br>
+実際の実務では、大抵の場合2か3となります。1は悪い例といってもいいかもしれません。<br>
+なぜならば、例外が発生したことは呼び出し元に知らせることが必要です。<br>
+呼び出した方は、どういう「結果」になったのかを把握する責任があります。<br>
+<br>
+みなさんに部下がいて、部下が失敗の報告をせずにもみ消したことを考えてください。<br>
+失敗の連絡が来てないのに、お客様からクレームがきた時のことを考えると恐ろしい限りですね。<br>
+誰が失敗したのか？どの程度の失敗をしたのかわからないのにお客様は激怒。<br>
+その対応をしなくてはいけないときのことを考えてみてください。<br>
+<br>
+ただし、上級の部下になると、失敗を自分でリカバリーして何ごともなかったかのように振る舞う<br>
+ことができるでしょう。<br>
+プログラムも一緒です。基本は呼び出し元に知らせる。しかし、上級のプログラムになると、<br>
+catch して、例外が起きた原因を正しく復旧して何事もなかったかのように振る舞う。<br>
+ここまで考慮されたプログラムはめったにありませんが。<br>
+</div>
+
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+</body>
+</html>

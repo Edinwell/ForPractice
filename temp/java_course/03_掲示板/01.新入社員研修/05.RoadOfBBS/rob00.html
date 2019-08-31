@@ -1,0 +1,144 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>～掲示板への道～</title>
+<link rel="stylesheet" type="text/css" href="../../css/main.css">
+</head>
+<body>
+<center>
+<h1>～掲示板への道～</h1>
+</center>
+<hr>
+<p class="midasi0">この研修のゴール</p>
+この研修のゴールは、下記の「要求される掲示板の仕様・機能」にて示された機能を満たすMVC掲示板を作成することです。<br>
+この資料「～掲示板への道～」に従って、MVC掲示板を作成し、最終的に完成した掲示板を提出してください。<br>
+
+<br>
+提出物に対するチェックに関しては、<a href="../100.評価基準/index.html" target="top_main">チェックポイント</a>をご覧ください。
+
+
+<br><br>
+<p class="midasi0">開発環境基本事項</p>
+
+<table class="env">
+	<tr>
+		<th>OS</th>
+		<td>Windows</td>
+	</tr>
+	<tr>
+		<th>ブラウザ</th>
+		<td>Chrome 推奨</td>
+	</tr><tr>
+		<th>Servletコンテナ</th>
+		<td><a href="http://jakarta.apache.org/tomcat/index.html" target="_blank">Apache TOMCAT</a> (8.0.26 以降)</td>
+	</tr><tr>
+		<th>データベース</th>
+		<td><a href="http://www.mysql.com/ " target="_blank">MySQL</a> (v 5.6.25 以降)、mysql-connector-java-5.1.35-bin.jar(JDBCドライバ)</td>
+	</tr>
+</table>
+<p>
+
+<ul>
+<li>Tomcat と、MySQL は、「<a href="../04.掲示板開始の前に/index.html">掲示板開始の前に</a>」を参考にしてインストールしておいてください。</li>
+<li><img src="image/question.gif" style="vertical-align:middle;"> このマークは、自分で調査してください、という箇所です。<b>調べて理解することが重要です。</b><br>
+とくに重要なキーワードには<span class="important">赤字</span>にしてあります。</li>
+<li>上表で指定しているバージョンが古くなっている場合は、バージョン数値の近いものでかまいません。</li>
+<li>HTMLの知識がないという方はこちらもご覧下さい。<a href="roh.html">HTMLへの道</a></li>
+</ul>
+
+<hr>
+<p>
+
+<a name="siyou">
+<p class="midasi0">要求される掲示板の仕様・機能</p>
+
+<table class="siyou">
+<tr><td valign="top" style="padding-top: 10px; padding-left: 0px;">
+<img src="image/screenshot.gif" alt="このような掲示板を作成してください。">
+</td><td valign="top">
+<ul style="margin:0px;padding:0px;">
+<li>入力項目　※印：必須入力項目
+ <ul>
+  <li>名前（テキスト）※
+  <li>メールアドレス（テキスト）
+  <li>件名（テキスト）
+  <li>メッセージ（テキストエリア）※
+  <li>文字色（ラジオボタン）
+  <li>パスワード（パスワード）※
+  <li>投稿（サブミットボタン）
+  <li>リセット（リセットボタン）
+ </ul>
+<br>
+</li>
+<li>入力必須項目は、それらのうち1つでも未入力で投稿ボタンを押下しても、投稿は受け付けない。が、入力済み文字列は残しておく。また、その際には<span style="color:red;">エラーメッセージ</span>を表示する。<br><br></li>
+<li>文字色選択可能（掲載されたとき、選択された文字色で表現される）。なお、デフォルトの文字色は黒とする。<br><br></li>
+<li>投稿日時は自動的に付加され、掲載時に表示される。「2003年12月10日(水)午後3時40分50秒」形式の表示とする。<br><br></li>
+<li>削除機能付き。投稿者自身が投稿時に設定した削除パスワードで削除できる（＝自分の投稿記事しか削除できない）。削除できなかった場合は、<span style="color:red;">エラーメッセージ</span>を表示する。<br><br></li>
+<li>返信機能は不要で、記事編集（訂正）機能も不要。<br><br></li>
+<li>このスクリーンショットの<a href="掲示板＜例＞.html" target="_blank">HTMLファイルをダウンロード</a>できます。<br><br></li>
+</ul>
+</td></tr>
+</table>
+<p>
+
+<hr>
+
+<p class="midasi1">研修課題提出の際のご注意</p>
+<ol>
+<li>ZIP 形式で圧縮したファイルをメールに添付送信してください。<br>
+圧縮ファイルに含めるのは、ソースコードやクラスファイル一式です。<br>
+基本的なディレクトリ構成としては、「～掲示板への道～」でのサンプルにもあるように、<br>
+<font color="blue"><pre>
+%WEBAPPLI%
+   |
+   +---\WEB-INF
+           |
+           +---\classes
+           |
+           +---\lib</pre></font>
+としていただき、そのまま %WEBAPPLI% ごと圧縮ファイルにしてください。<br>
+<br>
+<div class="comment">
+GMail を使っている場合、lib フォルダに jar ファイルが入っていると、送信エラーで<br>
+メールが送れないことがあります。その場合は、lib ファイルの中を空にして送信してください。<br>
+</div>
+<br>
+
+<li>掲示板のために使うデータベース名を、<br>
+<br>
+<b>×    CREATE DATABASE BBS;</b><br>
+とするのではなく、<br>
+<b>◎    CREATE DATABASE WAKAI_BBS;</b><br>
+というように、「誰のものか」 がわかるようにしておいてください。<br>
+<br>
+ソースファイルなどにはこのような措置は不要です。<br>
+（たとえば、YamadaBbsServlet.java等にはしないでください。）<br>
+<br>
+<li>マニュアルを付録しておいてください。<br>
+<br>
+ファイル<a href="例：MVC掲示板.txt">「例：MVC掲示板.txt」</a>を参考にしてマニュアルを作成してください。<br>
+<br>
+<ul>
+<li>WORDやEXCELファイル形式ではなく、テキストファイルでお願いいたします。</li>
+<li>テーブル作成時に使用した CREATE文 や、<br>
+テーブルの初期データ用の INSERT文など（あれば）をそのまま書いておいてください。</li>
+</ul>
+<br>
+<li>コーディング規約に則ってコーディングしてください。<br>
+１行の行数や、インデントなどに注意します。
+<a href="インデント例.java">「インデント例.java」</a>をご覧ください。<br>
+<br>
+見にくいソースコードは、ロジックもまたスマートではありません。<br>
+
+</ol>
+
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+</body>
+</html>

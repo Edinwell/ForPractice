@@ -1,0 +1,20 @@
+<project name="create.dbunit.test.data" default="mysql.export">
+
+    <taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask">
+        <classpath id="class.path">
+            <fileset dir="lib"/>
+        </classpath>
+    </taskdef>
+    
+    <target name="mysql.export">
+        <dbunit driver="org.gjt.mm.mysql.Driver"          
+                url="jdbc:mysql://localhost/db_name"          
+                userid="user_id"          
+                password="password">    
+            
+            <export dest="data/export.xml"/>
+            
+        </dbunit>
+    </target>
+        
+</project>

@@ -1,0 +1,173 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="../../css/main.css">
+<title>～掲示板への道・序章～</title>
+</head>
+<body>
+<center>
+<h2>～掲示板への道・序章～</h2>
+<h1>0.HTMLって・・・</h1>
+</center>
+<hr>
+
+<p class="midasi0">HTMLとは</p>
+
+HTML に関するドキュメントは、現在多数出回っています。<br>
+有名なサイトとしては、<br>
+<ul>
+<li>
+<a href="http://www.tohoho-web.com/www.htm" target="_blank">とほほのWWW入門</a><br>
+</li>
+<li>
+<a href="http://www.ne.jp/asahi/minazuki/bakera/html/hatomaru" target="_blank">HTML鳩丸クラブ</a>
+</li>
+</ul>
+<br>などがあります。
+
+さて、HTML というのはなんでしょうか？というのはここでは放っておきます。<br>
+タグと呼ばれる意味を持った特殊な記号により記述されるテキストだと思っていてくれればかまいません。<br>
+<br>
+以下のようなホームページがあったとします。
+<br><br>
+
+<b>図1</b><br>
+<img src="image/html01.jpg" alt="1.基本html">
+<p>
+
+さっそく中身を見てみましょう。<br>
+画面を右クリックして、ソースの表示を選択すると、<br>
+実際にホームページがどのように記述されているかがわかります。<br>
+（中には右クリックを禁止していたりするサイトもありますが・・・）<br>
+
+<xmp class="source">
+<html>
+    <head>
+        <title>html入門</title>
+    </head>
+    <body>
+    ここには内容を書きます。
+    改行されてませんよね？<br>改行されましたか？
+    <!--コメントですので画面には見えません。-->
+    <h1>見出し</h1>
+    </body>
+</html>
+</xmp>
+<br>
+テキストエディタにこの内容を記載し、拡張子を html（またはhtm）として保存し、<br>
+ブラウザで開くと先ほどのようなホームページになります。<br>
+<br>
+さて、内容をひとつひとつ確認していきましょう。<br>
+<br>
+一番最初に &lt;html&gt; で始まり、&lt;/html&gt; で終わっています。<br>
+このように、タグとは、開始タグと終了タグと呼ばれる１対のタグで表現されます。<br>
+<br>
+&lt;html&gt; タグは、<br>
+このドキュメントが HTML ドキュメントであることを宣言します。<br>
+<br>
+続いて、&lt;head&gt; があります。ここにはこのドキュメントの内容に関する記述が入ります。<br>
+<br>
+今回は &lt;title&gt; が定義されているだけです。<br>
+この &lt;title&gt; タグは、ブラウザの上部にタイトルとして表示されます。<br>
+<br>
+続いて、&lt;body&gt; タグですが、<br>
+ここに記述した内容が実際にブラウザに表示され、ホームページの内容となります。<br>
+<br>
+HTML の基本は下記の様な構成になります。<br>
+<br>
+
+<xmp class="source">
+<htm>
+<head>
+</head>
+                                      
+<body>
+</body>
+</html>
+</xmp>
+
+<br>
+
+&lt;!--コメント--&gt;のように挟まれた箇所はコメントとされ、実際の画面には表示されません。<br>
+<br>
+&lt;br&gt; は改行を表します。実際に、テキストエディタなどで記述している時に、<br>
+改行を入れてもその改行は改行として認識されないので気をつけてください。<br>
+<br>
+（&lt;br&gt; に関しては開始タグと終了タグが無いのに気づきましたか？<br>
+このように一部省略が許されているタグもあります。本来は &lt;br/&gt; や &lt;br&gt;&lt;/br&gt; と記載します。）<br>
+<br>
+&lt;h1&gt; は見出しを表します。<br>
+&lt;h1&gt; から &lt;h6&gt; まであり、数字が大きくなる毎に文字は小さくなっていきます。<br>
+<br>
+さて、駆け足で見てきましたが、タグは種類もたくさんあり、
+とても覚えきれるものではありません。<br>
+必要に応じて書籍や、先ほど上げたサイトなどで確認して使用するようにしてください。<br>
+<br>
+では掲示板への道にあるサンプルファイルを見てみてください。<br>
+以下のようなタグが新しく出てきます。<br>
+まずはそれぞれの意味や使い方を調べてみてください。<br>
+<br>
+<ul>
+<li>
+&lt;table&gt;<br>
+</li>
+<li>
+<b>&lt;form&gt;</b><br>
+</li>
+<li>
+<b>&lt;input&gt;</b><br>
+</li>
+<li>
+&lt;hr&gt;<br>
+</li>
+<li>
+&lt;p&gt;<br>
+</li>
+<li>
+&lt;font&gt;<br>
+</li>
+<li>
+&lt;center&gt;<br>
+</li>
+</ul>
+<p><b>太字</b>のタグは特に重要です。<br>
+<br>
+また、下のようなものをテーブルといい、&lt;table&gt; を使って表現します。<br>
+<br>
+<table border="1">
+<tr>
+  <td>1</td>
+  <td>2</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>4</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td>6</td>
+</tr>
+</table>
+
+<div class="comment">
+掲示板への道にあるサンプルファイルでは使用しているのですが、<br>
+&lt;font&gt; や、&lt;center&gt; のように、スタイル（デザイン）を指定するタグの使用は<br>
+本来推奨されていません。<br>
+また、&lt;table&gt; タグを本来の用途である表を表示する目的を超えて、表組のデザインを構成するために<br>
+使用することも推奨されていません。<br>
+<br>
+スタイル（デザイン）を指定するには、CSS という仕組みがあり、これを使用することが推奨されています。<br>
+<br>
+研修中は、&lt;font&gt; や、&lt;center&gt; や、&lt;table&gt; を使用してスタイルを指定しても<br>
+構いませんが、後々は、CSS を使用して指定するようにしてください。<br>
+</div>
+
+<p><br></p>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+</body>
+</html>

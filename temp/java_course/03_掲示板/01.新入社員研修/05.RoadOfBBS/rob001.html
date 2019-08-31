@@ -1,0 +1,118 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<title>～掲示板への道～</title>
+<link rel="stylesheet" type="text/css" href="../../css/main.css">
+</head>
+<body>
+<center>
+<h2>～掲示板への道～</h2>
+<h1>0.事前準備</h1>
+</center>
+<hr>
+
+<p class="midasi0">Tomcatのインストール</p>
+まずは、掲示板を動かす土台となるサーブレットエンジンをインストールしましょう。<br>
+この研修では、サーブレットエンジンとして Tomcat を使用します。<br>
+<br><br>
+<div class="desc1">１．下記サイトより apache-tomcat-6.0.16.tar.gz をダウンロードしてください。</div>
+<ul>
+<li>銀座研修の場合
+<br><br>
+ダウンロード元： <a href="file://///192.168.0.10\mouse\03_misc\17_Tomcat">\\192.168.0.10\mouse\03_misc\17_Tomcat</a><br>
+<br><br>
+</li>
+<li>自宅研修の場合
+<br><br>
+ダウンロード元： <a href="http://tomcat.apache.org/download-60.cgi">http://tomcat.apache.org/download-60.cgi</a>　の下記赤丸のリンク<br>
+<br>
+<img src="image/bbs001_01.png"><br><br><br>
+</li>
+</ul>
+<div class="desc1">２．ダウンロードした apache-tomcat-6.0.16.tar.gz を解凍します。</div>
+<div class="desc1">３．解凍して出来たディレクトリ apache-tomcat-6.0.16 を C:\ の下に置き名前を tomcat に変更します。</div>
+<p>
+この段階で以下のようなディレクトリ構成となっていることを確認してください<br><br>
+<img src="image/bbs001_02.png"><br><br>
+</p>
+<a name="startup.bat"></a>
+<div class="desc1">Tomcat の起動方法と終了方法</div>
+<ul>
+<li>起動方法<br><br>
+C:\tomcat\bin\startup.bat　をダブルクリックします。
+<br><br>
+</li>
+<li>終了方法<br><br>
+Ctrl+C　を押します。
+</li>
+</ul>
+これ以降本ドキュメントでは、Tomcat をインストールしたディレクトリ C:\tomcat を <span class="important">%CATALINA_HOME%</span> と記載します。<br>
+<br><br>
+
+<a name="mysql"></a>
+<p class="midasi0">MySQLのインストール</p>
+次に掲示板で投稿されたデータを格納するデータベースをインストールしましょう。
+<br>
+この研修では、データベースとしてMySQLを使用します。<br>
+<br><br>
+<div class="desc1">１．下記サイトより mysql-noinstall-5[1].1.23a-maria-alpha-win32.zip をダウンロードしてください。</div>
+<ul>
+<li>銀座研修の場合
+<br><br>
+ダウンロード元： <a href="file://///192.168.0.10\mouse\03_misc\18_MySQL">\\192.168.0.10\mouse\03_misc\18_MySQL</a><br>
+<br><br>
+</li>
+<li>自宅研修の場合
+<br><br>
+ダウンロード元： <a href="http://downloads.mysql.com/archives.php?p=mysql-5.1&v=5.1.23">http://downloads.mysql.com/archives.php?p=mysql-5.1&v=5.1.23</a>　の下記赤丸のリンク<br>
+<br>
+<img src="image/bbs001_03.png"><br><br><br>
+</li>
+</ul>
+<div class="desc1">２．ダウンロードした mysql-noinstall-5[1].1.23a-maria-alpha-win32.zip を解凍します。</div>
+<div class="desc1">３．解凍して出来たディレクトリの中に<a href="file">my.ini</a>ファイルを追加します</div>
+<div class="desc1">４．解凍して出来たディレクトリ mysql-5.1.23a-maria-alpha-win32 を C:\ の下に置き名前を mysql に変更します。</div>
+<p>
+この段階で以下のようなディレクトリ構成となっていることを確認してください。<br><br>
+<img src="image/bbs001_04.png"><br><br>
+</p>
+<div class="desc1">４．ユーザー環境変数 PATH を設定します。</div>
+<p>
+ユーザー環境変数の PATH に <b>C:\mysql\bin を追加します。</b><br>
+（ユーザー環境変数の PATH が存在しない場合は新規に作成してください。）<br><br>
+<img src="image/bbs001_05.png"><br><br>
+</p>
+<a name="mysql_start"></a>
+<div class="desc1">MySQLサーバー の起動方法と終了方法</div>
+<ul>
+<li>起動方法<br><br>
+コマンドラインで次のように入力します<br><br>
+<table border=0 bgcolor="black" width="400" cellspacing=5 cellpadding=2>
+<tr><td>
+<font color="white"><pre>C:\hoge&gt;mysqld -u root  --default-character-set=cp932</pre></font>
+</td></tr>
+</table>
+<br><br>
+</li>
+<li>終了方法<br><br>
+コマンドラインで次のように入力します<br><br>
+<table border=0 bgcolor="black" width="400" cellspacing=5 cellpadding=2>
+<tr><td>
+<font color="white"><pre>C:\hoge&gt;mysqladmin -u root shutdown</pre></font>
+</td></tr>
+</table>
+</li>
+</ul>
+
+
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+
+</body>
+</html>

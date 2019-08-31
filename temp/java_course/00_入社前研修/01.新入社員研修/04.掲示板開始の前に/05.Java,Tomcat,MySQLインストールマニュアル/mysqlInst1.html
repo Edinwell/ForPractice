@@ -1,0 +1,157 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="../../../css/main.css">
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+</head>
+<body>
+
+<center>
+<h2>MySQLのインストール(Installer)</h2>
+</center>
+<hr>
+
+
+<a name="mysql"></a>
+<p class="midasi0">MySQLのインストール(Installer)</p>
+<ul>
+MySQLをInstallerを使ってインストールする方法を記述していきます。<br>
+</ul>
+<div class="desc1">１．下記サイトより mysql-installer-web-community-5.6.25.0.msi をダウンロードしてください。</div>
+<ul>
+MySQL： <a href="http://dev.mysql.com/downloads/windows/installer/">http://dev.mysql.com/downloads/windows/installer/</a>　
+の下記赤に囲まれた部分の Download ボタンを押します。<br><br>
+<div class="comment">
+※ MySQL は現在のところ、32bit 版と 64bit 版で同じものがダウンロードされるので 32bit と 64bit を意識する必要はありません。
+</div>
+<br>
+<img src="image/sqlInst1.png"><br><br><br>
+すると、下記のようにアカウントの登録を促されますが、特に登録しなくてもダウンロードできます。<br>
+<br>
+<img src="image/sqlInst2.png"><br><br><br>
+<div>上図、赤枠内の just start my download をクリックすると、アカウントを登録せずにダウンロードできます。</div><br>
+</ul>
+<div class="desc1">２．Installerを実行していきます。</div>
+<ul>
+ダウンロードした後、Installerを実行していきます。<br>
+<br>
+<img src="image/sqlInst01.png"><br><br>
+accept the licence termsにチェックをし、<br>
+「Next」を押してください。<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/sqlInst02.png"><br><br>
+Customを選択し、「Next」を押してください。<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/sqlInst03.png"><br><br>
+ Available ProductsのMysql Serversを展開していき、<br>
+MySQL Server5.6.25 - X86を選択してください。<br>
+その後、真ん中にある右矢印ボタンを押し右に移動させて下さい。<br>
+同じように、MySQL Connectorsを展開していき、<br>
+Connector/J5.1.35-X86を右に移動させてください。<br>
+移動したのを確認し、「Next」を押してください。<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/sqlInst04.png"><br><br>
+「Execute」を押してください。<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/sqlInst05.png"><br><br>
+ StatusがCompleteになったら、「Next」を押してください。<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/sqlInst06.png"><br><br>
+ 「Next」を押してください。<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/sqlInst07.png"><br><br>
+ ここはデフォルトのままで、「Next」を押してください。<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/sqlInst08.png"><br><br>
+ パスワードを入力してください。<br>
+（ここではパスワードを"root"と設定しましたので、<br>
+後の講義資料でも統一してこのパスワードを使用します。）<br>
+入力をした後、「Next」を押してください。
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/sqlInst09.png"><br><br>
+  ここもデフォルトのままで、「Next」を押してください。<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/sqlInst010.png"><br><br>
+ 「Execute」を押してください。<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/sqlInst011.png"><br><br>
+ 緑のチェックがすべてについたら、「Finish」を押してください。<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/sqlInst012.png"><br><br>
+ 「Next」を押してください。<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/sqlInst013.png"><br><br>
+ 「Finish」を押してください。<br>
+<br>
+
+<div class="desc1">３、my.iniの編集</div>
+<ul>
+Installerを使ってインストールした場合には、C:\ProgramData\MySQL\MySQL Server 5.6下に<br>
+自動でmy.ini（構成設定ファイル）が生成されます。<br>
+<br>
+<div class="comment">
+ProgramDataフォルダは Windows の標準の設定では隠れていて表示されないようになっています。<br>
+コントロールパネル→デスクトップのカスタマイズ→フォルダーオプションの<br>
+「隠しファイル、隠しフォルダー、および隠しドライブを表示する。」<br>
+をチェックし適用ボタンを押すことで、表示させることができます。<br>
+</div>
+<br>
+<img src="image/sqlInst018.png"><br><br>
+MySQL上で使えるエンコードを変更するため、一部編集します。<br>
+編集箇所は、「default-character-set=utf8」と書かれている箇所を編集します。<br><br>
+<img src="image/sqlInst015.png"><br><br>
+上の図で「<font color="red"><b>utf8</b></font>」を「<font color="red"><b>cp932</b></font>」に書き直して下さい。全部で２箇所（図の箇所）あります。<br>
+<br></ul>
+<div class="desc1">４、環境変数の設定</div>
+<ul>
+「コントロールパネル」→「システムとセキュリティ」→「システム」→「システムの詳細設定」→「環境変数」と選択して、<br>
+システム環境変数に下記のものを追加していきます。<br><br>
+
+PATH：<font color="red"><b>C:\Program Files\MySQL\MySQL Server 5.6\bin</b></font><br>
+<br>
+<div class="comment">
+変数値の最後にセミコロンを打って追加する。<br>
+"・・・<font color="red"><b>;</font>C:\Program Files\MySQL\MySQL Server 5.6\bin</b>")<br>
+元から入ってる変数値は消さないように注意！<br>
+</div>
+
+<br>
+<img src="image/sqlInst014.png"><br><br>
+</ul><br>
+
+<div class="desc1">５、MySQLコマンドクライアントの使用方法</div>
+<ul>
+パソコン起動と同時にMySQL Serverも起動する設定をしました。（上のインストール時）<br>
+ここでは既に起動されているMySQLのコマンドクライアントの使用方法を説明します。<br><br>
+コマンドラインで「<font color="red"><b>mysql -u root -p</b></font>」と入力し,
+エンターを押すと、"Enter password"と表示されます。<br>
+ここに上で登録したパスワード（ここでは"root"）を入力しエンターを押します。<br><br>
+<img src="image/sqlInst016.png"><br><br>
+そして、下図のように表示されればOKです。<br><br>
+<img src="image/sqlInst017.png"><br><br>
+
+
+</ul>
+
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+
+</body>
+</html>

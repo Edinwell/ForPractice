@@ -1,0 +1,3808 @@
+<html><head><title>Java(TM) Debug Wire Protocol</title><meta HTTP-EQUIV="Content-Type" Content="text/html; charset=UTF-8"></head>
+<body bgcolor="white">
+<li><a href="#JDWP_VirtualMachine">VirtualMachine</a>コマンド・セット(1)
+<ul>
+        <li><a href="#JDWP_VirtualMachine_Version">Version</a> (1)
+        <li><a href="#JDWP_VirtualMachine_ClassesBySignature">ClassesBySignature</a> (2)
+        <li><a href="#JDWP_VirtualMachine_AllClasses">AllClasses</a> (3)
+        <li><a href="#JDWP_VirtualMachine_AllThreads">AllThreads</a> (4)
+        <li><a href="#JDWP_VirtualMachine_TopLevelThreadGroups">TopLevelThreadGroups</a> (5)
+        <li><a href="#JDWP_VirtualMachine_Dispose">Dispose</a> (6)
+        <li><a href="#JDWP_VirtualMachine_IDSizes">IDSizes</a> (7)
+        <li><a href="#JDWP_VirtualMachine_Suspend">Suspend</a> (8)
+        <li><a href="#JDWP_VirtualMachine_Resume">Resume</a> (9)
+        <li><a href="#JDWP_VirtualMachine_Exit">Exit</a> (10)
+        <li><a href="#JDWP_VirtualMachine_CreateString">CreateString</a> (11)
+        <li><a href="#JDWP_VirtualMachine_Capabilities">Capabilities</a> (12)
+        <li><a href="#JDWP_VirtualMachine_ClassPaths">ClassPaths</a> (13)
+        <li><a href="#JDWP_VirtualMachine_DisposeObjects">DisposeObjects</a> (14)
+        <li><a href="#JDWP_VirtualMachine_HoldEvents">HoldEvents</a> (15)
+        <li><a href="#JDWP_VirtualMachine_ReleaseEvents">ReleaseEvents</a> (16)
+        <li><a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a> (17)
+        <li><a href="#JDWP_VirtualMachine_RedefineClasses">RedefineClasses</a> (18)
+        <li><a href="#JDWP_VirtualMachine_SetDefaultStratum">SetDefaultStratum</a> (19)
+        <li><a href="#JDWP_VirtualMachine_AllClassesWithGeneric">AllClassesWithGeneric</a> (20)
+        <li><a href="#JDWP_VirtualMachine_InstanceCounts">InstanceCounts</a> (21)
+</ul>
+<li><a href="#JDWP_ReferenceType">ReferenceType</a>コマンド・セット(2)
+<ul>
+        <li><a href="#JDWP_ReferenceType_Signature">Signature</a> (1)
+        <li><a href="#JDWP_ReferenceType_ClassLoader">ClassLoader</a> (2)
+        <li><a href="#JDWP_ReferenceType_Modifiers">Modifiers</a> (3)
+        <li><a href="#JDWP_ReferenceType_Fields">Fields</a> (4)
+        <li><a href="#JDWP_ReferenceType_Methods">Methods</a> (5)
+        <li><a href="#JDWP_ReferenceType_GetValues">GetValues</a> (6)
+        <li><a href="#JDWP_ReferenceType_SourceFile">SourceFile</a> (7)
+        <li><a href="#JDWP_ReferenceType_NestedTypes">NestedTypes</a> (8)
+        <li><a href="#JDWP_ReferenceType_Status">Status</a> (9)
+        <li><a href="#JDWP_ReferenceType_Interfaces">Interfaces</a> (10)
+        <li><a href="#JDWP_ReferenceType_ClassObject">ClassObject</a> (11)
+        <li><a href="#JDWP_ReferenceType_SourceDebugExtension">SourceDebugExtension</a> (12)
+        <li><a href="#JDWP_ReferenceType_SignatureWithGeneric">SignatureWithGeneric</a> (13)
+        <li><a href="#JDWP_ReferenceType_FieldsWithGeneric">FieldsWithGeneric</a> (14)
+        <li><a href="#JDWP_ReferenceType_MethodsWithGeneric">MethodsWithGeneric</a> (15)
+        <li><a href="#JDWP_ReferenceType_Instances">Instances</a> (16)
+        <li><a href="#JDWP_ReferenceType_ClassFileVersion">ClassFileVersion</a> (17)
+        <li><a href="#JDWP_ReferenceType_ConstantPool">ConstantPool</a> (18)
+</ul>
+<li><a href="#JDWP_ClassType">ClassType</a>コマンド・セット(3)
+<ul>
+        <li><a href="#JDWP_ClassType_Superclass">Superclass</a> (1)
+        <li><a href="#JDWP_ClassType_SetValues">SetValues</a> (2)
+        <li><a href="#JDWP_ClassType_InvokeMethod">InvokeMethod</a> (3)
+        <li><a href="#JDWP_ClassType_NewInstance">NewInstance</a> (4)
+</ul>
+<li><a href="#JDWP_ArrayType">ArrayType</a>コマンド・セット(4)
+<ul>
+        <li><a href="#JDWP_ArrayType_NewInstance">NewInstance</a> (1)
+</ul>
+<li><a href="#JDWP_InterfaceType">InterfaceType</a>コマンド・セット(5)
+<ul>
+</ul>
+<li><a href="#JDWP_Method">Method</a>コマンド・セット(6)
+<ul>
+        <li><a href="#JDWP_Method_LineTable">LineTable</a> (1)
+        <li><a href="#JDWP_Method_VariableTable">VariableTable</a> (2)
+        <li><a href="#JDWP_Method_Bytecodes">Bytecodes</a> (3)
+        <li><a href="#JDWP_Method_IsObsolete">IsObsolete</a> (4)
+        <li><a href="#JDWP_Method_VariableTableWithGeneric">VariableTableWithGeneric</a> (5)
+</ul>
+<li><a href="#JDWP_Field">Field</a>コマンド・セット(8)
+<ul>
+</ul>
+<li><a href="#JDWP_ObjectReference">ObjectReference</a>コマンド・セット(9)
+<ul>
+        <li><a href="#JDWP_ObjectReference_ReferenceType">ReferenceType</a> (1)
+        <li><a href="#JDWP_ObjectReference_GetValues">GetValues</a> (2)
+        <li><a href="#JDWP_ObjectReference_SetValues">SetValues</a> (3)
+        <li><a href="#JDWP_ObjectReference_MonitorInfo">MonitorInfo</a> (5)
+        <li><a href="#JDWP_ObjectReference_InvokeMethod">InvokeMethod</a> (6)
+        <li><a href="#JDWP_ObjectReference_DisableCollection">DisableCollection</a> (7)
+        <li><a href="#JDWP_ObjectReference_EnableCollection">EnableCollection</a> (8)
+        <li><a href="#JDWP_ObjectReference_IsCollected">IsCollected</a> (9)
+        <li><a href="#JDWP_ObjectReference_ReferringObjects">ReferringObjects</a> (10)
+</ul>
+<li><a href="#JDWP_StringReference">StringReference</a>コマンド・セット(10)
+<ul>
+        <li><a href="#JDWP_StringReference_Value">Value</a> (1)
+</ul>
+<li><a href="#JDWP_ThreadReference">ThreadReference</a>コマンド・セット(11)
+<ul>
+        <li><a href="#JDWP_ThreadReference_Name">Name</a> (1)
+        <li><a href="#JDWP_ThreadReference_Suspend">Suspend</a> (2)
+        <li><a href="#JDWP_ThreadReference_Resume">Resume</a> (3)
+        <li><a href="#JDWP_ThreadReference_Status">Status</a> (4)
+        <li><a href="#JDWP_ThreadReference_ThreadGroup">ThreadGroup</a> (5)
+        <li><a href="#JDWP_ThreadReference_Frames">Frames</a> (6)
+        <li><a href="#JDWP_ThreadReference_FrameCount">FrameCount</a> (7)
+        <li><a href="#JDWP_ThreadReference_OwnedMonitors">OwnedMonitors</a> (8)
+        <li><a href="#JDWP_ThreadReference_CurrentContendedMonitor">CurrentContendedMonitor</a> (9)
+        <li><a href="#JDWP_ThreadReference_Stop">Stop</a> (10)
+        <li><a href="#JDWP_ThreadReference_Interrupt">Interrupt</a> (11)
+        <li><a href="#JDWP_ThreadReference_SuspendCount">SuspendCount</a> (12)
+        <li><a href="#JDWP_ThreadReference_OwnedMonitorsStackDepthInfo">OwnedMonitorsStackDepthInfo</a> (13)
+        <li><a href="#JDWP_ThreadReference_ForceEarlyReturn">ForceEarlyReturn</a> (14)
+</ul>
+<li><a href="#JDWP_ThreadGroupReference">ThreadGroupReference</a>コマンド・セット(12)
+<ul>
+        <li><a href="#JDWP_ThreadGroupReference_Name">Name</a> (1)
+        <li><a href="#JDWP_ThreadGroupReference_Parent">Parent</a> (2)
+        <li><a href="#JDWP_ThreadGroupReference_Children">Children</a> (3)
+</ul>
+<li><a href="#JDWP_ArrayReference">ArrayReference</a>コマンド・セット(13)
+<ul>
+        <li><a href="#JDWP_ArrayReference_Length">Length</a> (1)
+        <li><a href="#JDWP_ArrayReference_GetValues">GetValues</a> (2)
+        <li><a href="#JDWP_ArrayReference_SetValues">SetValues</a> (3)
+</ul>
+<li><a href="#JDWP_ClassLoaderReference">ClassLoaderReference</a>コマンド・セット(14)
+<ul>
+        <li><a href="#JDWP_ClassLoaderReference_VisibleClasses">VisibleClasses</a> (1)
+</ul>
+<li><a href="#JDWP_EventRequest">EventRequest</a>コマンド・セット(15)
+<ul>
+        <li><a href="#JDWP_EventRequest_Set">Set</a> (1)
+        <li><a href="#JDWP_EventRequest_Clear">Clear</a> (2)
+        <li><a href="#JDWP_EventRequest_ClearAllBreakpoints">ClearAllBreakpoints</a> (3)
+</ul>
+<li><a href="#JDWP_StackFrame">StackFrame</a>コマンド・セット(16)
+<ul>
+        <li><a href="#JDWP_StackFrame_GetValues">GetValues</a> (1)
+        <li><a href="#JDWP_StackFrame_SetValues">SetValues</a> (2)
+        <li><a href="#JDWP_StackFrame_ThisObject">ThisObject</a> (3)
+        <li><a href="#JDWP_StackFrame_PopFrames">PopFrames</a> (4)
+</ul>
+<li><a href="#JDWP_ClassObjectReference">ClassObjectReference</a>コマンド・セット(17)
+<ul>
+        <li><a href="#JDWP_ClassObjectReference_ReflectedType">ReflectedType</a> (1)
+</ul>
+<li><a href="#JDWP_Event">Event</a>コマンド・セット(64)
+<ul>
+        <li><a href="#JDWP_Event_Composite">Composite</a> (100)
+</ul>
+<li><a href="#JDWP_Error">Error</a>定数
+<li><a href="#JDWP_EventKind">EventKind</a>定数
+<li><a href="#JDWP_ThreadStatus">ThreadStatus</a>定数
+<li><a href="#JDWP_SuspendStatus">SuspendStatus</a>定数
+<li><a href="#JDWP_ClassStatus">ClassStatus</a>定数
+<li><a href="#JDWP_TypeTag">TypeTag</a>定数
+<li><a href="#JDWP_Tag">Tag</a>定数
+<li><a href="#JDWP_StepDepth">StepDepth</a>定数
+<li><a href="#JDWP_StepSize">StepSize</a>定数
+<li><a href="#JDWP_SuspendPolicy">SuspendPolicy</a>定数
+<li><a href="#JDWP_InvokeOptions">InvokeOptions</a>定数
+<h4><a name="JDWP_VirtualMachine">VirtualMachineコマンド・セット</a> (1)</h4>
+
+<h5><a name="JDWP_VirtualMachine_Version">Version</a>コマンド(1)</h5>
+ターゲットのVMにより実装されたJDWPのバージョンを返します。バージョン文字列の書式は、実装に依存します。 
+<dl>
+<dt>出力データ
+<dd>(なし)
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+string<td><i>description</i><td>VMのバージョンに関するテキスト情報
+<tr>
+<td colspan=5>
+int<td><i>jdwpMajor</i><td>JDWPのメジャー・バージョン番号
+<tr>
+<td colspan=5>
+int<td><i>jdwpMinor</i><td>JDWPのマイナー・バージョン番号
+<tr>
+<td colspan=5>
+string<td><i>vmVersion</i><td>ターゲットVMのJREバージョン(java.versionプロパティの値と同じ)
+<tr>
+<td colspan=5>
+string<td><i>vmName</i><td>ターゲットVM名(java.vm.nameプロパティの値と同じ)
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_VirtualMachine_ClassesBySignature">ClassesBySignatureコマンド</a> (2)</h5>
+ターゲットVMによりロードされたクラスのうち、指定されたシグネチャと一致するすべてのクラスの参照型を返します。複数のクラス・ローダーが同じ名前のクラスをロードしている場合は、複数の参照型が返されます。検索は、ロードされたクラスのみに限定されます。指定されたシグネチャを持つクラスのロードは行われません。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+string<td><i>signature</i><td>検索するクラスのJNIシグニチャ(たとえば、"Ljava/lang/String;")。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>classes</i><td>あとに続く参照型の数。&nbsp;
+<tr>
+<td colspan=7>
+<i>classes</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+byte<td><i>refTypeTag</i><td>あとに続く参照型の<a href="#JDWP_TypeTag">種類</a>。&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+referenceTypeID<td><i>typeID</i><td>対応するロードされた参照型
+<tr>
+<td colspan=1>
+<td colspan=4>
+int<td><i>status</i><td>現在のクラスの<a href="#JDWP_ClassStatus">ステータス</a>。&nbsp; &nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_VirtualMachine_AllClasses">AllClassesコマンド</a> (3)</h5>
+ターゲットVMによって現在ロードされているクラスすべての参照型を返します。
+<dl>
+<dt>出力データ
+<dd>(なし)
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>classes</i><td>あとに続く参照型の数。&nbsp;
+<tr>
+<td colspan=7>
+<i>classes</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+byte<td><i>refTypeTag</i><td>あとに続く参照型の<a href="#JDWP_TypeTag">種類</a>。&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+referenceTypeID<td><i>typeID</i><td>ロードされた参照型&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+string<td><i>signature</i><td>ロードされた参照型のJNIシグニチャ
+<tr>
+<td colspan=1>
+<td colspan=4>
+int<td><i>status</i><td>現在のクラスの<a href="#JDWP_ClassStatus">ステータス</a>。&nbsp; &nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_VirtualMachine_AllThreads">AllThreadsコマンド</a> (4)</h5>
+ターゲットVMで実行中のすべてのスレッドを返します。返されるリストには、java.lang.Threadで作成されたスレッド、JNIを介してターゲットVMに接続されたすべてのネイティブ・スレッド、およびターゲットVMにより作成されたシステム・スレッドが含まれます。開始されていないスレッド、および実行の完了したスレッドは、リストに含まれません。 
+<dl>
+<dt>出力データ
+<dd>(なし)
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>threads</i><td>あとに続くスレッドの数
+<tr>
+<td colspan=7>
+<i>threads</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+threadID<td><i>thread</i><td>実行中のスレッド
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_VirtualMachine_TopLevelThreadGroups">TopLevelThreadGroupsコマンド</a> (5)</h5>
+親を持たないスレッド・グループをすべて返します。このコマンドは、既存のスレッド・グループの(1つまたは複数の)ツリーを構築する最初の手順として使用できます。
+<dl>
+<dt>出力データ
+<dd>(なし)
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>groups</i><td>あとに続くスレッド・グループの数
+<tr>
+<td colspan=7>
+<i>groups</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+threadGroupID<td><i>group</i><td>トップ・レベルのスレッド・グループ
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_VirtualMachine_Dispose">Disposeコマンド</a> (6)</h5>
+この仮想マシンのミラーを無効にします。ターゲットVMへの通信チャネルが閉じられ、ターゲットVMは、このデバッガまたは別のデバッガからの次の接続を受け付ける準備をします。これには、次のような作業が含まれます。 <ul><li>すべてのイベント要求が取り消される。 <li>スレッド・レベルの<a href="#JDWP_ThreadReference_Resume">Resume</a>コマンドまたはVMレベルの<a href="#JDWP_VirtualMachine_Resume">Resume</a>コマンドにより中断されたすべてのスレッドが、実行に必要な回数だけ再開される。 <li>ガベージ・コレクションが<a href="#JDWP_ObjectReference_DisableCollection">無効</a>にされたすべての状況で、再度有効にされる </ul>ターゲットVMで実行中のすべてのメソッド呼出しは、切断後も継続されます。そのようなメソッド呼出しが完了すると、呼出し元のスレッドは、もともと停止した場所から実行を継続します。 <p>この仮想マシンを起源とするリソース(オブジェクト参照や参照型など)は、無効になります。 
+<dl>
+<dt>出力データ
+<dd>(なし)
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd>(なし)
+</dl>
+<h5><a name="JDWP_VirtualMachine_IDSizes">IDSizesコマンド</a> (7)</h5>
+ターゲットVM内に存在する可変サイズのデータ型のサイズを返します。戻り値は、コマンド・パケットおよび応答パケット内でその識別子が使用しているバイト数を示します。
+<dl>
+<dt>出力データ
+<dd>(なし)
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>fieldIDSize</i><td>fieldIDのサイズ(バイト単位)
+<tr>
+<td colspan=5>
+int<td><i>methodIDSize</i><td>methodIDのサイズ(バイト単位)
+<tr>
+<td colspan=5>
+int<td><i>objectIDSize</i><td>objectIDのサイズ(バイト単位)
+<tr>
+<td colspan=5>
+int<td><i>referenceTypeIDSize</i><td>referenceTypeIDのサイズ(バイト単位)
+<tr>
+<td colspan=5>
+int<td><i>frameIDSize</i><td>frameIDのサイズ(バイト単位)
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_VirtualMachine_Suspend">Suspendコマンド</a> (8)</h5>
+ターゲットVMで稼動中のアプリケーションの実行を中断します。現在実行中のJavaスレッドは、すべて中断されます。 <p>java.lang.Thread.suspendとは異なり、仮想マシンと個々のスレッド両方の中断がカウントされます。スレッドをふたたび実行する前に、<a href="#JDWP_VirtualMachine_Resume">VMレベルのResume</a>コマンドまたは<a href="#JDWP_ThreadReference_Resume">スレッド・レベルのResume</a>コマンドを使って、中断の実行回数と同じ数だけ再開を実行する必要があります。 
+<dl>
+<dt>出力データ
+<dd>(なし)
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_VirtualMachine_Resume">Resumeコマンド</a> (9)</h5>
+Suspendコマンドの実行後、またはイベントによるアプリケーションの停止後に、アプリケーションの実行を再開します。仮想マシンおよび個々のスレッドの中断は、カウントされます。特定のスレッドの中断回数がn回の場合、そのスレッドを続行する前にn回再開する必要があります。 
+<dl>
+<dt>出力データ
+<dd>(なし)
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd>(なし)
+</dl>
+<h5><a name="JDWP_VirtualMachine_Exit">Exitコマンド</a> (10)</h5>
+指定された終了コードでターゲットVMを終了させます。プラットフォームによっては、終了コードが下位8ビットなどに切り詰められる場合があります。以前にターゲットVMから返されたIDは、すべて無効になります。VMで実行中のスレッドは、そのまま突然に停止させられます。スレッド終了例外はスローされないため、finallyブロックは実行されません。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>exitCode</i><td>終了コード
+</table>
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd>(なし)
+</dl>
+<h5><a name="JDWP_VirtualMachine_CreateString">CreateStringコマンド</a> (11)</h5>
+ターゲットVM内に文字列オブジェクトを新規作成し、そのIDを返します。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+string<td><i>utf</i><td>作成された文字列内で使用するUTF-8形式の文字。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+stringID<td><i>stringObject</i><td>作成された文字列(java.lang.Stringのインスタンス)
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_VirtualMachine_Capabilities">Capabilitiesコマンド</a> (12)</h5>
+このVMの権限を取得します。各権限はboolean値として返され、その権限が存在するかどうかを示します。各権限に関連するコマンドは、その権限が利用できない場合、NOT_IMPLEMENTEDエラーを返します。
+<dl>
+<dt>出力データ
+<dd>(なし)
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+boolean<td><i>canWatchFieldModification</i><td>VMがフィールドの変更を監視して、変更ウォッチポイント・イベントを送信可能かどうか&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>canWatchFieldAccess</i><td>VMがフィールドへのアクセスを監視して、アクセス・ウォッチポイント・イベントを送信可能かどうか&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>canGetBytecodes</i><td>VMが、指定されたメソッドのバイト・コードを取得できるかどうか&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>canGetSyntheticAttribute</i><td>フィールドまたはメソッドが合成である場合、VMがそれを判別できるかどうか(つまり、メソッドまたはフィールドがコンパイラにより生成されたものである場合、VMがそれを判別できるかどうか)&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>canGetOwnedMonitorInfo</i><td>所有されたスレッドのモニター情報を、VMが取得可能かどうか&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>canGetCurrentContendedMonitor</i><td>現在競合しているスレッドのモニターを、VMが取得可能かどうか&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>canGetMonitorInfo</i><td>指定されたオブジェクトのモニター情報を、VMが取得できるかどうか&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_VirtualMachine_ClassPaths">ClassPathsコマンド</a> (13)</h5>
+ターゲットVMのclasspathおよびbootclasspathを取得します。classpathが定義されていない場合は、空のリストを返します。bootclasspathが定義されていない場合は、空のリストを返します。
+<dl>
+<dt>出力データ
+<dd>(なし)
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+string<td><i>baseDir</i><td>次のリスト内のいずれかの相対パス解決で使用されるベース・ディレクトリ。
+<tr>
+<td colspan=5>
+int<td><i>classpaths</i><td>classpath内のパスの数
+<tr>
+<td colspan=7>
+<i>classpaths</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+string<td><i>path</i><td>classpathの1コンポーネント
+<tr>
+<td colspan=5>
+int<td><i>bootclasspaths</i><td>bootclasspath内のパスの数。
+<tr>
+<td colspan=7>
+<i>bootclasspaths</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+string<td><i>path</i><td>bootclasspathの1コンポーネント
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_VirtualMachine_DisposeObjects">DisposeObjectsコマンド</a> (14)</h5>
+オブジェクトIDのリストを解放します。リスト内の各オブジェクトに対して、以下の処理が適用されます。バックエンドによって保持されている参照の回数(参照カウント)が、refCntによって減らされます。その後、参照カウントが0以下であれば、そのIDは解放されます。解放されたIDに関連付けられているバックエンド・リソースがあれば、そのリソースも解放され、オブジェクトのガベージ・コレクションが無効にされていれば、再度有効にされます。このコマンドを送った側は、解放されたIDを参照するコマンドをそれ以降は送らないようにしなければなりません。<p>このコマンドの使用は、必須ではありません。このコマンドが送られない場合、各IDに関連付けられているリソースは、対応するオブジェクトのガベージ・コレクションの実行後に、バックエンドにより解放されます。このコマンドのもっとも効果的な利用法は、大量のオブジェクト(大規模な配列など)がバックエンドから取得されているが、すぐにはガベージ・コレクションが行われない場合に、バックエンドの負荷を軽減することです。 <p>このコマンドで解放されたIDは、バックエンドにより再利用されることがあります。この説明では、参照がカウントされていることを想定しており、バックエンドは同等の動作をする任意の実装を使用できます。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>requests</i><td>あとに続くオブジェクト破棄要求の数
+<tr>
+<td colspan=7>
+<i>requests</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+objectID<td><i>object</i><td>オブジェクトID&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+int<td><i>refCnt</i><td>このオブジェクトIDがバックエンドから受け取ったパケットに含まれていた回数。ここに正確なカウントを指定することにより、オブジェクトIDが着信パケットの一部であり、まだフロント・エンドにより処理されていない場合に、オブジェクトIDがバックエンドで解放されることを回避できる。
+</table>
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd>(なし)
+</dl>
+<h5><a name="JDWP_VirtualMachine_HoldEvents">HoldEventsコマンド</a> (15)</h5>
+ターゲットVMに対し、イベントの送信を停止するように伝えます。イベントは破棄されるのではなく、次にReleaseEventsコマンドが送信されるまで保持されます。大量のイベントが生成される状況で、デバッガVMに送信されるイベントの数を制御する場合に、このコマンドは有用です。イベントはデバッガ・バック・エンドにより保持されます。アプリケーションの実行は、バッファがデバッガ・バック・エンドでオーバーフローしないように、バック・エンドによって凍結されます。コマンドへの応答は保持されないため、このコマンドによる影響はありません。イベントがすでに保持されている場合、このコマンドは無視されます。
+<dl>
+<dt>出力データ
+<dd>(なし)
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd>(なし)
+</dl>
+<h5><a name="JDWP_VirtualMachine_ReleaseEvents">ReleaseEventsコマンド</a> (16)</h5>
+ターゲットVMに対し、イベントの送信を継続するよう伝えます。このコマンドは、HoldEventsコマンドの実行後に通常のアクティビティを復元する際に使用されます。現在有効なHoldEventsコマンドが存在しない場合、このコマンドは無視されます。
+<dl>
+<dt>出力データ
+<dd>(なし)
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd>(なし)
+</dl>
+<h5><a name="JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNewコマンド</a> (17)</h5>
+このVMのすべての権限を取得します。各権限はboolean値として返され、その権限が存在するかどうかを示します。各権限に関連するコマンドは、JDWP 1バージョン1.4以降でその権限が利用できない場合、NOT_IMPLEMENTEDエラーを返します。
+<dl>
+<dt>出力データ
+<dd>(なし)
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+boolean<td><i>canWatchFieldModification</i><td>VMがフィールドの変更を監視して、変更ウォッチポイント・イベントを送信可能かどうか&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>canWatchFieldAccess</i><td>VMがフィールドへのアクセスを監視して、アクセス・ウォッチポイント・イベントを送信可能かどうか&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>canGetBytecodes</i><td>VMが、指定されたメソッドのバイト・コードを取得できるかどうか&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>canGetSyntheticAttribute</i><td>フィールドまたはメソッドが合成である場合、VMがそれを判別できるかどうか(つまり、メソッドまたはフィールドがコンパイラにより生成されたものである場合、VMがそれを判別できるかどうか)&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>canGetOwnedMonitorInfo</i><td>所有されたスレッドのモニター情報を、VMが取得可能かどうか&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>canGetCurrentContendedMonitor</i><td>現在競合しているスレッドのモニターを、VMが取得可能かどうか&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>canGetMonitorInfo</i><td>指定されたオブジェクトのモニター情報を、VMが取得できるかどうか&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>canRedefineClasses</i><td>VMがクラスを再定義できるかどうか
+<tr>
+<td colspan=5>
+boolean<td><i>canAddMethod</i><td>VMがクラスを再定義するときにメソッドを追加できるかどうか
+<tr>
+<td colspan=5>
+boolean<td><i>canUnrestrictedlyRedefineClasses</i><td>VMがクラスを自由に再定義できるかどうか
+<tr>
+<td colspan=5>
+boolean<td><i>canPopFrames</i><td>VMがスタック・フレームをポップできるかどうか
+<tr>
+<td colspan=5>
+boolean<td><i>canUseInstanceFilters</i><td>VMが特定のオブジェクトでイベントをフィルタできるかどうか
+<tr>
+<td colspan=5>
+boolean<td><i>canGetSourceDebugExtension</i><td>VMがソース・デバッグ拡張機能を取得できるかどうか
+<tr>
+<td colspan=5>
+boolean<td><i>canRequestVMDeathEvent</i><td>VMがVM終了イベントを要求できるかどうか
+<tr>
+<td colspan=5>
+boolean<td><i>canSetDefaultStratum</i><td>VMがデフォルトの層を設定できるかどうか
+<tr>
+<td colspan=5>
+boolean<td><i>canGetInstanceInfo</i><td>VMがインスタンス、クラスのインスタンス数、参照するオブジェクトを返せるかどうか
+<tr>
+<td colspan=5>
+boolean<td><i>canRequestMonitorEvents</i><td>VMが監視イベントを要求できるかどうか
+<tr>
+<td colspan=5>
+boolean<td><i>canGetMonitorFrameInfo</i><td>VMがフレームの深さに関する情報を含む監視を取得できるかどうか
+<tr>
+<td colspan=5>
+boolean<td><i>canUseSourceNameFilters</i><td>VMがソース名に基づいてクラス準備イベントをフィルタ処理できるかどうか
+<tr>
+<td colspan=5>
+boolean<td><i>canGetConstantPool</i><td>VMが定数プール情報を返せるかどうか
+<tr>
+<td colspan=5>
+boolean<td><i>canForceEarlyReturn</i><td>VMがメソッドからの戻り値を早期に返させることができるかどうか
+<tr>
+<td colspan=5>
+boolean<td><i>reserved22</i><td>将来の権限のために予約済み&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>reserved23</i><td>将来の権限のために予約済み&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>reserved24</i><td>将来の権限のために予約済み&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>reserved25</i><td>将来の権限のために予約済み&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>reserved26</i><td>将来の権限のために予約済み&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>reserved27</i><td>将来の権限のために予約済み&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>reserved28</i><td>将来の権限のために予約済み&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>reserved29</i><td>将来の権限のために予約済み&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>reserved30</i><td>将来の権限のために予約済み&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>reserved31</i><td>将来の権限のために予約済み&nbsp;
+<tr>
+<td colspan=5>
+boolean<td><i>reserved32</i><td>将来の権限のために予約済み&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_VirtualMachine_RedefineClasses">RedefineClassesコマンド</a> (18)</h5>
+新しいクラス定義をインストールします。ターゲットVMで再定義されたクラスのメソッドにアクティブなスタック・フレームがあると、そのアクティブ・フレームは元のメソッドのバイト・コードの実行を続行します。これらのメソッドは、使用されていないものと見なされます(<a href="#JDWP_Method_IsObsolete">IsObsolete</a>を参照)。再定義されたクラスのメソッドは、ターゲットVMの新しい呼出しに使用されます。元のメソッドIDは再定義されたメソッドを参照します。再定義されたクラスのすべてのブレークポイントが解除されます。スタック・フレームをリセットする場合は、<a href="#JDWP_StackFrame_PopFrames">PopFrames</a>コマンドを使用して、使用されていないメソッドとともにフレームをポップできます。<p>canRedefineClasses権限が必要です(<a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>を参照)。canRedefineClasses権限に加え、ターゲットVMには、クラスを再定義するときにメソッドを追加するcanAddMethod権限、または任意の方法でクラスを再定義するcanUnrestrictedlyRedefineClassesが必要です。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>classes</i><td>あとに続く参照型の数。&nbsp;
+<tr>
+<td colspan=7>
+<i>classes</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+referenceTypeID<td><i>refType</i><td>参照型。&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+int<td><i>classfile</i><td>定義するクラスのバイト数(下)
+<tr>
+<td colspan=1>
+<td colspan=6>
+<i>classfile</i>回の繰り返し:
+<tr>
+<td colspan=2>
+<td colspan=3>
+byte<td><i>classbyte</i><td>JVMクラス・ファイル形式のバイト。
+</table>
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeの1つが参照型のIDではない。</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeの1つが既知のIDではない。</td></tr>
+<tr><td><a href="#Error_UNSUPPORTED_VERSION">UNSUPPORTED_VERSION</a></td><td>クラス・ファイルのバージョンがこのVMでサポートされていない。</td></tr>
+<tr><td><a href="#Error_INVALID_CLASS_FORMAT">INVALID_CLASS_FORMAT</a></td><td>仮想マシンがクラス・ファイルを読み込もうとしたが、ファイルの形式が間違っているか、その他の理由でクラス・ファイルとして解釈できない。</td></tr>
+<tr><td><a href="#Error_CIRCULAR_CLASS_DEFINITION">CIRCULAR_CLASS_DEFINITION</a></td><td>クラスの初期化中に、循環定義が検出された。</td></tr>
+<tr><td><a href="#Error_FAILS_VERIFICATION">FAILS_VERIFICATION</a></td><td>クラス・ファイルの形式は正しいが、検証ルーチンは何らかの種類の内部的な不整合かセキュリティ上の問題を検出した。</td></tr>
+<tr><td><a href="#Error_NAMES_DONT_MATCH">NAMES_DONT_MATCH</a></td><td>新しいクラス・ファイル内で定義されたクラス名が、旧クラス・オブジェクト内の名前と異なる。</td></tr>
+<tr><td><a href="#Error_NOT_IMPLEMENTED">NOT_IMPLEMENTED</a></td><td>この機能は実装されていない(CapabilitiesNew.canRedefineClassesがfalse)</td></tr>
+<tr><td><a href="#Error_ADD_METHOD_NOT_IMPLEMENTED">ADD_METHOD_NOT_IMPLEMENTED</a></td><td>追加メソッドが実装されていない。</td></tr>
+<tr><td><a href="#Error_SCHEMA_CHANGE_NOT_IMPLEMENTED">SCHEMA_CHANGE_NOT_IMPLEMENTED</a></td><td>スキーマの変更が実装されていない。</td></tr>
+<tr><td><a href="#Error_HIERARCHY_CHANGE_NOT_IMPLEMENTED">HIERARCHY_CHANGE_NOT_IMPLEMENTED</a></td><td>新しいクラスのバージョンの直接スーパー・クラスが異なる、または直接実装されているインタフェースが異なり、canUnrestrictedlyRedefineClassesがfalse。</td></tr>
+<tr><td><a href="#Error_DELETE_METHOD_NOT_IMPLEMENTED">DELETE_METHOD_NOT_IMPLEMENTED</a></td><td>新しいクラスのバージョンでは、旧クラスのバージョンで宣言したメソッドを宣言せず、またcanUnrestrictedlyRedefineClassesがfalse。</td></tr>
+<tr><td><a href="#Error_CLASS_MODIFIERS_CHANGE_NOT_IMPLEMENTED">CLASS_MODIFIERS_CHANGE_NOT_IMPLEMENTED</a></td><td>新しいクラスのバージョンの修飾子が異なり、canUnrestrictedlyRedefineClassesがfalse。</td></tr>
+<tr><td><a href="#Error_METHOD_MODIFIERS_CHANGE_NOT_IMPLEMENTED">METHOD_MODIFIERS_CHANGE_NOT_IMPLEMENTED</a></td><td>新しいクラスのバージョンのメソッドの修飾子が旧クラスのバージョンの修飾子と異なり、canUnrestrictedlyRedefineClassesがfalse。</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_VirtualMachine_SetDefaultStratum">SetDefaultStratumコマンド</a> (19)</h5>
+デフォルトの層を設定します。canSetDefaultStratum権限が必要です(<a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>を参照)。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+string<td><i>stratumID</i><td>デフォルト層、または参照型デフォルトを使用するための空の文字列。
+</table>
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_NOT_IMPLEMENTED">NOT_IMPLEMENTED</a></td><td>この機能はこの仮想マシンに実装されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_VirtualMachine_AllClassesWithGeneric">AllClassesWithGenericコマンド</a> (20)</h5>
+ターゲットVMによって現在ロードされているクラスすべての参照型を返します。各クラスに対してJNIシグニチャとジェネリック・シグニチャの両方が返されます。ジェネリックス・シグニチャについては、<cite>Java(tm)仮想マシン仕様</cite>のシグニチャ属性のセクションを参照してください。これはJDWPバージョン1.5以降です。
+<dl>
+<dt>出力データ
+<dd>(なし)
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>classes</i><td>あとに続く参照型の数。&nbsp;
+<tr>
+<td colspan=7>
+<i>classes</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+byte<td><i>refTypeTag</i><td>あとに続く参照型の<a href="#JDWP_TypeTag">種類</a>。&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+referenceTypeID<td><i>typeID</i><td>ロードされた参照型&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+string<td><i>signature</i><td>ロードされた参照型のJNIシグニチャ。
+<tr>
+<td colspan=1>
+<td colspan=4>
+string<td><i>genericSignature</i><td>ロードされた参照型のジェネリック・シグニチャ、ない場合は空の文字列。
+<tr>
+<td colspan=1>
+<td colspan=4>
+int<td><i>status</i><td>現在のクラスの<a href="#JDWP_ClassStatus">ステータス</a>。&nbsp; &nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_VirtualMachine_InstanceCounts">InstanceCountsコマンド</a> (21)</h5>
+入力リスト内の各参照型のインスタンス数を返します。ガベージ・コレクト目的で到達可能なインスタンスだけがカウントされます。アンロード済みなどの理由で参照型が無効な場合、インスタンス・カウントとしてゼロが返されます。<p>これはJDWPバージョン1.6以降。canGetInstanceInfo権限が必要です(<a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>を参照)。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>refTypesCount</i><td>全参照型の数。負でない数値。
+<tr>
+<td colspan=7>
+<i>refTypesCount</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+referenceTypeID<td><i>refType</i><td>参照型ID。
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>counts</i><td>あとに続く回数。
+<tr>
+<td colspan=7>
+<i>counts</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+long<td><i>instanceCount</i><td>「出力データ」内の参照型のインスタンス数。
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_ILLEGAL_ARGUMENT">ILLEGAL_ARGUMENT</a></td><td>refTypesCountがゼロより小さい。</td></tr>
+<tr><td><a href="#Error_NOT_IMPLEMENTED">NOT_IMPLEMENTED</a></td><td>この機能はこの仮想マシンに実装されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h4><a name="JDWP_ReferenceType">ReferenceTypeコマンド・セット</a> (2)</h4>
+
+<h5><a name="JDWP_ReferenceType_Signature">Signatureコマンド</a> (1)</h5>
+参照型のJNIシグニチャを返します。JNIシグニチャの形式については、<a href="http://java.sun.com/products/jdk/1.2/docs/guide/jni/index.html">Java Native Inteface仕様</a>を参照してください<p>プリミティブ・クラスの場合、返されるシグニチャは対応するプリミティブ型のシグニチャです。たとえば、「I」は、java.lang.Integer.TYPEにより表されるクラスのシグニチャとして返されます。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>参照型ID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+string<td><i>signature</i><td>参照型のJNIシグニチャ。&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ReferenceType_ClassLoader">ClassLoaderコマンド</a> (2)</h5>
+指定された参照型をロードしたjava.lang.ClassLoaderのインスタンスを返します。その参照型がシステム・クラス・ローダーによりロードされた場合、返されるオブジェクトIDはnullになります。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>参照型ID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+classLoaderID<td><i>classLoader</i><td>参照型のクラス・ローダー。&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ReferenceType_Modifiers">Modifiersコマンド</a> (3)</h5>
+参照型の修飾子(アクセス・フラグともいう)を返します。返されるビット・マスクには、参照型の宣言に関する情報が含まれます。参照型が配列またはプリミティブ・クラス(たとえば、java.lang.Integer.TYPE)である場合、返されるビット・マスクの値は定義されません。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>参照型ID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>modBits</i><td><cite>Java(tm)仮想マシン仕様</cite>の第4章で定義されている修飾子ビット&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ReferenceType_Fields">Fieldsコマンド</a> (4)</h5>
+参照型の各フィールドに関する情報を返します。継承したフィールドは含まれません。フィールド・リストには、コンパイラにより作成されたすべての合成フィールドが含まれます。フィールドは、クラス・ファイル内に出現する順序で返されます。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>参照型ID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>declared</i><td>宣言されているフィールドの数。&nbsp;
+<tr>
+<td colspan=7>
+<i>declared</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+fieldID<td><i>fieldID</i><td>フィールドID。&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+string<td><i>name</i><td>フィールドの名前。
+<tr>
+<td colspan=1>
+<td colspan=4>
+string<td><i>signature</i><td>フィールドのJNIシグニチャ。
+<tr>
+<td colspan=1>
+<td colspan=4>
+int<td><i>modBits</i><td>フィールド宣言に関する補足情報を提供する修飾子ビット・フラグ(アクセス・フラグともいう)。個々のフラグ値は、<cite>Java(tm)仮想マシン仕様</cite>の第4章に定義されている。また、合成属性の<a href="#JDWP_VirtualMachine_Capabilities">権限</a>を利用可能な場合には、<code>0xf0000000</code>ビットは、そのフィールドが合成であることを示す。&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_CLASS_NOT_PREPARED">CLASS_NOT_PREPARED</a></td><td>クラスがロードされているが、まだ準備されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ReferenceType_Methods">Methodsコマンド</a> (5)</h5>
+参照型の各メソッドに関する情報を返します。継承されたメソッドは、含まれません。メソッドのリストには、コンストラクタ(名前「&lt;init>」で識別される)、存在する場合には初期化メソッド(名前「&lt;clinit>」で識別される)、およびコンパイラにより作成されたすべての合成メソッドが含まれます。メソッドは、クラス・ファイル内に出現する順序で返されます。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>参照型ID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>declared</i><td>宣言されているメソッドの数。&nbsp;
+<tr>
+<td colspan=7>
+<i>declared</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+methodID<td><i>methodID</i><td>メソッドID。&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+string<td><i>name</i><td>メソッドの名前。
+<tr>
+<td colspan=1>
+<td colspan=4>
+string<td><i>signature</i><td>メソッドのJNIシグニチャ。
+<tr>
+<td colspan=1>
+<td colspan=4>
+int<td><i>modBits</i><td>メソッド宣言に関する補足情報を提供する修飾子ビット・フラグ(アクセス・フラグともいう)。個々のフラグ値は、<cite>Java(tm)仮想マシン仕様</cite>の第4章に定義されている。また、合成属性の<a href="#JDWP_VirtualMachine_Capabilities">権限</a>を利用可能な場合には、<code>0xf0000000</code>ビットは、そのメソッドが合成であることを示す。&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_CLASS_NOT_PREPARED">CLASS_NOT_PREPARED</a></td><td>クラスがロードされているが、まだ準備されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ReferenceType_GetValues">GetValuesコマンド</a> (6)</h5>
+参照型の1つ以上のstaticフィールドの値を返します。各フィールドは、参照型のメンバーか、そのスーパー・クラス、スーパー・インタフェースまたは実装されたインタフェースのいずれかである必要があります。アクセス制御は実行されません。このため、たとえばprivateフィールドの値を取得できます。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>参照型ID。&nbsp;
+<tr>
+<td colspan=5>
+int<td><i>fields</i><td>取得する値の数&nbsp;
+<tr>
+<td colspan=7>
+<i>fields</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+fieldID<td><i>fieldID</i><td>取得するフィールド
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>values</i><td>返される値の数。fieldsの取得する値の数と常に等しい。
+<tr>
+<td colspan=7>
+<i>values</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+value<td><i>value</i><td>フィールドの値&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_FIELDID">INVALID_FIELDID</a></td><td>無効なフィールド。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ReferenceType_SourceFile">SourceFileコマンド</a> (7)</h5>
+参照型が宣言されたソース・ファイルの名前を返します。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>参照型ID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+string<td><i>sourceFile</i><td>ソース・ファイルの名前。ファイルのパス情報は含まれない
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_ABSENT_INFORMATION">ABSENT_INFORMATION</a></td><td>ソース・ファイルの属性が存在しない。</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ReferenceType_NestedTypes">NestedTypesコマンド</a> (8)</h5>
+この型のすぐ内側にネストしたクラスとインタフェースを返します。これらの型のさらに内側にネストしたタイプは含まれません。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>参照型ID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>classes</i><td>ネストされたクラスとインタフェースの数
+<tr>
+<td colspan=7>
+<i>classes</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+byte<td><i>refTypeTag</i><td>あとに続く参照型の<a href="#JDWP_TypeTag">種類</a>。&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+referenceTypeID<td><i>typeID</i><td>ネストされたクラスまたはインタフェースのID。
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ReferenceType_Status">Statusコマンド</a> (9)</h5>
+参照型の現在のステータスを返します。<cite>Java(tm)仮想マシン仕様</cite>のセクション2.1.6で説明されているように、ステータスは参照型の初期化の程度を示します。クラスがリンクしている場合は、返されるステータス・ビットのPREPAREDおよびVERIFIEDビットが設定されます。クラスが初期化されている場合は、返されるステータス・ビットのINITIALIZEDビットが設定されます。初期化中にエラーが発生した場合は、返されるステータス・ビットのERRORビットが設定されます。返されるステータス・ビットは、配列型およびプリミティブ・クラス(java.lang.Integer.TYPEなど)の場合は未定義です。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>参照型ID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>status</i><td><a href="#JDWP_ClassStatus">ステータス</a>ビット。<a href="#JDWP_ClassStatus">JDWP.ClassStatus</a>を参照&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ReferenceType_Interfaces">Interfacesコマンド</a> (10)</h5>
+このクラスによる実装が宣言されたインタフェースを返します。間接的に実装された(実装済みのインタフェースから継承した、またはスーパー・クラスが実装した)インタフェースは含まれません。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>参照型ID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>interfaces</i><td>実装したインタフェースの数
+<tr>
+<td colspan=7>
+<i>interfaces</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+interfaceID<td><i>interfaceType</i><td>実装されたインタフェース。
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ReferenceType_ClassObject">ClassObjectコマンド</a> (11)</h5>
+この型に対応するクラス・オブジェクトを返します。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>参照型ID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+classObjectID<td><i>classObject</i><td>クラス・オブジェクト。
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ReferenceType_SourceDebugExtension">SourceDebugExtensionコマンド</a> (12)</h5>
+SourceDebugExtension属性の値を返します。これはJDWPバージョン1.4以降です。canGetSourceDebugExtension権限が必要です(<a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>を参照)。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>参照型ID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+string<td><i>extension</i><td>拡張属性
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_ABSENT_INFORMATION">ABSENT_INFORMATION</a></td><td>拡張属性が指定されていない。</td></tr>
+<tr><td><a href="#Error_NOT_IMPLEMENTED">NOT_IMPLEMENTED</a></td><td>この機能はこの仮想マシンに実装されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ReferenceType_SignatureWithGeneric">SignatureWithGenericコマンド</a> (13)</h5>
+参照型のJNIシグネチャを返します。存在する場合はジェネリック・シグネチャも一緒に返します。ジェネリックス・シグニチャについては、<cite>Java(tm)仮想マシン仕様</cite>のシグニチャ属性のセクションを参照してください。これはJDWPバージョン1.5以降です。<p>
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>参照型ID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+string<td><i>signature</i><td>参照型のJNIシグニチャ。&nbsp;
+<tr>
+<td colspan=5>
+string<td><i>genericSignature</i><td>参照型のジェネリック・シグニチャ、ない場合は空の文字列。
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ReferenceType_FieldsWithGeneric">FieldsWithGenericコマンド</a> (14)</h5>
+参照型の各フィールドに関する情報(存在する場合はジェネリック・シグニチャを含む)を返します。継承したフィールドは含まれません。フィールド・リストには、コンパイラにより作成されたすべての合成フィールドが含まれます。フィールドは、クラス・ファイル内に出現する順序で返されます。ジェネリックス・シグニチャについては、<cite>Java(tm)仮想マシン仕様</cite>のシグニチャ属性のセクションを参照してください。これはJDWPバージョン1.5以降です。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>参照型ID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>declared</i><td>宣言されているフィールドの数。&nbsp;
+<tr>
+<td colspan=7>
+<i>declared</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+fieldID<td><i>fieldID</i><td>フィールドID。&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+string<td><i>name</i><td>フィールドの名前。
+<tr>
+<td colspan=1>
+<td colspan=4>
+string<td><i>signature</i><td>フィールドのJNIシグニチャ。
+<tr>
+<td colspan=1>
+<td colspan=4>
+string<td><i>genericSignature</i><td>フィールドのジェネリック・シグニチャ、ない場合は空の文字列。
+<tr>
+<td colspan=1>
+<td colspan=4>
+int<td><i>modBits</i><td>フィールド宣言に関する補足情報を提供する修飾子ビット・フラグ(アクセス・フラグともいう)。個々のフラグ値は、<cite>Java(tm)仮想マシン仕様</cite>の第4章に定義されている。また、合成属性の<a href="#JDWP_VirtualMachine_Capabilities">権限</a>を利用可能な場合には、<code>0xf0000000</code>ビットは、そのフィールドが合成であることを示す。&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_CLASS_NOT_PREPARED">CLASS_NOT_PREPARED</a></td><td>クラスがロードされているが、まだ準備されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ReferenceType_MethodsWithGeneric">MethodsWithGenericコマンド</a> (15)</h5>
+参照型の各メソッドに関する情報(存在する場合はジェネリック・シグニチャを含む)を返します。継承したメソッドは含まれません。メソッドのリストには、コンストラクタ(名前「&lt;init>」で識別される)、存在する場合には初期化メソッド(名前「&lt;clinit>」で識別される)、およびコンパイラにより作成されたすべての合成メソッドが含まれます。メソッドは、クラス・ファイル内に出現する順序で返されます。ジェネリックス・シグニチャについては、<cite>Java(tm)仮想マシン仕様</cite>のシグニチャ属性のセクションを参照してください。これはJDWPバージョン1.5以降です。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>参照型ID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>declared</i><td>宣言されているメソッドの数。&nbsp;
+<tr>
+<td colspan=7>
+<i>declared</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+methodID<td><i>methodID</i><td>メソッドID。&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+string<td><i>name</i><td>メソッドの名前。
+<tr>
+<td colspan=1>
+<td colspan=4>
+string<td><i>signature</i><td>メソッドのJNIシグニチャ。
+<tr>
+<td colspan=1>
+<td colspan=4>
+string<td><i>genericSignature</i><td>メソッドのジェネリック・シグニチャ、ない場合は空の文字列。
+<tr>
+<td colspan=1>
+<td colspan=4>
+int<td><i>modBits</i><td>メソッド宣言に関する補足情報を提供する修飾子ビット・フラグ(アクセス・フラグともいう)。個々のフラグ値は、<cite>Java(tm)仮想マシン仕様</cite>の第4章に定義されている。また、合成属性の<a href="#JDWP_VirtualMachine_Capabilities">権限</a>を利用可能な場合には、<code>0xf0000000</code>ビットは、そのメソッドが合成であることを示す。&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_CLASS_NOT_PREPARED">CLASS_NOT_PREPARED</a></td><td>クラスがロードされているが、まだ準備されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ReferenceType_Instances">Instancesコマンド</a> (16)</h5>
+この参照型のインスタンスを返します。ガベージ・コレクト目的で到達可能なインスタンスだけが返されます。 <p>これはJDWPバージョン1.6以降。canGetInstanceInfo権限が必要です(<a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>を参照)。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>参照型ID。&nbsp;
+<tr>
+<td colspan=5>
+int<td><i>maxInstances</i><td>返されるインスタンスの最大数。負でない数値。ゼロの場合、すべてのインスタンスが返される。
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>instances</i><td>あとに続くインスタンスの数。
+<tr>
+<td colspan=7>
+<i>instances</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+tagged-objectID<td><i>instance</i><td>この参照型のインスタンス。
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_ILLEGAL_ARGUMENT">ILLEGAL_ARGUMENT</a></td><td>maxInstancesがゼロより小さい。</td></tr>
+<tr><td><a href="#Error_NOT_IMPLEMENTED">NOT_IMPLEMENTED</a></td><td>この機能はこの仮想マシンに実装されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ReferenceType_ClassFileVersion">ClassFileVersionコマンド</a> (17)</h5>
+Java仮想マシン仕様のクラス・ファイル形式で定義されているクラス・ファイルのメジャー・バージョン番号とマイナー・バージョン番号を返します。 <p>これはJDWPバージョン1.6以降。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>クラス。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>majorVersion</i><td>メジャー・バージョン番号
+<tr>
+<td colspan=5>
+int<td><i>minorVersion</i><td>マイナー・バージョン番号
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_ABSENT_INFORMATION">ABSENT_INFORMATION</a></td><td>プリミティブ型および配列型のクラス・ファイル・バージョン情報が存在しない。</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ReferenceType_ConstantPool">ConstantPoolコマンド</a> (18)</h5>
+<cite>Java(tm)仮想マシン仕様</cite>のクラス・ファイル形式の説明に記載されているconstant_pool項目の形式で、定数プールのrawバイト数を返します。 <p>これはJDWPバージョン1.6以降。canGetConstantPool権限が必要です(<a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>を参照)。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>クラス。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>count</i><td>定数プール・エントリの総数に1を加えた値。これは、<cite>Java(tm)仮想マシン仕様</cite>のクラス・ファイル形式の説明に記載されている、constant_pool_count項目と一致する。&nbsp;
+<tr>
+<td colspan=5>
+int<td><i>bytes</i><td>&nbsp;
+<tr>
+<td colspan=7>
+<i>bytes</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+byte<td><i>cpbytes</i><td>rawバイトの定数プール
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_NOT_IMPLEMENTED">NOT_IMPLEMENTED</a></td><td>ターゲット仮想マシンが定数プール情報の取得をサポートしていない。</td></tr>
+<tr><td><a href="#Error_ABSENT_INFORMATION">ABSENT_INFORMATION</a></td><td>プリミティブ型および配列型の定数プール情報が存在しない。</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h4><a name="JDWP_ClassType">ClassTypeコマンド・セット</a> (3)</h4>
+
+<h5><a name="JDWP_ClassType_Superclass">Superclassコマンド</a> (1)</h5>
+クラスの直属のスーパー・クラスを返します。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+classID<td><i>clazz</i><td>クラス型ID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+classID<td><i>superclass</i><td>スーパー・クラス(java.lang.ObjectのクラスIDが指定されている場合は、null)。
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>clazzがクラスのIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>clazzが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ClassType_SetValues">SetValuesコマンド</a> (2)</h5>
+1つ以上のstaticフィールドの値を設定します。各フィールドは、クラス型のメンバーか、そのスーパー・クラス、スーパー・インタフェースまたは実装されたインタフェースのいずれかである必要があります。アクセス制御は実行されません。このため、たとえばprivateフィールドの値を設定できます。最後のフィールドを設定することはできません。プリミティブ値の場合、値の型とフィールドの型は正確に一致している必要があります。オブジェクト値の場合、値の型からフィールドの型への広範な参照変換が存在し、かつフィールドの型がロードされている必要があります。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+classID<td><i>clazz</i><td>クラス型ID。&nbsp;
+<tr>
+<td colspan=5>
+int<td><i>values</i><td>設定するフィールドの数。&nbsp;
+<tr>
+<td colspan=7>
+<i>values</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+fieldID<td><i>fieldID</i><td>設定するフィールド。&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+untagged-value<td><i>value</i><td>フィールドに入力する値。&nbsp;
+</table>
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>clazzがクラスのIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_CLASS_NOT_PREPARED">CLASS_NOT_PREPARED</a></td><td>クラスがロードされているが、まだ準備されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>clazzが既知のIDではない、またはオブジェクト・フィールドの値が既知のIDではない。</td></tr>
+<tr><td><a href="#Error_INVALID_FIELDID">INVALID_FIELDID</a></td><td>無効なフィールド。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ClassType_InvokeMethod">InvokeMethodコマンド</a> (3)</h5>
+staticメソッドを呼び出します。メソッドは、クラス型のメンバーか、そのスーパー・クラス、スーパー・インタフェースまたは実装されたインタフェースのいずれかである必要があります。アクセス制御は実行されません。このため、たとえばprivateメソッドを呼び出すことができます。<p>メソッド呼出しは、指定されたスレッドで実行されます。メソッド呼出しは、指定されたスレッドがイベントにより中断されている場合にだけ実行されます。ターゲットVMがフロント・エンドにより中断されている場合のメソッド呼出しはサポートされていません。 <p>指定されたメソッドは、指定された引数リスト内の引数を使用して呼び出されます。メソッド呼出しは同期的に行われます。そのため、呼び出されたメソッドがターゲットVM内で復帰するまで、応答パケットは送信されません。戻り値(たいていの場合、void値)は応答パケットに含まれます。呼び出されたメソッドが例外をスローする場合は、例外オブジェクトIDが応答パケット内に設定されます。そうでない場合、例外オブジェクトIDはnullになります。 <p>プリミティブ引数の場合、引数値の型と引数の型は厳密に一致している必要があります。オブジェクト引数の場合、引数値の型から引数の型への拡張参照変換が存在し、かつ引数の型がロードされている必要があります。 <p>デフォルトでは、ターゲットVM内のすべてのスレッドがメソッドの呼出し中に再開されます(イベントまたはコマンドによって以前に中断されたスレッドの場合)。これは、いずれかのスレッドが、呼出し先メソッドが必要とするモニターを所有している場合に、デッドロックが発生するのを防ぎます。ブレークポイントまたはほかのイベントが、呼出し中に発生する可能性があります。ただし、この暗黙の再開処理が、ThreadReferenceのResumeコマンドの処理とまったく同じであることに注意してください。このため、スレッドの中断カウントが1より大きいと、呼出し中もスレッドは中断状態のままになります。デフォルトでは、ターゲットVM内のすべてのスレッドは、呼出しの完了時に中断します(呼出し前のスレッドの状態とは無関係)。 <p><code>options</code>フィールドにINVOKE_SINGLE_THREADEDビット・フラグを指定することにより、呼出し中に他のスレッドが再開しないようにできます。ただし、前述のようなデッドロックに対する保護や、デッドロックからの回復ができなくなるため、このオプションはよく注意して利用してください。指定されたスレッドのみが再開されます(前述したすべてのスレッドの場合と同様)。シングル・スレッド呼出しが完了すると、呼出し元スレッドは再び中断されます。シングル・スレッド呼出し中に開始されたすべてのスレッドは、呼出し完了時にも中断されません。 <p>ターゲットVMが呼出し中に切断されても(たとえば、VirtualMachineのDisposeコマンドによる)、メソッド呼出しは続行されます。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+classID<td><i>clazz</i><td>クラス型ID。&nbsp;
+<tr>
+<td colspan=5>
+threadID<td><i>thread</i><td>呼出しを行うスレッド。&nbsp;
+<tr>
+<td colspan=5>
+methodID<td><i>methodID</i><td>呼び出すメソッド。&nbsp;
+<tr>
+<td colspan=5>
+int<td><i>arguments</i><td>&nbsp;
+<tr>
+<td colspan=7>
+<i>arguments</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+value<td><i>arg</i><td>引数の値。&nbsp;
+<tr>
+<td colspan=5>
+int<td><i>options</i><td>呼び出し<a href="#JDWP_InvokeOptions">オプション</a>&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+value<td><i>returnValue</i><td>戻り値。
+<tr>
+<td colspan=5>
+tagged-objectID<td><i>exception</i><td>スローされた例外。
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>clazzがクラスのIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>clazzが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_METHODID">INVALID_METHODID</a></td><td>methodIDがメソッドのIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_THREAD_NOT_SUSPENDED">THREAD_NOT_SUSPENDED</a></td><td>指定されたスレッドは、イベントによって中断されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ClassType_NewInstance">NewInstanceコマンド</a> (4)</h5>
+指定されたコンストラクタを呼び出して、この型の新規オブジェクトを作成します。コンストラクタ・メソッドIDは、クラス型のメンバーでなければなりません。<p>インスタンスの作成は、指定されたスレッドで実行されます。インスタンスの作成は、指定されたスレッドがイベントにより中断されている場合にだけ実行されます。ターゲットVMがフロント・エンドにより中断されている場合のメソッド呼出しはサポートされていません。 <p>指定されたコンストラクタは、指定された引数リスト内の引数を使用して呼び出されます。コンストラクタ呼出しは同期的に行われます。そのため、呼び出されたメソッドがターゲットVM内で復帰するまで、応答パケットは送信されません。戻り値(たいていの場合、void値)は応答パケットに含まれます。コンストラクタが例外をスローする場合は、例外オブジェクトIDが応答パケット内に設定されます。そうでない場合、例外オブジェクトIDはnullになります。 <p>プリミティブ引数の場合、引数値の型と引数の型は厳密に一致している必要があります。オブジェクト引数の場合、引数値の型から引数の型への拡張参照変換が存在し、かつ引数の型がロードされている必要があります。 <p>デフォルトでは、ターゲットVM内のすべてのスレッドがメソッドの呼出し中に再開されます(イベントまたはコマンドによって以前に中断されたスレッドの場合)。これは、いずれかのスレッドが、呼出し先メソッドが必要とするモニターを所有している場合に、デッドロックが発生するのを防ぎます。ブレークポイントまたはほかのイベントが、呼出し中に発生する可能性があります。ただし、この暗黙の再開処理が、ThreadReferenceのResumeコマンドの処理とまったく同じであることに注意してください。このため、スレッドの中断カウントが1より大きいと、呼出し中もスレッドは中断状態のままになります。デフォルトでは、ターゲットVM内のすべてのスレッドは、呼出しの完了時に中断します(呼出し前のスレッドの状態とは無関係)。 <p><code>options</code>フィールドにINVOKE_SINGLE_THREADEDビット・フラグを指定することにより、呼出し中に他のスレッドが再開しないようにできます。ただし、前述のようなデッドロックに対する保護や、デッドロックからの回復ができなくなるため、このオプションはよく注意して利用してください。指定されたスレッドのみが再開されます(前述したすべてのスレッドの場合と同様)。シングル・スレッド呼出しが完了すると、呼出し元スレッドは再び中断されます。シングル・スレッド呼出し中に開始されたすべてのスレッドは、呼出し完了時にも中断されません。 <p>ターゲットVMが呼出し中に切断されても(たとえば、VirtualMachineのDisposeコマンドによる)、メソッド呼出しは続行されます。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+classID<td><i>clazz</i><td>クラス型ID。&nbsp;
+<tr>
+<td colspan=5>
+threadID<td><i>thread</i><td>コンストラクタを呼び出すスレッド。
+<tr>
+<td colspan=5>
+methodID<td><i>methodID</i><td>呼出し先のコンストラクタ。
+<tr>
+<td colspan=5>
+int<td><i>arguments</i><td>&nbsp;
+<tr>
+<td colspan=7>
+<i>arguments</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+value<td><i>arg</i><td>引数の値。&nbsp;
+<tr>
+<td colspan=5>
+int<td><i>options</i><td>コンストラクタ呼出しの<a href="#JDWP_InvokeOptions">オプション</a>&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+tagged-objectID<td><i>newObject</i><td>新規に作成されたオブジェクト、またはコンストラクタが例外をスローする場合はnull。
+<tr>
+<td colspan=5>
+tagged-objectID<td><i>exception</i><td>スローされた例外(存在する場合)、またはnull。
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>clazzがクラスのIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>clazzが既知のIDではない、またはオブジェクト・パラメータの値が既知のIDではない。</td></tr>
+<tr><td><a href="#Error_INVALID_METHODID">INVALID_METHODID</a></td><td>methodIDがメソッドのIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>この参照型はすでにアンロードされ、ガベージ・コレクトされた。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_THREAD_NOT_SUSPENDED">THREAD_NOT_SUSPENDED</a></td><td>指定されたスレッドは、イベントによって中断されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h4><a name="JDWP_ArrayType">ArrayTypeコマンド・セット</a> (4)</h4>
+
+<h5><a name="JDWP_ArrayType_NewInstance">NewInstanceコマンド</a> (1)</h5>
+この型の配列オブジェクトを、指定された長さで新規作成します。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+arrayTypeID<td><i>arrType</i><td>新規インスタンスの配列型。
+<tr>
+<td colspan=5>
+int<td><i>length</i><td>配列の長さ。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+tagged-objectID<td><i>newArray</i><td>新規作成された配列オブジェクト。&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_ARRAY">INVALID_ARRAY</a></td><td>配列が無効。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>この参照型はすでにアンロードされ、ガベージ・コレクトされた。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h4><a name="JDWP_InterfaceType">InterfaceTypeコマンド・セット</a> (5)</h4>
+
+<h4><a name="JDWP_Method">Methodコマンド・セット</a> (6)</h4>
+
+<h5><a name="JDWP_Method_LineTable">LineTableコマンド</a> (1)</h5>
+存在する場合、メソッドの行番号情報を返します。行テーブルは、ソース行番号を、行の初期コード・インデックスにマッピングします。行テーブルは、コード・インデックスにより(昇順で)順序付けされます。<a href="#JDWP_VirtualMachine_RedefineClasses">RedefineClasses</a>を使って新しいクラス定義がインストールされないかぎり、行番号は定数です。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>クラス。&nbsp;
+<tr>
+<td colspan=5>
+methodID<td><i>methodID</i><td>メソッド。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+long<td><i>start</i><td>メソッドについて有効な最小のコード・インデックス。>=0または -1 (メソッドがネイティブの場合)
+<tr>
+<td colspan=5>
+long<td><i>end</i><td>メソッドについて有効な最大のコード・インデックス。>=0または -1 (メソッドがネイティブの場合)
+<tr>
+<td colspan=5>
+int<td><i>lines</i><td>このメソッドの行テーブル内のエントリ数。
+<tr>
+<td colspan=7>
+<i>lines</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+long<td><i>lineCodeIndex</i><td>行の初期コード・インデックス(開始&lt;= lineCodeIndex &lt; 終了)
+<tr>
+<td colspan=1>
+<td colspan=4>
+int<td><i>lineNumber</i><td>行番号。
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_METHODID">INVALID_METHODID</a></td><td>methodIDがメソッドのIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_Method_VariableTable">VariableTableコマンド</a> (2)</h5>
+メソッドの変数情報を返します。変数テーブルには、メソッド内で宣言された引数と局所変数が含まれます。インスタンス・メソッドの場合、「this」参照がテーブルに含まれます。また、合成変数が存在する場合もあります。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>クラス。&nbsp;
+<tr>
+<td colspan=5>
+methodID<td><i>methodID</i><td>メソッド。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>argCnt</i><td>引数で使用されるフレーム内のワード数。8バイトの引数は2ワードを使用し、その他の引数は1ワードを使用する。&nbsp;
+<tr>
+<td colspan=5>
+int<td><i>slots</i><td>変数の数。&nbsp;
+<tr>
+<td colspan=7>
+<i>slots</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+long<td><i>codeIndex</i><td>変数が可視状態にある最初のコード・インデックス(符号なし)。<code>length</code>と一緒に使う。次のときにのみ、変数を取得または設定できる: 現在の<code>codeIndex</code> &lt;=現在のフレーム・コード・インデックス&lt; <code>codeIndex+length</code> &nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+string<td><i>name</i><td>変数の名前。&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+string<td><i>signature</i><td>変数型のJNIシグニチャ。&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+int<td><i>length</i><td><code>codeIndex</code>と一緒に使う符号なしの値。次のときにのみ、変数を取得または設定できる: 現在の<code>codeIndex</code> &lt;=現在のフレーム・コード・インデックス&lt; <code>code index+length</code> &nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+int<td><i>slot</i><td>フレーム内の局所変数のインデックス&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_METHODID">INVALID_METHODID</a></td><td>methodIDがメソッドのIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_ABSENT_INFORMATION">ABSENT_INFORMATION</a></td><td>メソッドの変数情報がない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_Method_Bytecodes">Bytecodesコマンド</a> (3)</h5>
+メソッドのバイト・コード(<cite>Java(tm)仮想マシン仕様</cite>で定義されている)を取得します。canGetBytecodes権限が必要です(<a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>を参照)。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>クラス。&nbsp;
+<tr>
+<td colspan=5>
+methodID<td><i>methodID</i><td>メソッド。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>bytes</i><td>&nbsp;
+<tr>
+<td colspan=7>
+<i>bytes</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+byte<td><i>bytecode</i><td>Javaバイト・コード。
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_METHODID">INVALID_METHODID</a></td><td>methodIDがメソッドのIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_NOT_IMPLEMENTED">NOT_IMPLEMENTED</a></td><td>ターゲット仮想マシンがバイト・コードの取得をサポートしていない。</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_Method_IsObsolete">IsObsoleteコマンド</a> (4)</h5>
+メソッドがもう使用されていないものかどうかを判別します。<a href="#JDWP_VirtualMachine_RedefineClasses">RedefineClasses</a>コマンドを使用してメソッドが同等ではないメソッドで置き換えられている場合、メソッドは使用されていません。双方のメソッドのバイト・コードが同じ場合(定数プールのインデックスを除く)、参照定数が等しい場合は、元のメソッドと再定義したメソッドが同等と見なされます。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>クラス。&nbsp;
+<tr>
+<td colspan=5>
+methodID<td><i>methodID</i><td>メソッド。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+boolean<td><i>isObsolete</i><td>RedefineClassesコマンドによって、このメソッドが同等でないメソッドで置き換えられている場合はtrue。
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_METHODID">INVALID_METHODID</a></td><td>methodIDがメソッドのIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_NOT_IMPLEMENTED">NOT_IMPLEMENTED</a></td><td>ターゲット仮想マシンがこのクエリーをサポートしていない。</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_Method_VariableTableWithGeneric">VariableTableWithGenericコマンド</a> (5)</h5>
+変数のジェネリック・シグニチャを含むメソッドの変数情報を返します。変数テーブルには、メソッド内で宣言された引数と局所変数が含まれます。インスタンス・メソッドの場合、「this」参照がテーブルに含まれます。また、合成変数が存在する場合もあります。ジェネリックス・シグニチャについては、<cite>Java(tm)仮想マシン仕様</cite>のシグニチャ属性のセクションを参照してください。これはJDWPバージョン1.5以降です。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>refType</i><td>クラス。&nbsp;
+<tr>
+<td colspan=5>
+methodID<td><i>methodID</i><td>メソッド。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>argCnt</i><td>引数で使用されるフレーム内のワード数。8バイトの引数は2ワードを使用し、その他の引数は1ワードを使用する。&nbsp;
+<tr>
+<td colspan=5>
+int<td><i>slots</i><td>変数の数。&nbsp;
+<tr>
+<td colspan=7>
+<i>slots</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+long<td><i>codeIndex</i><td>変数が可視状態にある最初のコード・インデックス(符号なし)。<code>length</code>と一緒に使う。次のときにのみ、変数を取得または設定できる: 現在の<code>codeIndex</code> &lt;=現在のフレーム・コード・インデックス&lt; <code>codeIndex+length</code> &nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+string<td><i>name</i><td>変数の名前。&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+string<td><i>signature</i><td>変数型のJNIシグニチャ。&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+string<td><i>genericSignature</i><td>変数型のジェネリック・シグニチャ、ない場合は空の文字列。
+<tr>
+<td colspan=1>
+<td colspan=4>
+int<td><i>length</i><td><code>codeIndex</code>と一緒に使う符号なしの値。次のときにのみ、変数を取得または設定できる: 現在の<code>codeIndex</code> &lt;=現在のフレーム・コード・インデックス&lt; <code>code index+length</code> &nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+int<td><i>slot</i><td>フレーム内の局所変数のインデックス&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>refTypeが参照型のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>refTypeが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_METHODID">INVALID_METHODID</a></td><td>methodIDがメソッドのIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_ABSENT_INFORMATION">ABSENT_INFORMATION</a></td><td>メソッドの変数情報がない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h4><a name="JDWP_Field">Fieldコマンド・セット</a> (8)</h4>
+
+<h4><a name="JDWP_ObjectReference">ObjectReferenceコマンド・セット</a> (9)</h4>
+
+<h5><a name="JDWP_ObjectReference_ReferenceType">ReferenceTypeコマンド</a> (1)</h5>
+オブジェクトの実行時の型を返します。実行時の型は、クラスまたは配列です。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+objectID<td><i>object</i><td>オブジェクトID&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+byte<td><i>refTypeTag</i><td>あとに続く参照型の<a href="#JDWP_TypeTag">種類</a>。&nbsp;
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>typeID</i><td>実行時の参照型。
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>この参照型はすでにアンロードされ、ガベージ・コレクトされた。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ObjectReference_GetValues">GetValuesコマンド</a> (2)</h5>
+1つ以上のインスタンス・フィールドの値を返します。各フィールドは、オブジェクトの型のメンバーか、そのスーパー・クラス、スーパー・インタフェースまたは実装されたインタフェースのいずれかである必要があります。アクセス制御は実行されません。このため、たとえばprivateフィールドの値を取得できます。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+objectID<td><i>object</i><td>オブジェクトID&nbsp;
+<tr>
+<td colspan=5>
+int<td><i>fields</i><td>取得する値の数&nbsp;
+<tr>
+<td colspan=7>
+<i>fields</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+fieldID<td><i>fieldID</i><td>取得するフィールド。
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>values</i><td>返される値の数。「fields」(取得する値の数)と常に等しい。応答では、フィールドの値はコマンド内の対応するfieldIDと同じ順序で順序付けされる。
+<tr>
+<td colspan=7>
+<i>values</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+value<td><i>value</i><td>フィールドの値&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>この参照型はすでにアンロードされ、ガベージ・コレクトされた。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_FIELDID">INVALID_FIELDID</a></td><td>無効なフィールド。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ObjectReference_SetValues">SetValuesコマンド</a> (3)</h5>
+1つ以上のインスタンス・フィールドの値を設定します。各フィールドは、オブジェクトの型のメンバーか、そのスーパー・クラス、スーパー・インタフェースまたは実装されたインタフェースのいずれかである必要があります。アクセス制御は実行されません。このため、たとえばprivateフィールドの値を設定できます。プリミティブ値の場合は、値の型とフィールドの型が正確に一致している必要があります。オブジェクト値の場合、値の型からフィールドの型への広範な参照変換が存在し、かつフィールドの型がロードされている必要があります。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+objectID<td><i>object</i><td>オブジェクトID&nbsp;
+<tr>
+<td colspan=5>
+int<td><i>values</i><td>設定するフィールドの数。&nbsp;
+<tr>
+<td colspan=7>
+<i>values</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+fieldID<td><i>fieldID</i><td>設定するフィールド。&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+untagged-value<td><i>value</i><td>フィールドに入力する値。&nbsp;
+</table>
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>この参照型はすでにアンロードされ、ガベージ・コレクトされた。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_FIELDID">INVALID_FIELDID</a></td><td>無効なフィールド。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ObjectReference_MonitorInfo">MonitorInfoコマンド</a> (5)</h5>
+オブジェクトのモニター情報を返します。VM内のすべてのスレッドが中断されている必要があります。canGetMonitorInfo権限が必要です(<a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>を参照)。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+objectID<td><i>object</i><td>オブジェクトID&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadID<td><i>owner</i><td>モニターの所有者、またはnull (現在は所有されていない場合)。
+<tr>
+<td colspan=5>
+int<td><i>entryCount</i><td>モニターが入力された回数。
+<tr>
+<td colspan=5>
+int<td><i>waiters</i><td>モニターを待機しているスレッドの数、現在の所有者が存在しない場合は0
+<tr>
+<td colspan=7>
+<i>waiters</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+threadID<td><i>thread</i><td>このモニターを待機しているスレッド。
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>この参照型はすでにアンロードされ、ガベージ・コレクトされた。&nbsp;</td></tr>
+<tr><td><a href="#Error_NOT_IMPLEMENTED">NOT_IMPLEMENTED</a></td><td>この機能はこの仮想マシンに実装されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ObjectReference_InvokeMethod">InvokeMethodコマンド</a> (6)</h5>
+インスタンス・メソッドを呼び出します。メソッドは、オブジェクトの型のメンバーか、そのスーパー・クラス、スーパー・インタフェースまたは実装されたインタフェースのいずれかである必要があります。アクセス制御は実行されません。このため、たとえばprivateメソッドを呼び出すことができます。<p>メソッド呼出しは、指定されたスレッドで実行されます。メソッド呼出しは、指定されたスレッドがイベントにより中断されている場合にだけ実行されます。ターゲットVMがフロント・エンドにより中断されている場合のメソッド呼出しはサポートされていません。 <p>指定されたメソッドは、指定された引数リスト内の引数を使用して呼び出されます。メソッド呼出しは同期的に行われます。そのため、呼び出されたメソッドがターゲットVM内で復帰するまで、応答パケットは送信されません。戻り値(たいていの場合、void値)は応答パケットに含まれます。呼び出されたメソッドが例外をスローする場合は、例外オブジェクトIDが応答パケット内に設定されます。そうでない場合、例外オブジェクトIDはnullになります。 <p>プリミティブ引数の場合、引数値の型と引数の型は厳密に一致している必要があります。オブジェクト引数の場合、引数値の型から引数の型への拡張参照変換が存在し、かつ引数の型がロードされている必要があります。 <p>デフォルトでは、ターゲットVM内のすべてのスレッドがメソッドの呼出し中に再開されます(イベントまたはコマンドによって以前に中断されたスレッドの場合)。これは、いずれかのスレッドが、呼出し先メソッドが必要とするモニターを所有している場合に、デッドロックが発生するのを防ぎます。ブレークポイントまたはほかのイベントが、呼出し中に発生する可能性があります。ただし、この暗黙の再開処理が、ThreadReferenceのResumeコマンドの処理とまったく同じであることに注意してください。このため、スレッドの中断カウントが1より大きいと、呼出し中もスレッドは中断状態のままになります。デフォルトでは、ターゲットVM内のすべてのスレッドは、呼出しの完了時に中断します(呼出し前のスレッドの状態とは無関係)。 <p><code>options</code>フィールドにINVOKE_SINGLE_THREADEDビット・フラグを指定することにより、呼出し中に他のスレッドが再開しないようにできます。ただし、前述のようなデッドロックに対する保護や、デッドロックからの回復ができなくなるため、このオプションはよく注意して利用してください。指定されたスレッドのみが再開されます(前述したすべてのスレッドの場合と同様)。シングル・スレッド呼出しが完了すると、呼出し元スレッドは再び中断されます。シングル・スレッド呼出し中に開始されたすべてのスレッドは、呼出し完了時にも中断されません。 <p>ターゲットVMが呼出し中に切断されても(たとえば、VirtualMachineのDisposeコマンドによる)、メソッド呼出しは続行されます。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+objectID<td><i>object</i><td>オブジェクトID&nbsp;
+<tr>
+<td colspan=5>
+threadID<td><i>thread</i><td>呼出しを行うスレッド。&nbsp;
+<tr>
+<td colspan=5>
+classID<td><i>clazz</i><td>クラスの型。
+<tr>
+<td colspan=5>
+methodID<td><i>methodID</i><td>呼び出すメソッド。&nbsp;
+<tr>
+<td colspan=5>
+int<td><i>arguments</i><td>引数の数。
+<tr>
+<td colspan=7>
+<i>arguments</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+value<td><i>arg</i><td>引数の値。&nbsp;
+<tr>
+<td colspan=5>
+int<td><i>options</i><td>呼び出し<a href="#JDWP_InvokeOptions">オプション</a>&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+value<td><i>returnValue</i><td>戻り値、またはnull (例外がスローされた場合)。
+<tr>
+<td colspan=5>
+tagged-objectID<td><i>exception</i><td>スローされた例外(存在する場合)。
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>この参照型はすでにアンロードされ、ガベージ・コレクトされた。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>clazzが参照型のIDではない。</td></tr>
+<tr><td><a href="#Error_INVALID_METHODID">INVALID_METHODID</a></td><td>methodIDがメソッドのIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_THREAD_NOT_SUSPENDED">THREAD_NOT_SUSPENDED</a></td><td>指定されたスレッドは、イベントによって中断されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ObjectReference_DisableCollection">DisableCollectionコマンド</a> (7)</h5>
+指定されたオブジェクトのガベージ・コレクションが実行されないようにします。デフォルトでは、バックエンド応答内のすべてのオブジェクトは、ターゲットVMの実行中にいつでもガベージ・コレクトが可能です。このコマンドを呼び出すと、オブジェクトがガベージ・コレクトされないことが保証されます。ガベージ・コレクションを再度有効にするには、<a href="#JDWP_ObjectReference_EnableCollection">EnableCollection</a>コマンドを使用します。 <p>ターゲットVMの中断中は、すべてのスレッドが中断しているため、ガベージ・コレクションは行われません。中断中に変数、フィールド、および配列を調べるという一般的な操作の場合は、明示的にガベージ・コレクションを無効にしなくても安全です。 <p>このメソッドを使用すると、ターゲットVM内のガベージ・コレクションのパターンが変わるため、アプリケーションの動作がデバッガ実行時とデバッガ非実行時とで異なる結果になる可能性があります。そのため、このメソッドの使用には慎重を期してください。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+objectID<td><i>object</i><td>オブジェクトID&nbsp;
+</table>
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>この参照型はすでにアンロードされ、ガベージ・コレクトされた。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ObjectReference_EnableCollection">EnableCollectionコマンド</a> (8)</h5>
+このオブジェクトのガベージ・コレクションを許可します。デフォルトでは、JDWPにより返されるすべてのオブジェクトは、ターゲットVMでアクセス不可能になるため、ガベージ・コレクトが可能です。このコマンドの呼出しが必要になるのは、<a href="#JDWP_ObjectReference_DisableCollection">DisableCollection</a>コマンドを使ってガベージ・コレクションを無効にした場合だけです。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+objectID<td><i>object</i><td>オブジェクトID&nbsp;
+</table>
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ObjectReference_IsCollected">IsCollectedコマンド</a> (9)</h5>
+オブジェクトが、ターゲットVM内でガベージ・コレクトされたかどうかを判定します。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+objectID<td><i>object</i><td>オブジェクトID&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+boolean<td><i>isCollected</i><td>オブジェクトがガベージ・コレクトされた場合はtrue、そうでない場合はfalse
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>この参照型はすでにアンロードされ、ガベージ・コレクトされた。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ObjectReference_ReferringObjects">ReferringObjectsコマンド</a> (10)</h5>
+このオブジェクトを直接参照するオブジェクトを返します。ガベージ・コレクションの目的で到達可能なオブジェクトのみが返されます。オブジェクトは、その他の方法でも参照可能です。たとえばスタック・フレーム内でローカル変数を使用する方法、JNIグローバル参照を使用する方法などがあります。このコマンドでは、このような、オブジェクトを参照しないオブジェクトは返されません。 <p>これはJDWPバージョン1.6以降。canGetInstanceInfo権限が必要です(<a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>を参照)。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+objectID<td><i>object</i><td>オブジェクトID&nbsp;
+<tr>
+<td colspan=5>
+int<td><i>maxReferrers</i><td>返される参照オブジェクトの最大数。負でない数値。ゼロの場合、すべての参照オブジェクトが返される。
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>referringObjects</i><td>あとに続くオブジェクトの数。
+<tr>
+<td colspan=7>
+<i>referringObjects</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+tagged-objectID<td><i>instance</i><td>このオブジェクトを参照するオブジェクト。
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>オブジェクトが既知のIDではない。</td></tr>
+<tr><td><a href="#Error_ILLEGAL_ARGUMENT">ILLEGAL_ARGUMENT</a></td><td>maxReferrersがゼロより小さい。</td></tr>
+<tr><td><a href="#Error_NOT_IMPLEMENTED">NOT_IMPLEMENTED</a></td><td>この機能はこの仮想マシンに実装されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h4><a name="JDWP_StringReference">StringReferenceコマンド・セット</a> (10)</h4>
+
+<h5><a name="JDWP_StringReference_Value">Valueコマンド</a> (1)</h5>
+文字列に含まれる文字を返します。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+objectID<td><i>stringObject</i><td>StringオブジェクトのID。
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+string<td><i>stringValue</i><td>文字列の値のUTF-8表現。
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_STRING">INVALID_STRING</a></td><td>文字列が無効。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>この参照型はすでにアンロードされ、ガベージ・コレクトされた。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h4><a name="JDWP_ThreadReference">ThreadReferenceコマンド・セット</a> (11)</h4>
+
+<h5><a name="JDWP_ThreadReference_Name">Nameコマンド</a> (1)</h5>
+スレッド名を返します。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadID<td><i>thread</i><td>スレッドのオブジェクトID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+string<td><i>threadName</i><td>スレッドの名前。
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>threadが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ThreadReference_Suspend">Suspendコマンド</a> (2)</h5>
+スレッドを中断します。 <p>java.lang.Thread.suspend()とは異なり、仮想マシンと個々のスレッド両方の中断がカウントされます。スレッドを再実行する前に、中断された回数と同じ数の再開が行われなければなりません。 <p>コマンドを使って単一のスレッドを中断することには、java.lang.Thread.suspend()の場合と同様の危険があります。中断されたスレッドが実行中の別のスレッドに必要なモニターを保持している場合、ターゲットVMでデッドロックが発生する可能性があります(少なくとも、中断されたスレッドが再開されるまでの間)。 <p>中断されたスレッドは、前述のJDI再開メソッドの1つを使って再開されるまで中断状態を維持することが保証されます。ターゲットVM内のアプリケーションが、中断したスレッドを{@link java.lang.Thread#resume}を使って再開することはできません。 <p>これにより、スレッドのステータスが変化することはない点に注意してください(<a href="#JDWP_ThreadReference_Status">ThreadStatus</a>を参照)。たとえば、このスレッドが実行中だった場合、ほかのスレッドからは依然として実行中に見えます。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadID<td><i>thread</i><td>スレッドのオブジェクトID。&nbsp;
+</table>
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>threadが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ThreadReference_Resume">Resumeコマンド</a> (3)</h5>
+指定されたスレッドの実行を再開します。以前にこのスレッドがフロント・エンドにより中断されたことがない場合には、このコマンドを呼び出しても効果はありません。それ以外の場合、このスレッドについて保留中の中断のカウントが減少します。カウントが0まで減少すると、スレッドは実行を継続します。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadID<td><i>thread</i><td>スレッドのオブジェクトID。&nbsp;
+</table>
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>threadが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ThreadReference_Status">Statusコマンド</a> (4)</h5>
+スレッドの現在のステータスを返します。スレッド・ステータスの応答は、最後に実行されていた時点でのスレッド・ステータスを示します。中断ステータスは、スレッドの中断に関する情報(存在する場合)を提供します。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadID<td><i>thread</i><td>スレッドのオブジェクトID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>threadStatus</i><td>スレッド・ステータス・コードの1つ。<a href="#JDWP_ThreadStatus">JDWP.ThreadStatus</a>&nbsp;を参照&nbsp;
+<tr>
+<td colspan=5>
+int<td><i>suspendStatus</i><td>中断ステータス・コードの1つ。<a href="#JDWP_SuspendStatus">JDWP.SuspendStatus</a>&nbsp;を参照&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>threadが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ThreadReference_ThreadGroup">ThreadGroupコマンド</a> (5)</h5>
+指定されたスレッドを含むスレッド・グループを返します。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadID<td><i>thread</i><td>スレッドのオブジェクトID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadGroupID<td><i>group</i><td>このスレッドのスレッド・グループ。&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>threadが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ThreadReference_Frames">Framesコマンド</a> (6)</h5>
+中断されたスレッドの現在の呼出しスタックを返します。フレーム・シーケンスは、現在実行中のフレームから始まり、次にその呼出し元のフレーム、と続きます。スレッドは中断されていなければならず、返されるframeIDは、スレッドが中断されている間だけ有効です。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadID<td><i>thread</i><td>スレッドのオブジェクトID。&nbsp;
+<tr>
+<td colspan=5>
+int<td><i>startFrame</i><td>取得する最初のフレームのインデックス。
+<tr>
+<td colspan=5>
+int<td><i>length</i><td>取得するフレームのカウント(-1は「残りすべて」の意味)。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>frames</i><td>取得されたフレーム数
+<tr>
+<td colspan=7>
+<i>frames</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+frameID<td><i>frameID</i><td>このフレームのID。&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+location<td><i>location</i><td>このフレームの現在位置
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>threadが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ThreadReference_FrameCount">FrameCountコマンド</a> (7)</h5>
+このスレッド・スタックのフレーム・カウントを返します。スレッドは中断されていなければならず、返されるカウントはスレッドが中断されている間だけ有効です。スレッドが中断されていない場合は、JDWP.Error.errorThreadNotSuspendedを返します。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadID<td><i>thread</i><td>スレッドのオブジェクトID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>frameCount</i><td>このスレッド・スタックのフレーム・カウント。&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>threadが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ThreadReference_OwnedMonitors">OwnedMonitorsコマンド</a> (8)</h5>
+オブジェクトのモニターがこのスレッドから入った、というオブジェクトを返します。スレッドは中断されていなければならず、返される情報はスレッドが中断されている間だけ有効です。canGetOwnedMonitorInfo権限が必要です(<a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>を参照)。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadID<td><i>thread</i><td>スレッドのオブジェクトID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>owned</i><td>所有するモニターの数&nbsp;
+<tr>
+<td colspan=7>
+<i>owned</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+tagged-objectID<td><i>monitor</i><td>所有するモニター&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>threadが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_NOT_IMPLEMENTED">NOT_IMPLEMENTED</a></td><td>この機能はこの仮想マシンに実装されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ThreadReference_CurrentContendedMonitor">CurrentContendedMonitorコマンド</a> (9)</h5>
+このスレッドが待機中のオブジェクトを返します(存在する場合)。スレッドは、モニターに入るのを待機しているか、java.lang.Object.waitメソッドを使って別のスレッドがnotifyメソッドを呼び出すのを待機している可能性があります。スレッドは中断されていなければならず、返される情報はスレッドが中断されている間だけ有効です。canGetCurrentContendedMonitor権限が必要です(<a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>を参照)。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadID<td><i>thread</i><td>スレッドのオブジェクトID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+tagged-objectID<td><i>monitor</i><td>競合するモニター、またはnull (競合するモニターが現在は存在しない場合)。&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>threadが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_NOT_IMPLEMENTED">NOT_IMPLEMENTED</a></td><td>この機能はこの仮想マシンに実装されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ThreadReference_Stop">Stopコマンド</a> (10)</h5>
+非同期の例外をスローしてスレッドを停止します(java.lang.Thread.stopを使用した場合と同様)。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadID<td><i>thread</i><td>スレッドのオブジェクトID。&nbsp;
+<tr>
+<td colspan=5>
+objectID<td><i>throwable</i><td>非同期の例外。このオブジェクトは、java.lang.Throwableのインスタンスまたはサブクラスでなければならない
+</table>
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>スレッドが既知のIDではない、または非同期の例外がガベージ・コレクトされている。</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ThreadReference_Interrupt">Interruptコマンド</a> (11)</h5>
+スレッドに対し割り込みを実行します(java.lang.Thread.interruptを実行した場合と同様)。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadID<td><i>thread</i><td>スレッドのオブジェクトID。&nbsp;
+</table>
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>threadが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ThreadReference_SuspendCount">SuspendCountコマンド</a> (12)</h5>
+このスレッドの中断カウントを取得します。中断カウントは、スレッド・レベルまたはVMレベルの中断コマンドによりスレッドが中断された回数(対応する再開コマンドが実行されたものは除く)です 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadID<td><i>thread</i><td>スレッドのオブジェクトID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>suspendCount</i><td>このスレッドの未処理の中断の回数。&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>threadが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ThreadReference_OwnedMonitorsStackDepthInfo">OwnedMonitorsStackDepthInfoコマンド</a> (13)</h5>
+スレッドが所有するモニター・オブジェクト、およびモニターが取得されたスタック深度を返します。実装がスタック深度を判別できない場合(JNI MonitorEnterにより取得されたモニターなど)は、スタック深度-1が返されます。スレッドは中断されている必要があります。返される情報が有効なのは、スレッドが中断されている場合のみです。canGetMonitorFrameInfo権限が必要です(<a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>を参照)。 <p>これはJDWPバージョン1.6以降。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadID<td><i>thread</i><td>スレッドのオブジェクトID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>owned</i><td>所有するモニターの数&nbsp;
+<tr>
+<td colspan=7>
+<i>owned</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+tagged-objectID<td><i>monitor</i><td>所有するモニター&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+int<td><i>stack_depth</i><td>モニターが取得されたスタック深度の位置
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>threadが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_NOT_IMPLEMENTED">NOT_IMPLEMENTED</a></td><td>この機能はこの仮想マシンに実装されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ThreadReference_ForceEarlyReturn">ForceEarlyReturnコマンド</a> (14)</h5>
+return文に到達する前に強制的にメソッドを復帰させます。  <p>早期復帰するメソッドを「被呼出しメソッド」と呼びます。被呼出しメソッドは、<cite>Java(tm)仮想マシン仕様</cite>のフレームのセクションに定義されているとおり、このコマンドの受信時に、指定されたスレッドの現在のメソッドになります。 <p>指定されるスレッドは、中断されている必要があります。メソッドの復帰は、Javaプログラミング言語のコードの実行がこのスレッド上で再開されたときに行われます。このコマンドが送信されてからスレッドの実行が再開されるまでの間、スタックの状態は未定義です。 <p>被呼出しメソッドでは、これ以上の命令は実行されません。特に、最終的にブロックは実行されません。注: これにより、アプリケーション内で整合性のない状態が発生することがあります。 <p>被呼出しメソッドを呼び出すことによって獲得されたロック(これがsynchronizedメソッドの場合)と、被呼出しメソッド内のsynchronizedブロックに入ることによって獲得されたロックは解除されます。注: これは、JNIロックやjava.util.concurrent.locksロックには適用されません。 <p>通常復帰の場合と同様に、MethodExitなどのイベントが生成されます。 <p>被呼出しメソッドは、非ネイティブのJavaプログラミング言語のメソッドとします。スタック上にフレームが1つだけある状態でスレッドへの強制復帰を行なった場合、スレッドが再開時に終了します。 <p>voidメソッドの場合、値はvoid値である必要があります。プリミティブ値を返すメソッドの場合、値の型と戻り値の型は正確に一致している必要があります。オブジェクト値の場合、値型から戻り値の型への広範な参照変換が存在し、かつ戻り値の型がロードされている必要があります。 <p>これはJDWPバージョン1.6以降。canForceEarlyReturn権限が必要です(<a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>を参照)。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadID<td><i>thread</i><td>スレッドのオブジェクトID。&nbsp;
+<tr>
+<td colspan=5>
+value<td><i>value</i><td>返す値。&nbsp;
+</table>
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>スレッドまたは値が既知のIDではない。</td></tr>
+<tr><td><a href="#Error_THREAD_NOT_SUSPENDED">THREAD_NOT_SUSPENDED</a></td><td>指定されたスレッドは、イベントによって中断されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_THREAD_NOT_ALIVE">THREAD_NOT_ALIVE</a></td><td>スレッドが開始されていないか、すでに終了している。</td></tr>
+<tr><td><a href="#Error_OPAQUE_FRAME">OPAQUE_FRAME</a></td><td>ネイティブ・メソッドに対応するフレームからの早期復帰が試みられた。または、実装がこのフレーム上でこの機能を提供できない。</td></tr>
+<tr><td><a href="#Error_NO_MORE_FRAMES">NO_MORE_FRAMES</a></td><td>呼出しスタックにJavaまたはJNIフレームはもうない。&nbsp;</td></tr>
+<tr><td><a href="#Error_NOT_IMPLEMENTED">NOT_IMPLEMENTED</a></td><td>この機能はこの仮想マシンに実装されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_TYPE_MISMATCH">TYPE_MISMATCH</a></td><td>値の型がメソッドの戻り値に適合しない。</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h4><a name="JDWP_ThreadGroupReference">ThreadGroupReferenceコマンド・セット</a> (12)</h4>
+
+<h5><a name="JDWP_ThreadGroupReference_Name">Nameコマンド</a> (1)</h5>
+スレッド・グループの名前を返します。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadGroupID<td><i>group</i><td>スレッド・グループのオブジェクトID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+string<td><i>groupName</i><td>スレッド・グループの名前。
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD_GROUP">INVALID_THREAD_GROUP</a></td><td>スレッド・グループが無効。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>groupが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ThreadGroupReference_Parent">Parentコマンド</a> (2)</h5>
+指定されたスレッド・グループを含むスレッド・グループ(存在する場合)を返します。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadGroupID<td><i>group</i><td>スレッド・グループのオブジェクトID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadGroupID<td><i>parentGroup</i><td>親スレッド・グループ・オブジェクト、またはnull (指定されたスレッド・グループがトップ・レベルのスレッド・グループの場合)
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD_GROUP">INVALID_THREAD_GROUP</a></td><td>スレッド・グループが無効。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>groupが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ThreadGroupReference_Children">Childrenコマンド</a> (3)</h5>
+このスレッド・グループに直接含まれるライブ・スレッドおよびアクティブなスレッド・グループを返します。子スレッド・グループ内のスレッドおよびスレッド・グループは、返されません。スレッドは開始されると、停止されるまで、活動状態にあります。アクティブなThreadGroupについては、<a href="../../../api/java/lang/ThreadGroup.html">java.lang.ThreadGroup</a>を参照してください。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadGroupID<td><i>group</i><td>スレッド・グループのオブジェクトID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>childThreads</i><td>子スレッドの数。&nbsp;
+<tr>
+<td colspan=7>
+<i>childThreads</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+threadID<td><i>childThread</i><td>直接の子スレッドID。
+<tr>
+<td colspan=5>
+int<td><i>childGroups</i><td>子スレッド・グループの数。&nbsp;
+<tr>
+<td colspan=7>
+<i>childGroups</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+threadGroupID<td><i>childGroup</i><td>直接の子スレッド・グループのID。
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD_GROUP">INVALID_THREAD_GROUP</a></td><td>スレッド・グループが無効。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>groupが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h4><a name="JDWP_ArrayReference">ArrayReferenceコマンド・セット</a> (13)</h4>
+
+<h5><a name="JDWP_ArrayReference_Length">Lengthコマンド</a> (1)</h5>
+指定された配列内のコンポーネントの数を返します。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+arrayID<td><i>arrayObject</i><td>配列のオブジェクトID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>arrayLength</i><td>配列の長さ。&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>arrayObjectが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_ARRAY">INVALID_ARRAY</a></td><td>配列が無効。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ArrayReference_GetValues">GetValuesコマンド</a> (2)</h5>
+配列コンポーネントの範囲を返します。指定された範囲は、配列の境界内にある必要があります。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+arrayID<td><i>arrayObject</i><td>配列のオブジェクトID。&nbsp;
+<tr>
+<td colspan=5>
+int<td><i>firstIndex</i><td>取得する最初のインデックス。
+<tr>
+<td colspan=5>
+int<td><i>length</i><td>取得するコンポーネントの数。
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+arrayregion<td><i>values</i><td>取得した値。値がオブジェクトの場合は、タグ付けされた値になる。それ以外の場合は、タグ付けされていない値になる
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_LENGTH">INVALID_LENGTH</a></td><td>インデックスがこの配列の最後を越えている場合。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>arrayObjectが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_ARRAY">INVALID_ARRAY</a></td><td>配列が無効。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_ArrayReference_SetValues">SetValuesコマンド</a> (3)</h5>
+配列コンポーネントの範囲を設定します。指定された範囲は、配列の境界内にある必要があります。プリミティブ値の場合、各値の型と配列コンポーネントの型は正確に一致している必要があります。オブジェクト値の場合、値型から配列コンポーネント型への広範な参照変換が存在し、かつ配列コンポーネント型がロードされている必要があります。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+arrayID<td><i>arrayObject</i><td>配列のオブジェクトID。&nbsp;
+<tr>
+<td colspan=5>
+int<td><i>firstIndex</i><td>設定する最初のインデックス。
+<tr>
+<td colspan=5>
+int<td><i>values</i><td>設定する値の数。&nbsp;
+<tr>
+<td colspan=7>
+<i>values</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+untagged-value<td><i>value</i><td>設定する値。&nbsp;
+</table>
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_LENGTH">INVALID_LENGTH</a></td><td>インデックスがこの配列の最後を越えている場合。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>arrayObjectが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_ARRAY">INVALID_ARRAY</a></td><td>配列が無効。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h4><a name="JDWP_ClassLoaderReference">ClassLoaderReferenceコマンド・セット</a> (14)</h4>
+
+<h5><a name="JDWP_ClassLoaderReference_VisibleClasses">VisibleClassesコマンド</a> (1)</h5>
+このクラス・ローダーに対してロードするよう要求されたすべてのクラスのリストを返します。このクラス・ローダーは、返されたリスト内の各クラスの<i>起動</i>クラス・ローダーと見なされます。このリストには、このローダーにより定義された各参照型、およびこのクラス・ローダーにより別のクラス・ローダーにロードが委譲されたすべての型が含まれます。 <p>可視クラス・リストには、型の名前空間に関して、便利な特性があります。特定の型の名前は、リスト中に最高1回しか出現しません。このクラス・ローダーにより定義されたクラスの型名を使って宣言されたフィールドまたは変数はそれぞれ、その単一の型に解決される必要があります。 <p>返されるリストの順番は保証されていません。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+classLoaderID<td><i>classLoaderObject</i><td>クラス・ローダーのオブジェクトID。
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>classes</i><td>可視クラスの数。&nbsp;
+<tr>
+<td colspan=7>
+<i>classes</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+byte<td><i>refTypeTag</i><td>あとに続く参照型の<a href="#JDWP_TypeTag">種類</a>。&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+referenceTypeID<td><i>typeID</i><td>このクラス・ローダーに対する可視クラス。
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>この参照型はすでにアンロードされ、ガベージ・コレクトされた。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_CLASS_LOADER">INVALID_CLASS_LOADER</a></td><td>クラス・ローダーが無効。</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h4><a name="JDWP_EventRequest">EventRequestコマンド・セット</a> (15)</h4>
+
+<h5><a name="JDWP_EventRequest_Set">Setコマンド</a> (1)</h5>
+イベント要求を設定します。この要求で指定されたイベントが発生すると、ターゲットVMから<a href="#JDWP_Event">イベント</a>が送信されます。要求されていないイベントが発生した場合、イベントはターゲットVMから送信されません。これに対する2つの例外は、VM開始イベントとVM終了イベントです。これらは自動的に生成されるイベントです。詳細は、<a href="#JDWP_Event_Composite">Compositeコマンド</a>を参照してください。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+byte<td><i>eventKind</i><td>要求するイベントの種類。要求できるイベントの完全なリストについては、<a href="#JDWP_EventKind">JDWP.EventKind</a>を参照。要求するために権限が必要となるイベントもある。
+<tr>
+<td colspan=5>
+byte<td><i>suspendPolicy</i><td>このイベントの発生時にどのスレッドを中断するか。イベントおよびコマンド応答の順序は、スレッドが中断および再開される順序を正確に反映するので要注意。たとえば、VMを中断するイベントの発生前に、<a href="#JDWP_VirtualMachine_Resume">VM全体の再開</a>が処理される場合、その再開コマンドへの応答は、中断イベントより前にトランスポートに書き込まれる。
+<tr>
+<td colspan=5>
+int<td><i>modifiers</i><td>生成されるイベント数の制御に使用される制約。修飾子は、イベントがイベント・キューに配置される前に満たす必要のある追加の条件を指定する。このコレクションに指定された順序で各修飾子をイベントに適用することにより、イベントはフィルタにかけられる。すべての修飾子の条件を満たすイベントのみがレポートされる。0の値は、要求に修飾子が存在しないことを意味する。<p>ターゲットVMからデバッガVMに送信されるイベント・トラフィックの量を減らすことにより、フィルタ処理でデバッガのパフォーマンスを劇的に向上させることが可能。
+<tr>
+<td colspan=7>
+<i>modifiers</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+byte<td><i>modKind</i><td>修飾子の種類
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case Count - <i>modKind</i>が1の場合:
+<td>要求されたイベントが報告される回数を最大で、指定された回数発生したあと1回に制限する。このフィルタが最初に<code>count - 1</code>回に達する時点までは、イベントはレポートされない。1回かぎりのイベントを要求するには、このメソッドをカウント1で呼び出せばよい。 <p>カウントが0に達したあとは、この要求内の続くフィルタが適用される。それらのフィルタがいずれもイベントを抑制しない場合、そのイベントはレポートされる。そうでない場合、イベントはレポートされない。どちらの場合にも、この要求に対して、それ以降のイベントがレポートされることはない。この修飾子は、どんな種類のイベントにも使用できる。
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>count</i><td>イベントを発生させる前のカウント。1回かぎりのイベントで使用する。
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case Conditional - <i>modKind</i>が2の場合:
+<td>式による条件
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>exprID</i><td>将来の使用のために予約済み
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case ThreadOnly - <i>modKind</i>が3の場合:
+<td>レポートされるイベントを、指定されたスレッド内のものに制限する。この修飾子は、クラスのアンロードを除く、すべての種類のイベントに使用できる。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+threadID<td><i>thread</i><td>要求されたスレッド
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case ClassOnly - <i>modKind</i>が4の場合:
+<td>クラス準備イベントの場合に、この要求で生成されたイベントを制限して、指定された参照型および任意のサブタイプの準備となるようにする。モニター待機およびモニター待機終了イベントの場合、この要求で生成されるイベントを、指定された参照型またはその任意のサブタイプであるモニター・オブジェクトを保持するイベントに限定する。それ以外のイベントの場合、この要求で生成されるイベントを、指定された参照型またはその任意のサブタイプ内で発生したものに限定する。イベントは、指定された参照型に安全にキャストできる参照型の中であれば、任意の位置で生成される。この修飾子は、クラスのアンロード、スレッド開始、およびスレッド終了を除く、すべての種類のイベントで使用できる。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+referenceTypeID<td><i>clazz</i><td>要求されたクラス
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case ClassMatch - <i>modKind</i>が5の場合:
+<td>レポートされるイベントを、指定された限定的な正規表現に名前が一致するクラスのイベントに限定する。クラス準備イベントの場合、準備されたクラス名で判定される。クラスのアンロード・イベントの場合、アンロードされたクラス名で判定される。モニター待機および待機終了イベントの場合、モニター・オブジェクトのクラス名が一致する。それ以外のイベントの場合、イベントが発生した位置のクラス名で判定される。この修飾子は、スレッド開始およびスレッド終了を除く、すべての種類のイベントで使用できる。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+string<td><i>classPattern</i><td>要求されたクラス・パターン。マッチ条件は、指定されたクラス・パターンに正確に一致する場合と、パターンの最初または最後が「*」である場合(たとえば、「*.Foo」、「java.*」)に限定される。&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case ClassExclude - <i>modKind</i>が6の場合:
+<td>レポートされるイベントを、指定された限定的な正規表現に名前が一致しないクラスのイベントに限定する。クラス準備イベントの場合、準備されたクラス名で判定される。クラスのアンロード・イベントの場合、アンロードされたクラス名で判定される。モニター待機および待機終了イベントの場合、モニター・オブジェクトのクラス名が一致する。それ以外のイベントの場合、イベントが発生した位置のクラス名で判定される。この修飾子は、スレッド開始およびスレッド終了を除く、すべての種類のイベントで使用できる。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+string<td><i>classPattern</i><td>許可されないクラス・パターン。マッチ条件は、指定されたクラス・パターンに正確に一致する場合と、パターンの最初または最後が「*」である場合(たとえば、「*.Foo」、「java.*」)に限定される。&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case LocationOnly - <i>modKind</i>が7の場合:
+<td>レポートされるイベントを、指定された場所で発生するイベントに限定する。この修飾子は、ブレークポイント、フィールド・アクセス、フィールド変更、ステップ、および例外の各イベントで使用できる。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+location<td><i>loc</i><td>要求される場所
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case ExceptionOnly - <i>modKind</i>が8の場合:
+<td>レポートされる例外を、クラスと、それがキャッチされるかどうかを基準にして限定する。この修飾子は、例外イベントでのみ使用できる。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+referenceTypeID<td><i>exceptionOrNull</i><td>レポートされる例外。null (0)は、すべての種類の例外をレポートするという意味。null以外の場合は、レポートされる例外イベントを、指定された型またはその任意のサブタイプに限定する。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+boolean<td><i>caught</i><td>キャッチされた例外をレポートする
+<tr>
+<td colspan=2>
+<td colspan=3>
+boolean<td><i>uncaught</i><td>キャッチされなかった例外をレポートする。例外がキャッチされたかどうかは、例外がスローされた時点でいつも判断できるとはかぎらない。詳細は、<a href="#JDWP_Event_Composite">複合イベント</a>の例外イベントのキャッチ位置に関する説明を参照。&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case FieldOnly - <i>modKind</i>が9の場合:
+<td>レポートされるイベントを、指定されたフィールドで発生するイベントに限定する。この修飾子は、フィールド・アクセスおよびフィールド変更イベントでのみ使用できる。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+referenceTypeID<td><i>declaring</i><td>フィールドが宣言されている型。
+<tr>
+<td colspan=2>
+<td colspan=3>
+fieldID<td><i>fieldID</i><td>要求されたフィールド
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case Step - <i>modKind</i>が10の場合:
+<td>レポートされるステップ・イベントを、深さおよびサイズの制限を満たすものに限定する。この修飾子は、ステップ・イベントでのみ使用できる。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+threadID<td><i>thread</i><td>ステップ実行を行うスレッド
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>size</i><td>各ステップのサイズ。<a href="#JDWP_StepSize">JDWP.StepSize</a>&nbsp;を参照&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>depth</i><td>相対呼出しスタックの制限。<a href="#JDWP_StepDepth">JDWP.StepDepth</a>&nbsp;を参照&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case InstanceOnly - <i>modKind</i>が11の場合:
+<td>レポートされるイベントを、指定されたオブジェクトがアクティブな「this」オブジェクトであるイベントに限定する。staticメソッドの場合のマッチ条件は、nullオブジェクト。この修飾子は、クラス準備、クラスのアンロード、スレッド開始、およびスレッド終了を除く、すべての種類のイベントで使用できる。この修飾子は、JDWPバージョン1.4で導入された。
+<tr>
+<td colspan=2>
+<td colspan=3>
+objectID<td><i>instance</i><td>要求された「this」オブジェクト
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case SourceNameMatch - <i>modKind</i>が12の場合:
+<td>レポートされるクラス準備イベントを、指定された限定的な正規表現に一致するソース名を持つ参照型に限定する。ソース名は、参照型の<a href="#JDWP_ReferenceType_SourceDebugExtension">SourceDebugExtension</a>により決定される。この修飾子は、クラス準備イベントでのみ使用できる。これはJDWPバージョン1.6以降。canUseSourceNameFilters権限が必要(<a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>を参照)。
+<tr>
+<td colspan=2>
+<td colspan=3>
+string<td><i>sourceNamePattern</i><td>要求されたソース名パターン。マッチ条件は、指定されたパターンに正確に一致する場合と、パターンの最初または最後が「*」である場合(たとえば、「*.Foo」、「java.*」)に限定される。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>requestID</i><td>作成された要求のID
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_CLASS">INVALID_CLASS</a></td><td>無効なクラス。</td></tr>
+<tr><td><a href="#Error_INVALID_STRING">INVALID_STRING</a></td><td>文字列が無効。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>この参照型はすでにアンロードされ、ガベージ・コレクトされた。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_COUNT">INVALID_COUNT</a></td><td>カウントが無効。</td></tr>
+<tr><td><a href="#Error_INVALID_FIELDID">INVALID_FIELDID</a></td><td>無効なフィールド。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_METHODID">INVALID_METHODID</a></td><td>無効なメソッド。</td></tr>
+<tr><td><a href="#Error_INVALID_LOCATION">INVALID_LOCATION</a></td><td>無効な位置。</td></tr>
+<tr><td><a href="#Error_INVALID_EVENT_TYPE">INVALID_EVENT_TYPE</a></td><td>指定されたイベント・タイプのIDが認識されない。&nbsp;</td></tr>
+<tr><td><a href="#Error_NOT_IMPLEMENTED">NOT_IMPLEMENTED</a></td><td>この機能はこの仮想マシンに実装されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_EventRequest_Clear">Clearコマンド</a> (2)</h5>
+イベント要求を解除します。解除できるイベントの全リストは、<a href="#JDWP_EventKind">JDWP.EventKind</a>を参照してください。指定したイベントの種類およびrequestIDに一致するイベント要求だけが解除されます。一致するイベント要求が存在しない場合、コマンドは無操作で、エラーになりません。自動的に生成されるイベントには、対応するイベント要求がないため、このコマンドで解除されない場合があります。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+byte<td><i>eventKind</i><td>解除するイベント・タイプ
+<tr>
+<td colspan=5>
+int<td><i>requestID</i><td>解除する要求のID
+</table>
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_EVENT_TYPE">INVALID_EVENT_TYPE</a></td><td>指定されたイベント・タイプのIDが認識されない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_EventRequest_ClearAllBreakpoints">ClearAllBreakpointsコマンド</a> (3)</h5>
+設定されているすべてのブレークポイントを削除します。設定されているブレークポイントが存在しない場合は無操作です。
+<dl>
+<dt>出力データ
+<dd>(なし)
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h4><a name="JDWP_StackFrame">StackFrameコマンド・セット</a> (16)</h4>
+
+<h5><a name="JDWP_StackFrame_GetValues">GetValuesコマンド</a> (1)</h5>
+指定されたフレーム内の1つまたは複数の局所変数の値を返します。各変数は、フレームのコード・インデックスで可視である必要があります。局所変数の情報が利用できなくても、フロント・エンドが正しい局所変数インデックスを判別できる場合は、値の取得が可能です。一般に、局所変数テーブルの情報にアクセスしなくても、メソッド・シグニチャからメソッド引数について変数のインデックスを判別できます。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadID<td><i>thread</i><td>フレームのスレッド。&nbsp;
+<tr>
+<td colspan=5>
+frameID<td><i>frame</i><td>フレームID。&nbsp;
+<tr>
+<td colspan=5>
+int<td><i>slots</i><td>取得する値の数。&nbsp;
+<tr>
+<td colspan=7>
+<i>slots</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+int<td><i>slot</i><td>フレーム内の局所変数のインデックス。&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=4>
+byte<td><i>sigbyte</i><td>変数の型を識別する<a href="#JDWP_Tag">タグ</a>
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+int<td><i>values</i><td>取得された値の数。slotsの取得する値の数と常に等しい。
+<tr>
+<td colspan=7>
+<i>values</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+value<td><i>slotValue</i><td>局所変数の値。&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>この参照型はすでにアンロードされ、ガベージ・コレクトされた。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_FRAMEID">INVALID_FRAMEID</a></td><td>無効なjframeID。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_SLOT">INVALID_SLOT</a></td><td>無効なスロット。</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_StackFrame_SetValues">SetValuesコマンド</a> (2)</h5>
+1つまたは複数の局所変数の値を設定します。各変数は、現在のフレーム・コード・インデックスで可視である必要があります。プリミティブ値の場合、値の型と変数の型は正確に一致している必要があります。オブジェクト値の場合、値の型から変数の型への広範な参照変換が存在し、かつ変数の型がロードされている必要があります。 <p>局所変数の情報を利用できなくても、フロント・エンドが正しい局所変数インデックスを判別できる場合は、値の設定が可能です。(一般に、局所変数テーブルの情報にアクセスしなくても、メソッド・シグネチャからメソッド引数についてこのインデックスを判別できます。) 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadID<td><i>thread</i><td>フレームのスレッド。&nbsp;
+<tr>
+<td colspan=5>
+frameID<td><i>frame</i><td>フレームID。&nbsp;
+<tr>
+<td colspan=5>
+int<td><i>slotValues</i><td>設定する値の数。&nbsp;
+<tr>
+<td colspan=7>
+<i>slotValues</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+int<td><i>slot</i><td>スロットID。
+<tr>
+<td colspan=1>
+<td colspan=4>
+value<td><i>slotValue</i><td>設定する値。&nbsp;
+</table>
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>この参照型はすでにアンロードされ、ガベージ・コレクトされた。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_FRAMEID">INVALID_FRAMEID</a></td><td>無効なjframeID。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_StackFrame_ThisObject">ThisObjectコマンド</a> (3)</h5>
+このフレームについての「this」参照の値を返します。フレームのメソッドがstaticまたはネイティブの場合、応答にはnullオブジェクト参照が含まれます。 
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadID<td><i>thread</i><td>フレームのスレッド。&nbsp;
+<tr>
+<td colspan=5>
+frameID<td><i>frame</i><td>フレームID。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+tagged-objectID<td><i>objectThis</i><td>このフレームについての「this」オブジェクト。&nbsp;
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>この参照型はすでにアンロードされ、ガベージ・コレクトされた。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_FRAMEID">INVALID_FRAMEID</a></td><td>無効なjframeID。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h5><a name="JDWP_StackFrame_PopFrames">PopFramesコマンド</a> (4)</h5>
+スレッド・スタックの一番上のスタック・フレームを「frame」までポップします。このコマンドを実行するには、スレッドが中断されている必要があります。一番上のスタック・フレームは破棄され、「frame」の前のスタック・フレームが現在のフレームになります。オペランド・スタックは回復します。引数が再度追加され、呼出しが<code>invokestatic</code>ではなかった場合は、<code>objectref</code>も再度追加されます。Java仮想マシン・プログラム・カウンタは、呼出し命令の操作コードに戻されます。<p>これはJDWPバージョン1.4以降です。canPopFrames権限が必要です(<a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>を参照)。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+threadID<td><i>thread</i><td>スレッドのオブジェクトID。&nbsp;
+<tr>
+<td colspan=5>
+frameID<td><i>frame</i><td>フレームID。&nbsp;
+</table>
+<dt>応答データ
+<dd>(なし)
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_THREAD">INVALID_THREAD</a></td><td>渡されたスレッドがnull、有効でないスレッド、または終了している。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>threadが既知のIDではない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_FRAMEID">INVALID_FRAMEID</a></td><td>無効なjframeID。&nbsp;</td></tr>
+<tr><td><a href="#Error_THREAD_NOT_SUSPENDED">THREAD_NOT_SUSPENDED</a></td><td>指定されたスレッドは、イベントによって中断されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_NO_MORE_FRAMES">NO_MORE_FRAMES</a></td><td>呼出しスタックにJavaまたはJNIフレームはもうない。&nbsp;</td></tr>
+<tr><td><a href="#Error_INVALID_FRAMEID">INVALID_FRAMEID</a></td><td>無効なjframeID。&nbsp;</td></tr>
+<tr><td><a href="#Error_NOT_IMPLEMENTED">NOT_IMPLEMENTED</a></td><td>この機能はこの仮想マシンに実装されていない。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h4><a name="JDWP_ClassObjectReference">ClassObjectReferenceコマンド・セット</a> (17)</h4>
+
+<h5><a name="JDWP_ClassObjectReference_ReflectedType">ReflectedTypeコマンド</a> (1)</h5>
+このクラス・オブジェクトによりリフレクトされた参照型を返します。
+<dl>
+<dt>出力データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+classObjectID<td><i>classObject</i><td>クラス・オブジェクト。&nbsp;
+</table>
+<dt>応答データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+byte<td><i>refTypeTag</i><td>あとに続く参照型の<a href="#JDWP_TypeTag">種類</a>。&nbsp;
+<tr>
+<td colspan=5>
+referenceTypeID<td><i>typeID</i><td>リフレクトされた参照型
+</table>
+<dt>エラー・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%">
+<tr><td><a href="#Error_INVALID_OBJECT">INVALID_OBJECT</a></td><td>この参照型はすでにアンロードされ、ガベージ・コレクトされた。&nbsp;</td></tr>
+<tr><td><a href="#Error_VM_DEAD">VM_DEAD</a></td><td>仮想マシンが動作していない。&nbsp;</td></tr>
+</table>
+</dl>
+<h4><a name="JDWP_Event">Eventコマンド・セット</a> (64)</h4>
+
+<h5><a name="JDWP_Event_Composite">Compositeコマンド</a> (100)</h5>
+ターゲットVMでは、特定の時点でいくつかのイベントが発生します。たとえば、特定の場所に対して複数のブレークポイント要求が存在するか、ブレークポイント要求と同じ場所に対してステップ実行を行う場合を考えてみましょう。これらのイベントは、複合イベントとしてまとめて配信されます。一貫性を保つため、レポートするイベントが1つだけであっても、イベントの配信には常に複合イベントが使用されます。 <P>複合イベントとしてグループ化されるイベントには、次の方法で制限が課されます。 <P><UL><LI>同一スレッドに対するほかのスレッド開始イベントとのみ一緒にされる:    <UL>    <LI>スレッド開始イベント    </UL><LI>同一スレッドに対するほかのスレッド終了イベントとのみ一緒にされる:    <UL>    <LI>スレッド終了イベント    </UL><LI>同一クラスに対するほかのクラス準備イベントとのみ一緒にされる:    <UL>    <LI>クラス準備イベント    </UL><LI>同一クラスに対するほかのクラス・アンロード・イベントとのみ一緒にされる:    <UL>    <LI>クラス・アンロード・イベント    </UL><LI>同一フィールド・アクセスに対するアクセス・ウォッチポイント・イベントとのみ一緒にされる:    <UL>    <LI>アクセス・ウォッチポイント・イベント    </UL><LI>同一フィールド変更に対するほかの変更ウォッチポイント・イベントとのみ一緒にされる:    <UL>    <LI>変更ウォッチポイント・イベント    </UL><LI>同一モニター・オブジェクトのMonitor contended enterイベントとのみ一緒にされる:     <UL>    <LI>Monitor Contended Enterイベント    </UL><LI>同一モニター・オブジェクトのMonitor contended enteredイベントとのみ一緒にされる:     <UL>    <LI>Monitor Contended Enteredイベント    </UL><LI>同一モニター・オブジェクトのモニター待機イベントとのみ一緒にされる:     <UL>    <LI>モニター待機イベント    </UL><LI>同一モニター・オブジェクトのモニター待機終了イベントとのみ一緒にされる:     <UL>    <LI>モニター待機終了イベント    </UL><LI>同一の例外発生に対するほかの例外イベントとのみ一緒にされる:    <UL>    <LI>例外イベント    </UL><LI>同一位置および同一スレッド内の、このグループのほかのメンバーとのみ一緒にされる:     <UL>    <LI>ブレークポイント・イベント    <LI>ステップ・イベント    <LI>メソッド・エントリ・イベント    <LI>メソッド終了イベント    </UL></UL><P>VM開始イベントとVM終了イベントは自動的に生成されるイベントです。つまり、<a href="#JDWP_EventRequest_Set">EventRequest.Set</a>コマンドを使用してこれらのイベントを要求する必要はありません。VM開始イベントは、VMの初期化の完了を示します。VM終了イベントは、VMの終了を示します。自動的に生成されるイベントが発生したときにデバッガが接続されている場合、そのイベントはターゲットVMから送信されます。自動的に生成されるイベントは、EventRequest.Setコマンドを使用して要求することもできます。したがって、イベントの発生時に同じイベントの種類の複数のイベントがターゲットVMから送信されます。自動的に生成されるイベントは、イベント・データのrequestIDフィールドが0に設定された状態で送信されます。イベント・データのsuspendPolicyフィールドの値は、イベントによって異なります。自動的に生成されるVM開始イベントの場合、suspendPolicyの値は定義されないため、実装固有または構成固有になります。たとえば、Sunの実装では、suspendPolicyは起動時にJDWPエージェントのオプションとして指定されます。自動的に生成されるVM終了イベントのsuspendPolicyはNONEに設定されます。
+<dl>
+<dt>イベント・データ
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="4%"><th width="15%"><th width="65%">
+
+<tr>
+<td colspan=5>
+byte<td><i>suspendPolicy</i><td>この複合イベントによりどのスレッドが中断されるか
+<tr>
+<td colspan=5>
+int<td><i>events</i><td>セット内のイベント。
+<tr>
+<td colspan=7>
+<i>events</i>回の繰り返し:
+<tr>
+<td colspan=1>
+<td colspan=4>
+byte<td><i>eventKind</i><td>イベントの種類のセレクタ
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case VMStart - <i>eventKind</i>がJDWP.EventKind.VM_STARTの場合:
+<td>ターゲットVMの初期化の通知。このイベントは、メイン・スレッドの開始前、かつアプリケーション・コードの実行前に受け取られる。このイベントが発生する前に、大量のシステム・コードが実行され、多数のシステム・クラスがロードされる。このイベントは、明示的に要求されていなくても、常にターゲットVMにより生成される。
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>requestID</i><td>イベントを生成させた要求(イベントが自動的に生成された場合は0)。
+<tr>
+<td colspan=2>
+<td colspan=3>
+threadID<td><i>thread</i><td>初期スレッド
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case SingleStep - <i>eventKind</i>がJDWP.EventKind.SINGLE_STEPの場合:
+<td>ターゲットVMのステップ完了の通知。その位置のコードが実行される前に、ステップ・イベントが生成される。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>requestID</i><td>イベントを生成させたリクエスト&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+threadID<td><i>thread</i><td>ステップ実行の行われたスレッド
+<tr>
+<td colspan=2>
+<td colspan=3>
+location<td><i>location</i><td>ステップ実行の行われた位置
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case Breakpoint - <i>eventKind</i>がJDWP.EventKind.BREAKPOINTの場合:
+<td>ターゲットVMのブレークポイントの通知。その位置のコードが実行される前に、ブレークポイント・イベントが生成される。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>requestID</i><td>イベントを生成させたリクエスト&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+threadID<td><i>thread</i><td>ブレークポイントをヒットしたスレッド
+<tr>
+<td colspan=2>
+<td colspan=3>
+location<td><i>location</i><td>ヒットした位置
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case MethodEntry - <i>eventKind</i>がJDWP.EventKind.METHOD_ENTRYの場合:
+<td>ターゲットVMのメソッド呼出しの通知。このイベントは、呼び出されたメソッド内のコードが実行される前に生成される。メソッド・エントリ・イベントは、ネイティブおよび非ネイティブのメソッドの両方で生成される。 <P>いくつかのVMでは、メソッドがスレッドの初期化の一部として呼び出された場合、特定のスレッドのスレッド開始イベントが発生する前に、そのスレッドについてのメソッド・エントリ・イベントが発生することがある。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>requestID</i><td>イベントを生成させたリクエスト&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+threadID<td><i>thread</i><td>メソッドに入ったスレッド
+<tr>
+<td colspan=2>
+<td colspan=3>
+location<td><i>location</i><td>メソッド内の初期実行可能ファイルの位置。
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case MethodExit - <i>eventKind</i>がJDWP.EventKind.METHOD_EXITの場合:
+<td>ターゲットVMのメソッド復帰の通知。このイベントはメソッド内のすべてのコードが実行されたあとで生成されますが、このイベントの位置はメソッド内で最後に実行された位置です。MethodExitEventは、ネイティブおよび非ネイティブ・メソッドの両方で生成されます。メソッドが例外をスローして終了した場合、MethodExitEventは生成されません。
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>requestID</i><td>イベントを生成させたリクエスト&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+threadID<td><i>thread</i><td>メソッドから出たスレッド&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+location<td><i>location</i><td>終了の位置&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case MethodExitWithReturnValue - <i>eventKind</i>がJDWP.EventKind.METHOD_EXIT_WITH_RETURN_VALUEの場合:
+<td>ターゲットVMのメソッド復帰の通知。このイベントはメソッド内のすべてのコードが実行されたあとで生成されますが、このイベントの位置はメソッド内で最後に実行された位置です。MethodExitEventは、ネイティブおよび非ネイティブ・メソッドの両方で生成されます。メソッドが例外をスローして終了した場合、MethodExitEventは生成されません。 <p>これはJDWPバージョン1.6以降。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>requestID</i><td>イベントを生成させたリクエスト&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+threadID<td><i>thread</i><td>メソッドから出たスレッド&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+location<td><i>location</i><td>終了の位置&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+value<td><i>value</i><td>メソッドから返される値
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case MonitorContendedEnter - <i>eventKind</i>がJDWP.EventKind.MONITOR_CONTENDED_ENTERの場合:
+<td>ターゲットVM内のスレッドが別のスレッドによってすでに獲得されているモニターに入ろうとする際の通知。canRequestMonitorEvents権限が必要(<a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>を参照)。 <p>これはJDWPバージョン1.6以降。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>requestID</i><td>イベントを生成させたリクエスト&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+threadID<td><i>thread</i><td>モニターに入ろうとしているスレッド
+<tr>
+<td colspan=2>
+<td colspan=3>
+tagged-objectID<td><i>object</i><td>モニター・オブジェクト参照&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+location<td><i>location</i><td>競合するモニター開始の位置&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case MonitorContendedEntered - <i>eventKind</i>がJDWP.EventKind.MONITOR_CONTENDED_ENTEREDの場合:
+<td>ターゲットVM内のスレッドが、別のスレッドによって獲得されたモニターが解放されるのを待ってモニターに入るときに送信される通知。canRequestMonitorEvents権限が必要(<a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>を参照)。 <p>これはJDWPバージョン1.6以降。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>requestID</i><td>イベントを生成させたリクエスト&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+threadID<td><i>thread</i><td>モニターに入ったスレッド
+<tr>
+<td colspan=2>
+<td colspan=3>
+tagged-objectID<td><i>object</i><td>モニター・オブジェクト参照&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+location<td><i>location</i><td>競合するモニター開始の位置&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case MonitorWait - <i>eventKind</i>がJDWP.EventKind.MONITOR_WAITの場合:
+<td>モニター・オブジェクト上で待機しようとしているスレッドの通知。canRequestMonitorEvents権限が必要(<a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>を参照)。 <p>これはJDWPバージョン1.6以降。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>requestID</i><td>イベントを生成させたリクエスト&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+threadID<td><i>thread</i><td>待機しようとしているスレッド
+<tr>
+<td colspan=2>
+<td colspan=3>
+tagged-objectID<td><i>object</i><td>モニター・オブジェクト参照&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+location<td><i>location</i><td>待機が発生する位置
+<tr>
+<td colspan=2>
+<td colspan=3>
+long<td><i>timeout</i><td>スレッド待機時間(単位はミリ秒)
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case MonitorWaited - <i>eventKind</i>がJDWP.EventKind.MONITOR_WAITEDの場合:
+<td>ターゲットVM内のスレッドがモニター・オブジェクト上での待機を終了するときに送信される通知。canRequestMonitorEvents権限が必要(<a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>を参照)。 <p>これはJDWPバージョン1.6以降。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>requestID</i><td>イベントを生成させたリクエスト&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+threadID<td><i>thread</i><td>待機したスレッド
+<tr>
+<td colspan=2>
+<td colspan=3>
+tagged-objectID<td><i>object</i><td>モニター・オブジェクト参照&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+location<td><i>location</i><td>待機が発生した位置
+<tr>
+<td colspan=2>
+<td colspan=3>
+boolean<td><i>timed_out</i><td>タイム・アウトした場合true
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case Exception - <i>eventKind</i>がJDWP.EventKind.EXCEPTIONの場合:
+<td>ターゲットVMの例外通知。例外が非ネイティブ・メソッドからスローされた場合、例外イベントは例外がスローされた位置で生成される。例外がネイティブ・メソッドからスローされた場合、例外がスローされたあとの最初の非ネイティブ位置で例外イベントが生成される。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>requestID</i><td>イベントを生成させたリクエスト&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+threadID<td><i>thread</i><td>例外付きのスレッド
+<tr>
+<td colspan=2>
+<td colspan=3>
+location<td><i>location</i><td>例外がスローされた位置(または、ネイティブ・メソッドからスローされた場合は、スローされたあとの最初の非ネイティブの位置)
+<tr>
+<td colspan=2>
+<td colspan=3>
+tagged-objectID<td><i>exception</i><td>スローされた例外
+<tr>
+<td colspan=2>
+<td colspan=3>
+location<td><i>catchLocation</i><td>キャッチされた位置、または0 (キャッチされなかった場合)。例外がキャッチされたと見なされるのは、スローの時点で、その例外を処理するtry文で現在の位置が動的に囲まれている場合。詳細は、JVM仕様を参照。そのようなtry文が存在する場合、キャッチの位置は、該当するcatch節内の最初の位置になる。 <p>例外の発生時に呼出しスタック内にネイティブ・メソッドが存在する場合は、返されるキャッチ位置について重要な制約があるので要注意。そのような場合、呼出しスタック上の何らかのネイティブ・メソッドにより例外が処理されるかどうかは予測できない。そのため、ここでキャッチされなかったと見なされた例外が、実はネイティブ・メソッドによって処理されていて、ターゲットVMを終了させないという状況が起こり得る。さらに、ここで返されるキャッチ位置に、例外をスローしたスレッドが必ず到達すると見なすこともできない。現在位置とキャッチ位置との間にネイティブ・フレームが存在する場合には、例外がネイティブ・メソッド内で処理され、クリアされる可能性がある。 <p>ソース・コード内にtry-catchブロックが明示的に記述されていない場合、コンパイラがtry-catchブロックを生成できることに注意。たとえば、<code>synchronized</code>および<code>finally</code>ブロックについて生成されるコードには、暗黙のtry-catchブロックが含まれることがある。例外のスロー時にその種の暗黙的に生成されたtry-catchブロックが呼出しスタック上に存在する場合は、ソース・コード上では例外がキャッチされないように見えるとしても、例外はキャッチされたと見なされる。
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case ThreadStart - <i>eventKind</i>がJDWP.EventKind.THREAD_STARTの場合:
+<td>ターゲットVMの新しい実行中スレッドの通知。新規スレッドは、<code>java.lang.Thread.start</code>を呼び出した結果として、またはJNIを介してVMに新規スレッドを接続した結果として実行されるようになる。この通知は、新規スレッドにより、その実行が開始される少し前に生成される。このタイミングの影響で、このイベントが受信される前に、そのスレッドについてほかのイベントが受信される可能性がある。特に、メソッド・エントリ・イベントおよびメソッド終了イベントは、スレッドの初期化中に発生することがある。また、<a href="#JDWP_VirtualMachine_AllThreads">VirtualMachine AllThreads</a>コマンドが、あるスレッドを、そのスレッドのスレッド開始イベントが受信される前に返す可能性もある。 <p>このイベントは、スレッド・オブジェクトの作成については何の情報も提供しておらず、デバッグ対象のVMによっては、ずっと以前に作成されたスレッドである可能性もあるので、注意を要する。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>requestID</i><td>イベントを生成させたリクエスト&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+threadID<td><i>thread</i><td>開始したスレッド
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case ThreadDeath - <i>eventKind</i>がJDWP.EventKind.THREAD_DEATHの場合:
+<td>ターゲットVMの完了済みスレッドの通知。この通知は、終了しようとしているスレッドにより終了前に生成される。このタイミングのため、{@link VirtualMachine#allThreads}は、このイベントの受信後に、このスレッドを返すことができる。 <p>このイベントは、スレッド・オブジェクトの寿命については何の情報も提供しない。ターゲットVMにどんな参照が存在するかに応じて、すぐにガベージ・コレクトされることも、されないこともある。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>requestID</i><td>イベントを生成させたリクエスト&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+threadID<td><i>thread</i><td>終了するスレッド
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case ClassPrepare - <i>eventKind</i>がJDWP.EventKind.CLASS_PREPAREの場合:
+<td>ターゲットVMのクラス準備の通知。クラス準備の定義については、JVM仕様を参照。プリミティブ・クラス(たとえば、java.lang.Integer.TYPE)の場合、クラス準備イベントは生成されない。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>requestID</i><td>イベントを生成させたリクエスト&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+threadID<td><i>thread</i><td>準備が行われているスレッド。まれに、ターゲットVM内のデバッガ・システム・スレッドでこのイベントが発生することがあります。デバッガ・スレッドはこれらのイベントの発生を防ぐための予防措置を講じるが、ある状況下、特にjava.lang.Errorのいくつかのサブクラスでは回避できない。このイベントがデバッガ・システム・スレッドにより生成された場合、このメソッドが返す値はnullになる。また、このイベントについて要求された<a href="#JDWP_SuspendPolicy">中断ポリシー</a>がEVENT_THREADであった場合は、かわりにすべてのスレッドが中断され、複合イベントの中断ポリシーにこの変更が反映される。 <p>前述の説明は、通常の(デバッグ以外の)操作中にターゲットVMにより作成されたシステム・スレッドには当てはまらない。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+byte<td><i>refTypeTag</i><td>参照型の種類。<a href="#JDWP_TypeTag">JDWP.TypeTag</a>&nbsp;を参照&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+referenceTypeID<td><i>typeID</i><td>準備中の型
+<tr>
+<td colspan=2>
+<td colspan=3>
+string<td><i>signature</i><td>型シグニチャ&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>status</i><td>型のステータス。<a href="#JDWP_ClassStatus">JDWP.ClassStatus</a>&nbsp;を参照&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case ClassUnload - <i>eventKind</i>がJDWP.EventKind.CLASS_UNLOADの場合:
+<td>ターゲットVMのクラス・アンロードの通知。 <p>ガベージ・コレクションの実行中にはデバッガのバックエンドに厳しい制約があるため、アンロード情報は大幅に制限されている。&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>requestID</i><td>イベントを生成させたリクエスト&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+string<td><i>signature</i><td>型シグニチャ&nbsp;
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case FieldAccess - <i>eventKind</i>がJDWP.EventKind.FIELD_ACCESSの場合:
+<td>ターゲットVMのフィールド・アクセスの通知。フィールドの変更は、フィールド・アクセスとは見なされない。canWatchFieldAccess権限が必要(<a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>を参照)。
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>requestID</i><td>イベントを生成させたリクエスト&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+threadID<td><i>thread</i><td>アクセス中のスレッド
+<tr>
+<td colspan=2>
+<td colspan=3>
+location<td><i>location</i><td>アクセスの位置
+<tr>
+<td colspan=2>
+<td colspan=3>
+byte<td><i>refTypeTag</i><td>参照型の種類。<a href="#JDWP_TypeTag">JDWP.TypeTag</a>&nbsp;を参照&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+referenceTypeID<td><i>typeID</i><td>フィールドの型&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+fieldID<td><i>fieldID</i><td>アクセスされているフィールド
+<tr>
+<td colspan=2>
+<td colspan=3>
+tagged-objectID<td><i>object</i><td>アクセスされているオブジェクト(staticの場合はnull=0)
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case FieldModification - <i>eventKind</i>がJDWP.EventKind.FIELD_MODIFICATIONの場合:
+<td>ターゲットVMのフィールド変更の通知。canWatchFieldModification権限が必要(<a href="#JDWP_VirtualMachine_CapabilitiesNew">CapabilitiesNew</a>を参照)。
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>requestID</i><td>イベントを生成させたリクエスト&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+threadID<td><i>thread</i><td>変更中のスレッド
+<tr>
+<td colspan=2>
+<td colspan=3>
+location<td><i>location</i><td>変更の位置
+<tr>
+<td colspan=2>
+<td colspan=3>
+byte<td><i>refTypeTag</i><td>参照型の種類。<a href="#JDWP_TypeTag">JDWP.TypeTag</a>&nbsp;を参照&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+referenceTypeID<td><i>typeID</i><td>フィールドの型&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+fieldID<td><i>fieldID</i><td>変更されているフィールド
+<tr>
+<td colspan=2>
+<td colspan=3>
+tagged-objectID<td><i>object</i><td>変更されているオブジェクト(staticの場合はnull=0)
+<tr>
+<td colspan=2>
+<td colspan=3>
+value<td><i>valueToBe</i><td>割り当てられる値
+<tr>
+<td colspan=1>
+<td colspan=5>
+Case VMDeath - <i>eventKind</i>がJDWP.EventKind.VM_DEATHの場合:
+<td>&nbsp;
+<tr>
+<td colspan=2>
+<td colspan=3>
+int<td><i>requestID</i><td>イベントを生成させたリクエスト&nbsp;
+</table>
+</dl>
+<h4><a name="JDWP_Error">Error定数</a></h4>
+
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="20%"><th width="5%"><th width="65%">
+<a NAME="Error_NONE"></a>
+<tr><td>NONE<td>0<td>エラーは発生しなかった。&nbsp; <a NAME="Error_INVALID_THREAD"></a>
+<tr><td>INVALID_THREAD<td>10<td>渡されたスレッドがnull、無効、またはすでに終了している。&nbsp; <a NAME="Error_INVALID_THREAD_GROUP"></a>
+<tr><td>INVALID_THREAD_GROUP<td>11<td>スレッド・グループが無効。&nbsp; <a NAME="Error_INVALID_PRIORITY"></a>
+<tr><td>INVALID_PRIORITY<td>12<td>無効な優先順位。&nbsp; <a NAME="Error_THREAD_NOT_SUSPENDED"></a>
+<tr><td>THREAD_NOT_SUSPENDED<td>13<td>指定されたスレッドは、イベントによって中断されていない。&nbsp; <a NAME="Error_THREAD_SUSPENDED"></a>
+<tr><td>THREAD_SUSPENDED<td>14<td>スレッドはすでに中断されている。&nbsp; <a NAME="Error_THREAD_NOT_ALIVE"></a>
+<tr><td>THREAD_NOT_ALIVE<td>15<td>スレッドが開始されていないか、すでに終了している。&nbsp; <a NAME="Error_INVALID_OBJECT"></a>
+<tr><td>INVALID_OBJECT<td>20<td>この参照型はすでにアンロードされ、ガベージ・コレクトされた。&nbsp; <a NAME="Error_INVALID_CLASS"></a>
+<tr><td>INVALID_CLASS<td>21<td>無効なクラス。&nbsp; <a NAME="Error_CLASS_NOT_PREPARED"></a>
+<tr><td>CLASS_NOT_PREPARED<td>22<td>クラスがロードされているが、まだ準備されていない。&nbsp; <a NAME="Error_INVALID_METHODID"></a>
+<tr><td>INVALID_METHODID<td>23<td>無効なメソッド。&nbsp; <a NAME="Error_INVALID_LOCATION"></a>
+<tr><td>INVALID_LOCATION<td>24<td>無効な位置。&nbsp; <a NAME="Error_INVALID_FIELDID"></a>
+<tr><td>INVALID_FIELDID<td>25<td>無効なフィールド。&nbsp; <a NAME="Error_INVALID_FRAMEID"></a>
+<tr><td>INVALID_FRAMEID<td>30<td>無効なjframeID。&nbsp; <a NAME="Error_NO_MORE_FRAMES"></a>
+<tr><td>NO_MORE_FRAMES<td>31<td>呼出しスタックにJavaまたはJNIフレームがなくなった。&nbsp; <a NAME="Error_OPAQUE_FRAME"></a>
+<tr><td>OPAQUE_FRAME<td>32<td>フレームに関する情報が入手できない。&nbsp; <a NAME="Error_NOT_CURRENT_FRAME"></a>
+<tr><td>NOT_CURRENT_FRAME<td>33<td>操作は現在のフレームでしか実行できない。&nbsp; <a NAME="Error_TYPE_MISMATCH"></a>
+<tr><td>TYPE_MISMATCH<td>34<td>使用した関数と変数の型が合わない。&nbsp; <a NAME="Error_INVALID_SLOT"></a>
+<tr><td>INVALID_SLOT<td>35<td>無効なスロット。&nbsp; <a NAME="Error_DUPLICATE"></a>
+<tr><td>DUPLICATE<td>40<td>すでに設定された項目。&nbsp; <a NAME="Error_NOT_FOUND"></a>
+<tr><td>NOT_FOUND<td>41<td>目的の要素が見つからない。&nbsp; <a NAME="Error_INVALID_MONITOR"></a>
+<tr><td>INVALID_MONITOR<td>50<td>無効なモニター。&nbsp; <a NAME="Error_NOT_MONITOR_OWNER"></a>
+<tr><td>NOT_MONITOR_OWNER<td>51<td>このスレッドはモニターを所有していない。&nbsp; <a NAME="Error_INTERRUPT"></a>
+<tr><td>INTERRUPT<td>52<td>呼出しの完了前に割り込まれた。&nbsp; <a NAME="Error_INVALID_CLASS_FORMAT"></a>
+<tr><td>INVALID_CLASS_FORMAT<td>60<td>仮想マシンがクラス・ファイルを読み込もうとしたが、ファイルの形式が間違っているか、その他の理由でクラス・ファイルとして解釈できない。&nbsp; <a NAME="Error_CIRCULAR_CLASS_DEFINITION"></a>
+<tr><td>CIRCULAR_CLASS_DEFINITION<td>61<td>クラスの初期化中に、循環定義が検出された。&nbsp; <a NAME="Error_FAILS_VERIFICATION"></a>
+<tr><td>FAILS_VERIFICATION<td>62<td>クラス・ファイルの形式は正しいが、検証ルーチンは何らかの種類の内部的な不整合かセキュリティ上の問題を検出した。&nbsp; <a NAME="Error_ADD_METHOD_NOT_IMPLEMENTED"></a>
+<tr><td>ADD_METHOD_NOT_IMPLEMENTED<td>63<td>追加メソッドが実装されていない。&nbsp; <a NAME="Error_SCHEMA_CHANGE_NOT_IMPLEMENTED"></a>
+<tr><td>SCHEMA_CHANGE_NOT_IMPLEMENTED<td>64<td>スキーマの変更が実装されていない。&nbsp; <a NAME="Error_INVALID_TYPESTATE"></a>
+<tr><td>INVALID_TYPESTATE<td>65<td>スレッドの状態が変更されたため、不整合が生じている。&nbsp; <a NAME="Error_HIERARCHY_CHANGE_NOT_IMPLEMENTED"></a>
+<tr><td>HIERARCHY_CHANGE_NOT_IMPLEMENTED<td>66<td>新しいクラスのバージョンの直接スーパー・クラスが異なる、または直接実装されているインタフェースが異なり、canUnrestrictedlyRedefineClassesがfalse。&nbsp; <a NAME="Error_DELETE_METHOD_NOT_IMPLEMENTED"></a>
+<tr><td>DELETE_METHOD_NOT_IMPLEMENTED<td>67<td>新しいクラスのバージョンでは、旧クラスのバージョンで宣言したメソッドを宣言せず、またcanUnrestrictedlyRedefineClassesがfalse。&nbsp; <a NAME="Error_UNSUPPORTED_VERSION"></a>
+<tr><td>UNSUPPORTED_VERSION<td>68<td>クラス・ファイルのバージョンがこのVMでサポートされていない。&nbsp; <a NAME="Error_NAMES_DONT_MATCH"></a>
+<tr><td>NAMES_DONT_MATCH<td>69<td>新しいクラス・ファイル内で定義されたクラス名が、旧クラス・オブジェクト内の名前と異なる。&nbsp; <a NAME="Error_CLASS_MODIFIERS_CHANGE_NOT_IMPLEMENTED"></a>
+<tr><td>CLASS_MODIFIERS_CHANGE_NOT_IMPLEMENTED<td>70<td>新しいクラスのバージョンの修飾子が異なり、canUnrestrictedlyRedefineClassesがfalse。&nbsp; <a NAME="Error_METHOD_MODIFIERS_CHANGE_NOT_IMPLEMENTED"></a>
+<tr><td>METHOD_MODIFIERS_CHANGE_NOT_IMPLEMENTED<td>71<td>新しいクラスのバージョンのメソッドの修飾子が旧クラスのバージョンの修飾子と異なり、canUnrestrictedlyRedefineClassesがfalse。&nbsp; <a NAME="Error_NOT_IMPLEMENTED"></a>
+<tr><td>NOT_IMPLEMENTED<td>99<td>この機能はこの仮想マシンに実装されていない。&nbsp; <a NAME="Error_NULL_POINTER"></a>
+<tr><td>NULL_POINTER<td>100<td>無効なポインタ。&nbsp; <a NAME="Error_ABSENT_INFORMATION"></a>
+<tr><td>ABSENT_INFORMATION<td>101<td>目的の情報を入手できない。&nbsp; <a NAME="Error_INVALID_EVENT_TYPE"></a>
+<tr><td>INVALID_EVENT_TYPE<td>102<td>指定されたイベント・タイプのIDが認識されない。&nbsp; <a NAME="Error_ILLEGAL_ARGUMENT"></a>
+<tr><td>ILLEGAL_ARGUMENT<td>103<td>不正な引数。&nbsp; <a NAME="Error_OUT_OF_MEMORY"></a>
+<tr><td>OUT_OF_MEMORY<td>110<td>関数でメモリーの割当てが必要になったが、これ以上割り当てられるメモリーがなかった。&nbsp; <a NAME="Error_ACCESS_DENIED"></a>
+<tr><td>ACCESS_DENIED<td>111<td>この仮想マシンではデバッグが有効になっていない。JVMTIが使用できない。<a NAME="Error_VM_DEAD"></a>
+<tr><td>VM_DEAD<td>112<td>仮想マシンが動作していない。&nbsp; <a NAME="Error_INTERNAL"></a>
+<tr><td>INTERNAL<td>113<td>予期しない内部エラーが発生した。&nbsp; <a NAME="Error_UNATTACHED_THREAD"></a>
+<tr><td>UNATTACHED_THREAD<td>115<td>この関数の呼出しに使われているスレッドが、仮想マシンに接続されていない。呼出しは、接続されたスレッドから行う必要がある。 <a NAME="Error_INVALID_TAG"></a>
+<tr><td>INVALID_TAG<td>500<td>オブジェクト型IDまたはクラス・タグ。&nbsp; <a NAME="Error_ALREADY_INVOKING"></a>
+<tr><td>ALREADY_INVOKING<td>502<td>以前の呼出しが未完了。&nbsp; <a NAME="Error_INVALID_INDEX"></a>
+<tr><td>INVALID_INDEX<td>503<td>インデックスが無効。&nbsp; <a NAME="Error_INVALID_LENGTH"></a>
+<tr><td>INVALID_LENGTH<td>504<td>長さが無効。&nbsp; <a NAME="Error_INVALID_STRING"></a>
+<tr><td>INVALID_STRING<td>506<td>文字列が無効。&nbsp; <a NAME="Error_INVALID_CLASS_LOADER"></a>
+<tr><td>INVALID_CLASS_LOADER<td>507<td>クラス・ローダーが無効。&nbsp; <a NAME="Error_INVALID_ARRAY"></a>
+<tr><td>INVALID_ARRAY<td>508<td>配列が無効。&nbsp; <a NAME="Error_TRANSPORT_LOAD"></a>
+<tr><td>TRANSPORT_LOAD<td>509<td>トランスポートをロードできない。&nbsp; <a NAME="Error_TRANSPORT_INIT"></a>
+<tr><td>TRANSPORT_INIT<td>510<td>トランスポートを初期化できない。&nbsp; <a NAME="Error_NATIVE_METHOD"></a>
+<tr><td>NATIVE_METHOD<td>511<td> &nbsp;
+<a NAME="Error_INVALID_COUNT"></a>
+<tr><td>INVALID_COUNT<td>512<td>カウントが無効。&nbsp;
+</table>
+<h4><a name="JDWP_EventKind">EventKind定数</a></h4>
+
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="20%"><th width="5%"><th width="65%">
+<a NAME="EventKind_SINGLE_STEP"></a>
+<tr><td>SINGLE_STEP<td>1<td> &nbsp;
+<a NAME="EventKind_BREAKPOINT"></a>
+<tr><td>BREAKPOINT<td>2<td> &nbsp;
+<a NAME="EventKind_FRAME_POP"></a>
+<tr><td>FRAME_POP<td>3<td> &nbsp;
+<a NAME="EventKind_EXCEPTION"></a>
+<tr><td>EXCEPTION<td>4<td> &nbsp;
+<a NAME="EventKind_USER_DEFINED"></a>
+<tr><td>USER_DEFINED<td>5<td> &nbsp;
+<a NAME="EventKind_THREAD_START"></a>
+<tr><td>THREAD_START<td>6<td> &nbsp;
+<a NAME="EventKind_THREAD_DEATH"></a>
+<tr><td>THREAD_DEATH<td>7<td> &nbsp;
+<a NAME="EventKind_THREAD_END"></a>
+<tr><td>THREAD_END<td>7<td>廃止 - jvmdiで使用されていました&nbsp; <a NAME="EventKind_CLASS_PREPARE"></a>
+<tr><td>CLASS_PREPARE<td>8<td> &nbsp;
+<a NAME="EventKind_CLASS_UNLOAD"></a>
+<tr><td>CLASS_UNLOAD<td>9<td> &nbsp;
+<a NAME="EventKind_CLASS_LOAD"></a>
+<tr><td>CLASS_LOAD<td>10<td> &nbsp;
+<a NAME="EventKind_FIELD_ACCESS"></a>
+<tr><td>FIELD_ACCESS<td>20<td> &nbsp;
+<a NAME="EventKind_FIELD_MODIFICATION"></a>
+<tr><td>FIELD_MODIFICATION<td>21<td> &nbsp;
+<a NAME="EventKind_EXCEPTION_CATCH"></a>
+<tr><td>EXCEPTION_CATCH<td>30<td> &nbsp;
+<a NAME="EventKind_METHOD_ENTRY"></a>
+<tr><td>METHOD_ENTRY<td>40<td> &nbsp;
+<a NAME="EventKind_METHOD_EXIT"></a>
+<tr><td>METHOD_EXIT<td>41<td> &nbsp;
+<a NAME="EventKind_METHOD_EXIT_WITH_RETURN_VALUE"></a>
+<tr><td>METHOD_EXIT_WITH_RETURN_VALUE<td>42<td> &nbsp;
+<a NAME="EventKind_MONITOR_CONTENDED_ENTER"></a>
+<tr><td>MONITOR_CONTENDED_ENTER<td>43<td> &nbsp;
+<a NAME="EventKind_MONITOR_CONTENDED_ENTERED"></a>
+<tr><td>MONITOR_CONTENDED_ENTERED<td>44<td> &nbsp;
+<a NAME="EventKind_MONITOR_WAIT"></a>
+<tr><td>MONITOR_WAIT<td>45<td> &nbsp;
+<a NAME="EventKind_MONITOR_WAITED"></a>
+<tr><td>MONITOR_WAITED<td>46<td> &nbsp;
+<a NAME="EventKind_VM_START"></a>
+<tr><td>VM_START<td>90<td> &nbsp;
+<a NAME="EventKind_VM_INIT"></a>
+<tr><td>VM_INIT<td>90<td>廃止 - jvmdiで使用されていました&nbsp; <a NAME="EventKind_VM_DEATH"></a>
+<tr><td>VM_DEATH<td>99<td> &nbsp;
+<a NAME="EventKind_VM_DISCONNECTED"></a>
+<tr><td>VM_DISCONNECTED<td>100<td>JDWPを越えて送信されることはありません
+</table>
+<h4><a name="JDWP_ThreadStatus">ThreadStatus定数</a></h4>
+
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="20%"><th width="5%"><th width="65%">
+<a NAME="ThreadStatus_ZOMBIE"></a>
+<tr><td>ZOMBIE<td>0<td> &nbsp;
+<a NAME="ThreadStatus_RUNNING"></a>
+<tr><td>RUNNING<td>1<td> &nbsp;
+<a NAME="ThreadStatus_SLEEPING"></a>
+<tr><td>SLEEPING<td>2<td> &nbsp;
+<a NAME="ThreadStatus_MONITOR"></a>
+<tr><td>MONITOR<td>3<td> &nbsp;
+<a NAME="ThreadStatus_WAIT"></a>
+<tr><td>WAIT<td>4<td> &nbsp;
+</table>
+<h4><a name="JDWP_SuspendStatus">SuspendStatus定数</a></h4>
+
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="20%"><th width="5%"><th width="65%">
+<a NAME="SuspendStatus_SUSPEND_STATUS_SUSPENDED"></a>
+<tr><td>SUSPEND_STATUS_SUSPENDED<td>0x1<td> &nbsp;
+</table>
+<h4><a name="JDWP_ClassStatus">ClassStatus定数</a></h4>
+
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="20%"><th width="5%"><th width="65%">
+<a NAME="ClassStatus_VERIFIED"></a>
+<tr><td>VERIFIED<td>1<td> &nbsp;
+<a NAME="ClassStatus_PREPARED"></a>
+<tr><td>PREPARED<td>2<td> &nbsp;
+<a NAME="ClassStatus_INITIALIZED"></a>
+<tr><td>INITIALIZED<td>4<td> &nbsp;
+<a NAME="ClassStatus_ERROR"></a>
+<tr><td>ERROR<td>8<td> &nbsp;
+</table>
+<h4><a name="JDWP_TypeTag">TypeTag定数</a></h4>
+
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="20%"><th width="5%"><th width="65%">
+<a NAME="TypeTag_CLASS"></a>
+<tr><td>CLASS<td>1<td>参照型はクラス。&nbsp; <a NAME="TypeTag_INTERFACE"></a>
+<tr><td>INTERFACE<td>2<td>参照型はインタフェース。&nbsp; <a NAME="TypeTag_ARRAY"></a>
+<tr><td>ARRAY<td>3<td>参照型は配列。&nbsp;
+</table>
+<h4><a name="JDWP_Tag">Tag定数</a></h4>
+
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="20%"><th width="5%"><th width="65%">
+<a NAME="Tag_ARRAY"></a>
+<tr><td>ARRAY<td>91<td>'[' - 配列オブジェクト(objectIDサイズ)。&nbsp; <a NAME="Tag_BYTE"></a>
+<tr><td>BYTE<td>66<td>'B' - バイト値(1バイト)。&nbsp; <a NAME="Tag_CHAR"></a>
+<tr><td>CHAR<td>67<td>'C' - 文字値(2バイト)。&nbsp; <a NAME="Tag_OBJECT"></a>
+<tr><td>OBJECT<td>76<td>'L' - オブジェクト(objectIDサイズ)。&nbsp; <a NAME="Tag_FLOAT"></a>
+<tr><td>FLOAT<td>70<td>'F' - 浮動小数点値(4バイト)。&nbsp; <a NAME="Tag_DOUBLE"></a>
+<tr><td>DOUBLE<td>68<td>'D' - 倍精度値(8バイト)。&nbsp; <a NAME="Tag_INT"></a>
+<tr><td>INT<td>73<td>'I' - 整数値(4バイト)。&nbsp; <a NAME="Tag_LONG"></a>
+<tr><td>LONG<td>74<td>'J' - 長整数値(8バイト)。&nbsp; <a NAME="Tag_SHORT"></a>
+<tr><td>SHORT<td>83<td>'S' - 短整数値(2バイト)。&nbsp; <a NAME="Tag_VOID"></a>
+<tr><td>VOID<td>86<td>'V' - void値(バイトなし)。&nbsp; <a NAME="Tag_BOOLEAN"></a>
+<tr><td>BOOLEAN<td>90<td>'Z' - ブール値(1バイト)。&nbsp; <a NAME="Tag_STRING"></a>
+<tr><td>STRING<td>115<td>'s' - Stringオブジェクト(objectIDサイズ)。&nbsp; <a NAME="Tag_THREAD"></a>
+<tr><td>THREAD<td>116<td>'t' - Threadオブジェクト(objectIDサイズ)。&nbsp; <a NAME="Tag_THREAD_GROUP"></a>
+<tr><td>THREAD_GROUP<td>103<td>'g' - ThreadGroupオブジェクト(objectIDサイズ)。&nbsp; <a NAME="Tag_CLASS_LOADER"></a>
+<tr><td>CLASS_LOADER<td>108<td>'l' - ClassLoaderオブジェクト(objectIDサイズ)。&nbsp; <a NAME="Tag_CLASS_OBJECT"></a>
+<tr><td>CLASS_OBJECT<td>99<td>'c' - クラス・オブジェクト(objectIDサイズ)。&nbsp;
+</table>
+<h4><a name="JDWP_StepDepth">StepDepth定数</a></h4>
+
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="20%"><th width="5%"><th width="65%">
+<a NAME="StepDepth_INTO"></a>
+<tr><td>INTO<td>0<td>ステップの終了前に、メソッド呼出しがあれば、その中に入る。&nbsp; <a NAME="StepDepth_OVER"></a>
+<tr><td>OVER<td>1<td>ステップの終了前に、メソッド呼出しがあれば、そのメソッドをすべて実行する。&nbsp; <a NAME="StepDepth_OUT"></a>
+<tr><td>OUT<td>2<td>現在のメソッドからステップ・アウトする。&nbsp;
+</table>
+<h4><a name="JDWP_StepSize">StepSize定数</a></h4>
+
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="20%"><th width="5%"><th width="65%">
+<a NAME="StepSize_MIN"></a>
+<tr><td>MIN<td>0<td>可能な最小の量(多くの場合、バイト・コード命令)だけステップ実行する。&nbsp; <a NAME="StepSize_LINE"></a>
+<tr><td>LINE<td>1<td>次のソース行までステップ実行する。行番号情報が存在しない場合は、MINステップが実行される。&nbsp;
+</table>
+<h4><a name="JDWP_SuspendPolicy">SuspendPolicy定数</a></h4>
+
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="20%"><th width="5%"><th width="65%">
+<a NAME="SuspendPolicy_NONE"></a>
+<tr><td>NONE<td>0<td>このイベントの遭遇時にスレッドを中断しない。&nbsp; <a NAME="SuspendPolicy_EVENT_THREAD"></a>
+<tr><td>EVENT_THREAD<td>1<td>このイベントの遭遇時にイベント・スレッドを中断する。&nbsp; <a NAME="SuspendPolicy_ALL"></a>
+<tr><td>ALL<td>2<td>このイベントの遭遇時にすべてのスレッドを中断する。&nbsp;
+</table>
+<h4><a name="JDWP_InvokeOptions">InvokeOptions定数</a></h4>
+呼出しオプションは、次のビット・フラグのうち、0個以上のビットを組み合わせたもの
+<dd><table border="1" cellpadding="3" cellspacing="0" summary="" width="90%"><tr>
+<th width="20%"><th width="5%"><th width="65%">
+<a NAME="InvokeOptions_INVOKE_SINGLE_THREADED"></a>
+<tr><td>INVOKE_SINGLE_THREADED<td>0x01<td>それ以外の場合、開始したすべてのスレッド。&nbsp; <a NAME="InvokeOptions_INVOKE_NONVIRTUAL"></a>
+<tr><td>INVOKE_NONVIRTUAL<td>0x02<td>それ以外の場合、通常の仮想呼び出し(インスタンス・メソッドのみ)
+</table>
+</body></html>

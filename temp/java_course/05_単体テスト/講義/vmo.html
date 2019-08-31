@@ -1,0 +1,474 @@
+﻿<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MVC施設予約の単体テスト</title>
+<link rel="stylesheet" type="text/css" href="../../css/main.css">
+</head>
+
+<body>
+
+<center>
+<h2>Virtual Mock Objects</h2>
+</center>
+<hr>
+<p class="midasi0">Virtual Mock Objects</p>
+
+Virtual Mock Objects (バーチャルモックオブジェクト)は、djUnitの機能のひとつです。<br>
+バイトコードの書き換えにより、モッククラスが存在するかのようなテストを記述する仕組みを提供します。<br>
+<br>
+といっても、イメージが難しいと思いますので、とりあえず使ってみることにします。<br>
+<!--
+但し、すべてのJUnit単体テスト環境で、VMOが使用できるわけではありませんので、<br>
+モックオブジェクトを作成する方法も理解したうえで使用することが大切です。<br>
+ -->
+<p class="midasi1">Virtual Mock Objects 設定</p>
+まずは、VMO を使用する環境を整えます。<br>
+既に、djUnitの導入を終えていますので、以下の設定のみを追加で行います。<br>
+<ol>
+	<li>ビルドパスに djUnit の jar ファイルを追加する。</li>
+	<li>djUnitの設定で、Virtual Mock Objectの使用設定を行う。</li>
+</ol>
+
+<h4>ビルドパスに djUnit の jar ファイルを追加する。</h4>
+プロジェクトを右クリック → [Properties] → [Java Build Path] → [Libraries] → [Add External JARs...]
+<br>
+<br>
+<img src="images/7_1.png" width="80%" />
+<br>
+<br>
+\%ECLIPSE_HOME%\plugins\jp.co.dgic.eclipse.jdt.djunit_0.8.6/djunit.jar
+<br>
+Jarの追加を選択して、導入したdjUnitの中にあるライブラリにクラスパスを通します。
+<br>
+<br>
+<img src="images/7_2.png" width="60%" />
+<br>
+<br>
+<img src="images/7_3.png" width="80%" />
+<br>
+<br>
+
+<h4>djUnitの設定で、Virtual Mock Objectsの使用設定を行う。</h4>
+
+プロジェクトを右クリック → [Properties] → [djUnit] → [Vertial Mock Objectss]にて、
+<br>
+「Virtual Mock Objectsを使用する」にチェックをします。
+<br>
+<br>
+<img src="images/7_4.png" width="80%" />
+<br>
+<br>
+[OK]でウィンドウを閉じます。<br>
+<br>
+
+<p class="midasi1">基本的な使い方</p>
+
+次のようなコードをテストすることを考えます。<br>
+<br>
+<xmp class="source">
+public class UserService {
+
+	public String getFullName(String id) {
+		String fullName = null;
+
+		UserDao dao = new UserDao();
+		User user = dao.getUser(id);
+
+		if (user != null) {
+		    fullName = user.getLastName() + " " + user.getFirstName();
+		}
+
+		return fullName;
+	}
+}
+</xmp>
+<br>
+このメソッドは UserDao のメソッドを使用してユーザを取得し、<br>
+取得したユーザから「姓」「名」を取得して、「氏名」 を生成し、返却します。<br>
+<br>
+このメソッドの責任は UserDao のメソッドに対して「正しい引数を渡すこと」と、<br>
+「戻り値のユーザを使用して、半角スペースを挟んだ氏名を正確に作成し返却すること」 の ２点です。<br>
+<br>
+この２点を検証するために、Dao の戻り値を固定にして、期待する「氏名」 が生成されることと、<br>
+UserDao にたいして、「A」 という引数を正確に渡していることを確認します。<br>
+<br>
+VMO を使用すると、以下のようなコードで、このテストを行うことができます。<br>
+<br>
+<xmp class="source">
+public void testGetFullName() throws Exception {
+
+	// 条件
+	User user = new User();
+	user.setLastName("単体");
+	user.setFirstName("テスト");
+
+	DJUnitTestCase.addReturnValue(UserDao.class, "getUser", user); --- (1)
+
+	// 実行
+	String name = service.getFullName("A");
+
+	// 結果
+	assertEquals("単体 テスト", name);
+	assertEquals("A", DJUnitTestCase.getArgument(UserDao.class, "getUser", 0)); --- (2)
+
+}
+</xmp>
+<br>
+(1) は、テスト対象の getFullName() メソッド内で呼ばれる UserDao クラスの getUser() メソッドの戻り値を固定で設定しています。<br>
+(2) は、UserDao クラスの getUser() メソッドへ渡された引数を取得し、"A" と比較をしています。<br>
+<br>
+コードだけではわかりにくいと思いますので、上記のコードをイメージ的に表現してみます。<br>
+尚、あくまでイメージ的な話であり、VMOの実際のテクニカルな話ではありません。<br>
+<br>
+<h4>VMO を使用しない場合</h4>
+<img src="images/09_vmo0.png" alt="images/09_vmo0.png" border="1"><br>
+<br>
+まずは、モック等を使用せずに普通のJUnitテストを使って、getFullName() メソッドの テストをした場合の処理の流れを見てみます。<br>
+テスト対象の Service クラスの getFullName(id) メソッドを実行して確認しています。<br>
+Service クラスは内部で UserDao クラスを呼び出し、Dao はDBへのアクセスを行っています。<br>
+
+<h4>VMO を使用した場合</h4>
+VMOを使用するとこの処理の流れがどう変わるのかを見てゆきます。<br>
+まず、上記のコードでは、 「addReturnValue()」 を呼び出しています。<br>
+すると、VMO という仮想的なモックが作成され、クラス名、メソッド名と オブジェクトをセットされた状態となります。<br>
+<br>
+<img src="images/09_vmo1.png" alt="images/09_vmo1.png" border="1"><br>
+<br>
+次に、テスト対象のメソッド  getFullName(id) を呼び出します。<br>
+<br>
+<img src="images/09_vmo2.png" alt="images/09_vmo2.png" border="1"><br>
+<br>
+この getFullName(id) メソッド内で、UserDao の getUser() メソッドが呼び出されようとした瞬間、<br>
+VMO が、Service クラスと UserDao クラス の間に割り込みます。<br>
+<br>
+自分が保持するクラス名、メソッド名に該当する メソッドが呼び出されたからです。<br>
+VMO は、渡されてきた引数を引き取り、最初に設定されたオブジェクトを戻り値として返却します。<br>
+<br>
+<img src="images/09_vmo3.png" alt="images/09_vmo3.png" border="1"><br>
+<br>
+Service クラスの処理が終わった後、VMO が保存している 渡された引数を、VMO から取得して、検証することができます。<br>
+<br>
+<img src="images/09_vmo4.png" alt="images/09_vmo4.png" border="1"><br>
+<br>
+この流れの中で、UserDao クラスは一度もアクセスされませんでした。<br>
+<br>
+これが、基本的な動作のイメージです。
+
+<br>
+
+
+<p class="midasi1">DJUnitTestCase の主なメソッド（抜粋）</p>
+
+DJUnitTestCase のメソッドを抜粋して紹介します。<br>
+基本的には、
+<ul>
+<li>テスト中に呼び出されるメソッドの戻り値を設定する</li>
+<li>テスト中に呼び出されるメソッドへ渡された引数を取得する</li>
+</ul>
+の２種類です。<br>
+<br>
+拡張として、同じメソッドが何回か呼び出されるような場合に、全ての呼び出しの戻り値を違う値に設定したり、<br>
+全ての呼び出しに対して渡される引数を違う値に設定したりするために、<br>
+あるメソッドの何回目の呼び出しを対象とするかを指定することができるシグネチャも準備されています。<br>
+<br>
+
+
+<table>
+	<tr>
+		<th>メソッド名</th>
+		<th>内容</th>
+	</tr>
+	<tr>
+		<td>void addReturnValue(Class cls, String methodName, Object value)</td>
+		<td>指定されたクラスの、指定されたメソッド名のメソッドが実行された際の戻り値を設定します。</td>
+	</tr>
+	<tr>
+		<td>void setReturnValueAt(Class cls, String methodName, int somethingth, Object value)</td>
+		<td>addReturnValue とほぼ同じですが、メソッドが複数回呼ばれるような場合に、それぞれの呼び出しに対する戻り値を設定することができます。
+		この呼び出し回数のカウントは0から始まります。</td>
+	</tr>
+	<tr>
+		<td>void addReturnNull(Class cls, String methodName)</td>
+		<td>指定されたクラスの、指定されたメソッド名のメソッドが実行された際の戻り値を null に設定します。
+		null を返却する場合はこのメソッドを使用しないと、例外が発生します。</td>
+	</tr>
+	<tr>
+		<td>Object getArgument(Class cls, String methodName, int argIndex)</td>
+		<td>指定されたクラスの、指定されたメソッド名のメソッドが呼び出された時に、指定されたインデックス番目の引数を取得します。
+		引数のインデックスは0からカウントします。 例） 3番目の引数の場合 : 2</td>
+	</tr>
+	<tr>
+		<td>Object getArgument(Class cls, String methodName, int somethingth, int argIndex)</td>
+		<td>上記のメソッドとほぼ同じですが、メソッドが複数回呼ばれるような場合に、それぞれの引数を検査することができます。</td>
+	</tr>
+	<tr>
+		<td>int getCallCount(Class cls, String methodName)</td>
+		<td>指定されたクラスの、指定されたメソッド名のメソッドが何回呼ばれたかを取得します。</td>
+	</tr>
+	<tr>
+		<td>void assertCalled(Class cls, String methodName)</td>
+		<td>指定されたクラスの、指定されたメソッド名のメソッドが呼ばれたことを検証します。</td>
+	</tr>
+	<tr>
+		<td>void assertNotCalled（Class cls, String methodName)</td>
+		<td>指定されたクラスの、指定されたメソッド名のメソッドが呼ばれなかったことを検証します。</td>
+	</tr>
+</table>
+
+<br>
+その他のメソッドについては、下記ページ等を参考にしてください。<br>
+<br>
+参考）<a href="http://works.dgic.co.jp/djwiki/Viewpage.do?pid=@5669727475616C204D6F636B204F626A65637473E38292E4BDBFE381A3E3819FE38386E382B9E38388" target="top">Virtual Mock Objectsを使ったテスト</a><br>
+<br>
+
+<p class="midasi1">サーブレットメソッドのJUnitテスト</p>
+それでは、HttpTC (サーブレット用モック)、VMO を利用した テストを実装してみます。<br>
+<br>
+まずは、正常なテストケースです。<br>
+<br>
+
+<xmp class="source">
+	/**
+	 * <pre>
+	 * 【概要】
+	 * ・更新ボタンを押下したとき施設リストと予約リストが取得されること.
+	 *
+	 * 【条件】
+	 * リクエストパラメータ
+	 * ・update : 更新
+	 *
+	 * 呼び出しメソッド戻り値
+	 * ・{@link ReserveDao#getRoomList()} : 施設リスト
+	 * ・{@link ReserveDao#getReserveList(Calendar reserveDate)} : 予約リスト
+	 *
+	 * 【実行】
+	 * ・doPost
+	 *
+	 * 【結果】
+	 * 呼び出しメソッド引数
+	 * ・{@link ReserveDao#getRoomList()} : 施設リスト
+	 * ・{@link ReserveDao#getReserveList(Calendar reserveDate)} : 予約リスト
+	 *
+	 * リクエスト情報
+	 * ・{@link ReserveServlet#RESERVE_LIST} : 予約リスト
+	 * ・{@link ReserveServlet#ROOM_LIST} : 施設リスト
+	 *
+	 * 遷移先情報
+	 * ・WEB-INF/jsp/reserve.jsp
+	 *
+	 * </pre>
+	 */
+	public void testDoPostGetReserveListRoomList() throws Exception {
+
+		// 条件
+		request.addParameter("update", "更新");
+		DJUnitTestCase.addReturnValue(ReserveDao.class, "getRoomList", roomList);
+		DJUnitTestCase.addReturnValue(ReserveDao.class, "getReserveList", reserveList);
+
+		// 実行
+		servlet.doPost(request, response);
+
+		// 結果
+		this.assertDate("2008/07/15", DJUnitTestCase.getArgument(ReserveDao.class, "getList", 0));
+
+		assertSame(reserveList, request.getAttribute("RESERVE_LIST"));
+		assertSame(roomList, request.getAttribute("ROOM_LIST"));
+
+		this.assertForwradPath("WEB-INF/jsp/reserve.jsp");
+	}
+</xmp>
+
+<br>
+<br>
+まず、JavaDoc の、【条件】となっている部分を見てください。<br>
+ここには、メソッドの実行前に設定しておくべき項目が挙げられています。<br>
+<br>
+『 <span class="bold">リクエストパラメータ</span> 』 は、doPost() 実行時に、request.getParameter("update") メソッドで取得される値です。<br>
+これは、以下のように記述することによって、HttpTC クラスの request モックオブジェクトに設定することができます。<br>
+<br>
+<xmp class="source">
+request.addParameter("update", "更新");
+</xmp>
+<br>
+チェックボックスなどにて、同じキーで複数の値が送信されるような場合は、 addPArameter() メソッドの第２引数に配列を指定します。<br>
+<br>
+<xmp class="modified_source">
+request.addParameter("key", new String[]{"value1", "value2", "value3"});
+</xmp><br>
+<br>
+『 <span class="bold">セッション情報</span> 』 は、上記のテストに記載されていませんが、<br>
+doPost() 実行時に、session.getAttribute("LOGIN_USER") メソッドで取得される値です。<br>
+メソッドの実行直前に以下のように HttpTC クラスの session モックオブジェクト内に格納します。<br>
+<br>
+<xmp class="source">
+session.setAttribute(user, "LOGIN_USER"));
+</xmp><br>
+<br>
+『 <span class="bold">呼び出しメソッド戻り値</span> 』 は、VMO の機能を利用します。<br>
+addReturnValue() メソッドを使用することで、<br>
+ここで指定されたクラス、指定されたメソッドに対する呼び出しは VMO で処理されるようになります。<br>
+ここで、施設一覧取得、予約一覧取得用のリストはどのテストでも共通に使用するため、<br>
+テストクラスのメンバとし、setUp() メソッドで初期化するようにしてあります。<br>
+<br>
+<xmp class="source">
+DJUnitTestCase.addReturnValue(ReserveDao.class, "getRoomList", roomList);
+DJUnitTestCase.addReturnValue(ReserveDao.class, "getReserveList", reserveList);
+</xmp>
+<br>
+尚、戻り値を void とするような DAO のメソッドがあった場合、「戻り値がないから」 ということで、このコードを省略すると、<br>
+VMO の機能が働かず、DAO が直接呼び出されることになってしまいますので、<br>
+VMO の機能を利用するメソッドについては、void 型の戻り値であっても、以下のようなコードを記述するようにしてください。<br>
+<br>
+<xmp class="modified_source">
+DJUnitTestCase.addReturnNull(ReserveDao.class, "register");
+</xmp>
+<br>
+これは、メソッドの戻り値としてnull を設定したい場合に使用するコードになりますが、この場合は VMO を利用するためだけに記述します。<br>
+<br>
+今回の施設予約システムにはありませんが、ユーティリティメソッドなどがある場合は、同じクラスの同じメソッドが何回も呼び出されるような場合、<br>
+各呼び出しで使用される戻り値を 変更したい場合は、以下のようなコードを使用します。<br>
+<br>
+<xmp class="modified_source">
+// ReserveUtil#isValidReserves() 1回目の呼び出しにおける戻り値
+DJUnitTestCase.setReturnValueAt(ReserveUtil.class, "isValidReserves", 0, false);
+
+// ReserveUtil#isValidReserves() 2回目の呼び出しにおける戻り値
+DJUnitTestCase.setReturnValueAt(ReserveUtil.class, "isValidReserves", 1, false);
+</xmp>
+<br>
+【条件】 が全て設定できたら、 【実行】 で doPost() メソッド を呼び出します。<br>
+引数には、前提条件が詰められている HttpTC の request モックオブジェクト, response モックオブジェクトを指定します。<br>
+<br>
+<xmp class="source">
+servlet.doPost(request, response);
+</xmp>
+<br>
+doPost() メソッドが終了したら、【結果】 が全て予想通りかどうかを検証していきます。<br>
+<br>
+『 <span class="bold">呼び出しメソッド引数</span> 』 では、<br>
+テスト対象のクラスが他のメソッド呼び出しの際に、正しい引数を渡していることを検証します。<br>
+【条件】 にて、addReturnValue()、addReturnNull() を呼び出されたメソッドについては、VMO から引数を取得することができます。<br>
+getArgument(ReserveDao.class, "getReserveList", 0) として、<br>
+ReserveDao の getReserveList() メソッドの 0番目の引数として渡された値を取得しています。<br>
+<br>
+this.assertDate() は、このテストのユーティリティメソッドで、<br>
+引数に渡された、java.sql.Date オブジェクトが、"2008/07/15" と同じ日付であることを検証しています。<br>
+<br>
+<xmp class="source">
+this.assertDate("2008/07/15", DJUnitTestCase.getArgument(ReserveDao.class, "getList", 0));
+</xmp>
+<br>
+『 <span class="bold">リクエスト情報</span> 』 では、現在のリクエスト内に格納されている情報を確認します。<br>
+JSP等で必要となる情報が、doPost() 実行後にリクエスト内に格納されていることを検証します。<br>
+リクエスト内に格納された情報は、サーブレットで通常処理する場合と同じように、「request.getAttribute("key")」 を使用して取得します。<br>
+<br>
+ここでは、Dao から取得したリストが、そのままリクエスト内に格納されていることを確認します。<br>
+Dao メソッドの戻り値がそのまま リクエスト内に格納されることが検証できればよいため、assertSame (JUnitのメソッド) を使用しています。<br>
+これは、オブジェクト同士を 「equals()」 ではなく、「==」 を使用して比較するメソッドです。<br>
+<br>
+<xmp class="source">
+assertSame(reserveList, request.getAttribute("RESERVE_LIST"));
+assertSame(roomList, request.getAttribute("ROOM_LIST"));
+</xmp>
+<br>
+『 <span class="bold">セッション情報</span> 』 では、JSP等で必要となる情報が、doPost() 実行後にセッション内に格納されていることや、<br>
+ログアウトの際などに、セッションから情報が削除されたことを検証します。<br>
+セッション内に格納された情報は、サーブレットで通常処理する場合と同じように、「session.getAttribute("key")」 を使用して取得します。<br>
+<br>
+ここでは、例としてセッション内に保持されているユーザ名が、該当するIDから取得されたユーザ名と同じか確認しています。<br>
+session オブジェクトから取得した、"A" と同じユーザ名であることを検証しています。<br>
+<br>
+<xmp class="source">
+assertEquals("A", session.getAttribute("LOGIN_USER"));
+</xmp>
+<br>
+『 <span class="bold">遷移先情報</span> 』 は、doPost() 実行後に、遷移先の情報が指定されているかどうかを確認します。<br>
+遷移先が指定されているかどうかの確認は、HttpTC クラスが持つ遷移先確認用のメソッド、assertForwradPath() を使用して検証を行います。<br>
+<br>
+<xmp class="source">
+this.assertForwradPath("WEB-INF/jsp/reserve.jsp");
+</xmp>
+<br>
+次に例外が発生するケースを例にします。<br>
+<br>
+<xmp class="source">
+
+	/**
+	 * <pre>
+	 * 【概要】
+	 * ・「login」が送信されたが、ユーザ取得にて例外が発生した場合、
+	 *   Exceptionがスローされること。
+	 *
+	 * 【条件】
+	 * リクエストパラメータ
+	 * ・login : ログイン
+	 * ・userId : 123ABC
+	 *
+	 * 呼び出しメソッド戻り値
+	 * ・{@link ReserveDao#getUser(String)} : {@link Exception}
+	 *
+	 * 【実行】
+	 * ・doPost
+	 *
+	 * 【結果】
+	 * 呼び出しメソッド引数
+	 * ・{@link ReserveDao#getUser(String)} : id=123ABC
+	 *
+	 * セッション情報
+	 * ・{@link ReserveServlet#LOGIN_USER} : null
+	 *
+	 * 例外
+	 * ・{@link Exception}
+	 *
+	 * </pre>
+	 */
+	public void testDoPostLoginThrowException() throws Exception {
+
+		try {
+			// 条件
+			request.addParameter("login", "ログイン");
+			request.addParameter("userId", "123ABC");
+
+			DJUnitTestCase.setReturnValueAtAllTimes(ReserveUtil.class, "isEmpty", false);
+			DJUnitTestCase.addReturnValue(ReserveDao.class, "getUser", new Exception("ReserveDao#getUser"));
+
+			// 実行
+			servlet.doPost(request, response);
+
+			fail();
+
+		} catch (ServletException e) {
+			assertEquals("123ABC", DJUnitTestCase.getArgument(ReserveDao.class, "getUser", 0));
+
+			assertNull(session.getAttribute("LOGIN_USER"));
+
+			Throwable t = e.getRootCause();
+			assertEquals("ReserveDao#getUser", t.getMessage());
+		}
+
+	}
+
+</xmp><br>
+<br>
+正常のケースと違う部分は、【条件】 の、<br>
+<br>
+<xmp class="source">
+addReturnValue(ReserveDao.class, "getUser", new Exception("ReserveDao#getUser"));
+</xmp>
+<br>
+です。ここでは、メソッドの戻り値に、「例外」 を生成して設定しています。<br>
+<br>
+例外のテストで気をつけなければいけないのは、例外を発生させる部分までに呼び出す他のユーティリティやDaoのメソッドがあった場合、<br>
+setReturnValue() メソッドを呼び出して、本物のDao などが呼び出されないようにしておく必要があるということです。<br>
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+
+
+</body>
+</html>

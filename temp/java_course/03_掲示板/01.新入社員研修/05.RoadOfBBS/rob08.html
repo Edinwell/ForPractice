@@ -1,0 +1,291 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31J">
+<title>～掲示板への道～</title>
+<link rel="stylesheet" type="text/css" href="../../css/main.css">
+</head>
+<body>
+<center>
+<h2>～掲示板への道～</h2>
+<h1>6.JSPとの連携“初歩”編</h1>
+</center>
+<hr>
+
+<p class="midasi0">「画面表示」処理はJSPに任せる</p>
+
+今まではサーブレットの中で「画面表示」処理をしていました。<br>
+「画面表示」処理をサーブレットから分離させ、JSP に担当させましょう。<br>
+<br><br>
+<a name="servlet_circle"></a>
+<p class="midasi1">画面（HTML）と Servlet と JSP の関係</p>
+
+次の図を見てください。<br>
+<ul>
+<li>
+画面（HTML）からは &lt;input&gt; タグで表示されたテキストボックスやラジオボタンで入力された情報が<br>
+リクエストパラメータとして、Servlet に送られます。<br><br>
+</li>
+<li>Servlet では、パラメータをリクエストから受け取り、リクエスト属性やセッション属性に値を設定します。<br><br>
+</li>
+<li>JSP では、リクエスト属性やセッション属性から Servlet が設定した値を取得した画面を生成します。<br><br>
+</li>
+</ul>
+<br>
+<img src="image/servlet_circle.png"><br>
+<br>
+
+<p class="midasi1">JSPを作成する</p>
+
+まず、%CATALINA_HOME%\webapps\bbs\ に bbs.jsp を作成してください。<br>
+ファイルの中身は次のようにします。<br>
+<br>
+<span class="filename">%CATALINA_HOME%\webapps\bbs\bbs.jsp</span>
+<xmp class="source">
+<%@ page contentType="text/html; charset=MS932" %>
+<%@ page import="jp.co.insightech.*" %>
+<%@ page import="java.util.*" %>
+
+<%
+  Vector messageList = (Vector) request.getAttribute("MESSAGE_LIST");
+%>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+	<title>掲示板</title>
+</head>
+<body>
+
+<form action="./top" method="POST">
+
+	<table border="1">
+		<tr>
+			<td>名前</td>
+			<td><input type="text" name="name"></td>
+		</tr>
+		<tr>
+			<td>件名</td>
+			<td><input type="text" name="subject"></td>
+		</tr>
+		<tr>
+    		<td>メッセージ</td>
+			<td><input type="text" name="content"></td>
+  		</tr>
+	</table>
+	<input type="submit" name="sendMessage" value="送信">
+
+</form>
+
+<%
+for (int i = 0; i < messageList.size(); i++) {
+	Message message = (Message) messageList.get(i);
+%>
+	<table border=1>
+		<tr><td>名前</td><td><%=  message.getName() %></td></tr>
+		<tr><td>件名</td><td><%=  message.getSubject() %></td></tr>
+		<tr><td>メッセージ</td><td><%= message.getContent() %></td></tr>
+	</table><br>
+<%
+}
+%>
+
+
+</body>
+</html>
+</xmp>
+<br><br>
+ポイントは、
+<ul>
+<li>&lt;%@ page contentType="～～" %&gt; でコンテントタイプを指定。</li>
+<li>&lt;%@ page import="～～" %&gt; で必要な Java のクラスをインポート</li>
+<li>request オブジェクトから属性値を取得。</li>
+</ul>
+です。
+<br><br><br>
+<img src="image/question.gif"> なお、次の項目はご自身で探求してください。
+<ul>
+<li>「<span class="important">&lt;%@ ～ %&gt;</span>」「<span class="important">&lt;% ～ %&gt;</span>」
+「<span class="important">&lt;%= ～ %&gt;</span>」がなんなのか
+</li>
+<li> 
+<span class="important">(String) request.getAttribute("MESSAGE_LIST");</span>
+ はなんなのか（下で出てくる <span class="important">setAttribute</span> と組で覚えてください。）
+</li>
+</ul>
+
+<br>
+次に、BBSServlet から show メソッドを削除し、代わりに bbs.jsp を呼び出す処理を記述します。<br>
+
+<br>
+
+<span class="filename">%CATALINA_HOME%\webapps\bbs\jp\co\insightech\BBSServlet.java</span>
+<xmp class="source">
+package jp.co.insightech;
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.sql.*;
+import java.util.Vector;
+
+public class BBSServlet extends HttpServlet {
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+
+		try {
+			MessageDao dao = new MessageDao();
+
+			String sendMessage = request.getParameter("sendMessage");
+			if (sendMessage != null) {
+
+				// (1) データベースに1件分レコードを挿入します
+				String name    = request.getParameter("name");
+				String subject = request.getParameter("subject");
+				String content = request.getParameter("content");
+
+				Message message = new Message();
+				message.setName(name);
+				message.setSubject(subject);
+				message.setContent(content);
+	    
+				dao.registerMessage(message);
+			}
+
+			// (2) データベースにあるデータを全件取得します
+			Vector messageList = dao.getMessageList();
+    
+			// 投稿メッセージの一覧を表示します
+</xmp>
+<xmp class="modified_source">
+			request.setAttribute("MESSAGE_LIST", messageList);
+
+			ServletContext sc = this.getServletContext();
+			RequestDispatcher rd = sc.getRequestDispatcher("/bbs.jsp");
+			rd.forward(request, response);
+</xmp>
+<xmp class="source">
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+</xmp>
+<xmp class="modified_source">
+	show メソッドはいらなくなったので削除
+	それ以外のメソッドは省略
+</xmp>
+<xmp class="source">
+}
+</xmp>
+<br><br>
+
+ポイントは、
+<ul>
+<li>doGet メソッドから show メソッドが消えた（＝サーブレットが表示を担当しなくなった）。
+<li>messageList を JSP に渡すために request の属性として設定している。
+<li>そして JSP にフォワード
+</ul>
+です。
+<p>
+<img src="image/question.gif"> 特に以下の処理が何をしているかは、ご自身で探求してください。
+<ul>
+<li><span class="important">request.setAttribute("MESSAGE_LIST", messageList);</span>
+</li>
+<li>
+ServletContext sc = this.getServletContext();　～　rd.forward(request, response);　<br>
+の流れは決まった形なのでこのまま覚えてください。
+</li>
+</ul>
+<br>
+これで、JSP を使えるようになりました、ブラウザから<br>
+<br>
+http://localhost:8080/bbs/top <br>
+<br>
+にアクセスして今までと同じように動くことを確認してください。<br>
+<br>
+<br>
+<p class="midasi1">JSPを WEB-INF の下に移動する</p>
+
+さて、JSP を使えるようになったところで、ブラウザから<br>
+<br>
+http://localhost:8080/bbs/bbs.jsp <br>
+<br>
+にアクセスしてみてください。<br>
+下記のような例外が表示されたかと思います。<br>
+<br>
+<img src="image/web-inf_jsp.png"><br>
+<br>
+このように今ある場所に作成した JSP には、ブラウザ（クライアント）から直接アクセスすることができます。<br>
+<br>
+直接アクセスされるような意図を持っている場合は今ある場所に作成すればよいのですが、<br>
+今回のケースもそうですが、たいていの場合は、Servlet 経由でフォワードするかたちをとりますので、<br>
+直接アクセスされてしまうと、意図せぬ例外が発生してしまいます。<br>
+<br>
+このような場合、JSP のもうひとつの置き場所として、<span class="important">WEB-INF</span> の下に置くことができます。<br>
+<br>
+まずは、bbs.jsp の場所を、<br>
+<br>
+%CATALINA_HOME%\webapps\bbs\bbs.jsp<br>
+<br>
+から<br>
+<br>
+%CATALINA_HOME%\webapps\bbs\<span class="important">WEB-INF</span>\bbs.jsp<br>
+<br>
+に移動してください。<br>
+<br>
+次に、この場所にある bbs.jsp にフォワードするために、BBSServlet を次のように変更します。<br>
+<br>
+<span class="filename">%CATALINA_HOME%\webapps\bbs\jp\co\insightech\BBSServlet.java</span>
+<xmp class="source">
+package jp.co.insightech;
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.sql.*;
+import java.util.Vector;
+
+public class BBSServlet extends HttpServlet {
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+
+		・・・
+		途中は省略
+		・・・
+</xmp>
+<xmp class="modified_source">
+			RequestDispatcher rd = sc.getRequestDispatcher("/WEB-INF/bbs.jsp");
+</xmp>
+<xmp class="source">
+			rd.forward(request, response);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	それ以外のメソッドは省略
+}
+</xmp>
+<br><br>
+これで、BBSServelt からは今まで通り、bbs.jsp にフォワードされますが、<br>
+bbs.jsp に直接アクセスすることは出来なくなりました。<br>
+試しに、
+<br>
+http://localhost:8080/bbs/WEB-INF/bbs.jsp <br>
+<br>
+にアクセスしてみてください。<br>
+HTTPステータス 404 が返却されるはずです。<br>
+<br>
+<br>
+
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+
+</body>
+</html>

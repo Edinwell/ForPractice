@@ -1,0 +1,210 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<TITLE>多重Look & Feelの使用</TITLE>
+<meta HTTP-EQUIV="Content-Type" Content="text/html; charset=UTF-8"></HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<b><font size="+3">多重Look & Feelの使用</font></b>
+
+<blockquote>
+<hr>
+<p>
+<i> このドキュメントは、最初に「<a href="http://java.sun.com/products/jfc/tsc/" target="_top"><em>The Swing Connection</em></a>」で公開された記事に基づいています。 </i>
+</p>
+<hr>
+</blockquote>
+
+<p>
+多重Look & Feelを使用すると、通常のLook & Feel (<em>デフォルト</em> Look & Feel)を1つ以上の<em>補助</em> Look & Feelで補足できます。たとえば、2つの補助のLook & Feel (1つは音声読上げ用、もう1つは点字用)をデフォルトLook & Feelに追加することにより、Swingベース・アプリケーションが生成する通常の表示出力に加えて、同時に音声読上げ出力や点字出力を提供できます。デフォルトLook & Feelは任意の通常のLook & Feel (JavaやWindowsのLook & Feelなど)にすることができ、補助のLook & Feelと連携するための変更は不要です。
+</p>
+
+
+<p>
+このドキュメントには次のセクションがあります。
+<ul>
+<li> <a href="#overview">概要</a>
+<li> <a href="#howtouse">補助的なLook & Feelの使用方法</a>
+<li> <a href="#howtowrite">補助的なLook & Feelを書く場合のヒント</a>
+     <ul>
+     <li> <a href="#dosanddonts">注意事項</a>
+     <li> <a href="#uidefaults">UIDefaultsの拡張</a>
+     <li> <a href="#defaultui">その他のUIオブジェクトの調査</a>
+     </ul>
+<li> <a href="#implementation">多重Look & Feelの実装方法</a>
+<li> <a href="#custom">カスタム多重Look & Feelの提供方法</a>
+</ul>
+
+<p>
+このドキュメントを読み進める前に、プラグイン可能なLook & Feelの概念に習熟しておくようにしてください。基本的な情報については、「<em>The Java Tutorial</em>」のセクション「<a href="http://java.sun.com/docs/books/tutorial/uiswing/lookandfeel/plaf.html">How to Set the Look and Feel</a>」を参照してください。アーキテクチャの詳細については、「<em>Swing Connection</em>」記事内のセクション「<a href="http://java.sun.com/products/jfc/tsc/articles/architecture/#pluggable">Pluggable look-and-feel architecture</a>」を参照してください。
+</p>
+
+<p> 
+<a name="overview"></a>
+<hr width=100% align=LEFT size=2>
+<b> <font color="#000080" size="+2">概要</font> </b>
+
+
+<p>
+
+<code>javax.swing.plaf.multi</code>パッケージ内のクラスは<i>多重Look & Feel</i>を実装します。多重Look & Feelは、UIオブジェクトを要求(<code>getUI</code>メソッドを使用)するコンポーネントに応答して、複数の異なるLook & FeelからUIオブジェクトを透過的に作成し、同時にサポートします。
+
+<p>
+多重Look & Feelを使用しない場合、特定のLook & Feelを拡張する開発者はLook & Feelをサポートするクラスの継承が必要になります。たとえば、多重Look & Feelを使用しないで音声読上げサポートをJava Look & Feelに追加する場合、開発者はJava Look & Feelのクラスを継承したクラスのグループを作成して、音声読上げのサポートをこの新しいクラスに追加する必要があります。また、開発者が音声読上げのサポートをその他のLook & Feel (MotifやWindowsなど)にも追加する場合、これらのクラスのサブクラスも作成する必要があります。
+</p>
+
+<p>
+この方法には次のように少なくとも2つの短所があります。 
+<ul type="DISC">
+  <li>最初に、各サブクラスは実質的には同じコードのコピーを使用する必要があり、開発者にとってサポートが困難な状況をもたらす可能性があります。<br></li>
+  <li>2番目に、エンド・ユーザーにはさらに重要なことですが、一部のアプリケーション開発者から特定のLook & Feelを使用するように強制される場合があります。この方法が使用されると、エンド・ユーザーは拡張されたLook & Feelを使用することさえできません。</li>
+</ul>
+
+<p>
+多重Look & Feelでは、複数のLook & Feelを組み合わせることができるため、これらの2つの問題が同時に解決されます。最初の問題(同じコードの別のコピーを使用する必要がある)は、開発者が特別なLook & Feelを作成してその他のLook & Feelと組み合わせることができるため、解決されます。
+</p>
+
+<p>
+2番目の問題(特定のLook & Feelの使用を強制する必要がある)は、すでにロック済みの可能性があるデフォルトLook & Feelが何であれ、特別なLook & Feelを一緒に使用できるため、解決されます。
+</p>
+
+<p>
+デフォルトの多重Look & Feelの実装は、<code>javax.swing.plaf.multi</code>パッケージ内の<code>MultiLookAndFeel</code>クラスで表され、(そのままの)多重Look & Feelという名前です。
+
+<p> 
+<a name="howtouse"></a>
+<hr width=100% align=LEFT size=2>
+<b> <font color="#000080" size="+2">補助的なLook &Feelの使用方法</font> </b>
+
+
+<p>
+補助的なLook & FeelをSwingとともに使用するのは容易です。Swingに多重Look & Feelを使用するように指示するには、すべてのアプリケーションで<code>$JDKHOME/lib/swing.properties</code>ファイルを変更して、<code>swing.auxiliarylaf</code>プロパティの定義を含める必要があります。Swingは<code>swing.auxiliarylaf</code>プロパティを<code>LookAndFeel</code>サブクラスのカンマ区切りのリストとみなしますが、これらのサブクラスは、デフォルトLook & Feelのほかに使用すべき補助的なLook & Feelを指定します。有効な<code>LookAndFeel</code>サブクラスが<code>swing.auxiliarylaf</code>プロパティに少なくとも1つ指定されていると、Swingは自動的にその多重Look & Feelを使用し、デフォルトおよび補助的なLook & Feelのロードとサポートを行います。
+</p>
+
+<p>
+たとえば、アプリケーションが音声読上げフィード・バックをサポートするLook & Feelを使用し、香りを発するデバイスのサポートを追加するLook & Feelも使用するとします。音声読み上げLook & Feelの名前は<code>com.myco.TextTalkerLookAndFeel</code>であり、香りのサポートを追加するLook & Feelの名前は<code>com.smellco.OlfactoryLookAndFeel</code>とします。
+</p>
+
+<p>
+Swingに、これら2つのLook & Feelを使用し、同時にデフォルトLook & Feelも使用するように指示するには、アプリケーションで単に次の行を<code>$JDKHOME/lib/swing.properties</code>ファイルに追加するだけです。
+</p>
+
+<p>
+<code>&nbsp;&nbsp;&nbsp; swing.auxiliarylaf=com.myco.TextTalkerLookAndFeel,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; com.smellco.OlfactoryLookAndFeel</code>
+</p>
+
+<p>
+この文は、コンポーネントのUIをデフォルトLook & Feelから直接取得する代わりに、多重Look & Feelから自動的に取得するようにSwingに指示します。結果として得られる多重UIは、デフォルトおよび補助的なLook & FeelからUIを取得して維持する小さな委譲先です。この結果、多重UIオブジェクトのメソッドが呼び出されると、多重UIは、デフォルトおよび補助的なLook & Feelから取得した各UIの同じメソッドを呼び出します。
+</p>
+
+<p> 
+<a name="howtowrite"></a>
+<hr width=100% align=LEFT size=2>
+<b> <font color="#000080" size="+2">補助的なLook &Feelを書く場合のヒント</font> </b>
+
+
+<p>
+補助的なLook & Feelは、デフォルトLook & Feelが提供する必要がある完全なサポートを提供する必要がない点を除いて、その他のLook & Feelと同様です。たとえば、音声読上げフィード・バックのみをサポートする補助的なLook & Feelは、ペイント用のコードを提供する必要はありません。また、すべてのコンポーネントをサポートする必要がない場合があります。たとえば、<code>JSeparator</code>は無視されることがあります。
+
+<p>
+補助的なLook & Feelは単純な傾向があるため、視覚的なLook & Feelよりも開発が容易な可能性があります。開発者は特別な機能を用意することのみに集中できます。 
+
+<p>
+補助的なLook & Feelの主な目的はデフォルトLook & Feelを拡張することにあるため、補助的なLook & Feelは非視覚的になる傾向があります。ただし、補助的なLook & Feelも純粋なLook & Feelであるため、画面に情報をレンダリングしても構いません。
+</p>
+
+<p>
+ほかのLook & Feelの場合と同様、補助的なLook & Feelを実装するには、<code>javax.swing.LookAndFeel</code>のサブクラスを記述し、<code>javax.swing.plaf</code>パッケージに定義されている<code><em>Foo</em>UI</code>クラスのサブクラスを作成します。
+</p>
+
+<p> 
+<br> <a name="dosanddonts"><font color="#000080" size="+1"><b>注意事項</b></font></a>
+</p>
+
+<p>
+次の段落では、補助的なLook & Feelの開発における一般的な推奨事項についていくつか説明します。
+</p>
+
+<p>
+<font color="#000080"><b>すべての初期化を実行する場合は<code>installUI</code>メソッドを使用し、すべてのクリーンアップを実行する場合は<code>uninstallUI</code>メソッドを使用します。</b></font>
+</p>
+<blockquote>
+コンポーネントのLook & Feelが設定されると、<code>installUI</code>および<code>uninstallUI</code>メソッドが呼び出されます。<code>installUI</code>メソッドにより、新しいUIオブジェクトはコンポーネントおよびそのデータ・モデルにリスナーを追加できます。同様に、<code>uninstallUI</code>メソッドにより、そのUIオブジェクトはリスナーを削除できます。
+</blockquote>
+            <p> <font color="#000080"><b>視覚的なLook & Feelを継承しないでください。</b></font></p>
+<blockquote>
+               補助的なLook & FeelのUIクラスを視覚的なLook & FeelのUIクラスのサブクラスとして実装<i>しない</i>ことをお薦めします。 理由は次のとおりです。リスナーをコンポーネント・オブジェクトにインストールしたりコンポーネントを画面にレンダリングしたりするコードを誤って継承する場合があるためです。 その結果、補助的なLook & FeelはデフォルトLook & Feelと協調するのではなく、競合する可能性があります。<br><br>代わりに、補助的なLook & FeelのUIクラスが<code>javax.swing.plaf</code>パッケージの抽象UIクラスを直接継承することをお薦めします。 この方法を使用すると、補助的なLook & FeelがデフォルトLook & Feelと競合することを避けることができます。
+</blockquote>
+            <p> <font color="#000080"><b>UIクラスが継承するUI固有のすべてのメソッドをオーバーライドします。</b></font>
+	    </p>
+<blockquote>
+               補助的なLook & Feelの各UIクラスは派生元の<code>javax.swing.plaf</code> UIクラスに定義されているメソッドをオーバーライドすることをお薦めします。この推奨事項の理由は、視覚的なLook & Feelを継承しない理由と同様です。たとえば、すべてのUIクラスの派生元の<code>ComponentUI</code>クラスは<code>update</code>メソッドのデフォルト実装を提供します。このデフォルト実装では、コンポーネントが不透明の場合に画面にペイントします。非視覚的で補助的なLook & FeelのUIクラスがこのメソッドをオーバーライドしないと、すべてが不透明なコンポーネントが空白領域として画面に表示されてしまいます。
+</blockquote>
+            <p> 
+
+<br> <a name="uidefaults"><font color="#000080" size="+1"><b>UIDefaultsの拡張</b></font></a>
+
+            <p>多くの場合、補助的なLook & Feelが「不完全」になる場合があります。 つまり、コンポーネントの完全なセットをサポートする必要がない場合があります。たとえば、補助的なLook & Feelは<code>ButtonUI</code>サブクラスを提供して、<code>LabelUI</code>サブクラスを提供しない場合があります。こうした選択は可能であり、多重Look & Feelはこのような状況を適切に処理します。</p>
+            <p>ただしデフォルトでは、Swingは、Look & FeelにUIオブジェクトを要求してLook & FeelがそのUIをサポートしない場合、エラー・メッセージを発行します。特に、補助的なLook & Feelの開発者が特定のコンポーネントをサポートする予定がない場合、このメッセージは迷惑な場合があります。</p>
+            <p>幸い、<code>UIDefaults</code>クラスのサブクラスを作成し、そのインスタンスを<code>LookAndFeel</code>クラスの<code>getDefaults</code>メソッドから返すことにより、このエラー・メッセージを回避できます。たとえば、
+	      </p>
+            <p><code>public class MyAuxLookAndFeel extends LookAndFeel {<br>     ...<br>     public UIDefaults getDefaults() {<br>         <b>UIDefaults table = <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; new MyAuxUIDefaults();<br> </b>        Object[] uiDefaults = {<br>           "ButtonUI", "MyAuxButtonUI",<br>           ...<br>         }<br>         table.putDefaults(uiDefaults);<br>         return table;<br>     }<br> }<br> <br> <b>class MyAuxUIDefaults extends UIDefaults {<br>     protected void getUIError(String msg) {<br>         //System.err.println<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp; ("An annoying message!");<br>     }<br> }</b></code></p>
+
+<p>
+前述の例では、<code>MyAux</code>という補助的なLook & Feelは<code>getUIError</code>メソッドをオーバーライドする<code>UIDefaults</code>サブクラスを作成します。 <code>getUIError</code>メソッドは、SwingがLook & FeelのUIオブジェクトを検出できなかった場合に呼び出されるメソッドです。 単にこのメソッドで何もしなければ、エラー・メッセージを回避できます。</p>
+            <p> 
+
+<br> <a name="defaultui"><b><font color="#000080" size="+1">その他のUIオブジェクトの調査</font></b></a>
+
+            <p>まれに、補助的なLook & FeelのUIオブジェクトが、コンポーネントに使用されるデフォルトUIオブジェクトに関心がある場合があります。 この場合、補助的なLook & FeelのUIオブジェクトは<code>getUI</code>メソッドを呼び出すことで、コンポーネントからUIを取得できます。 返されるUIは、いずれかの多重Look & Feel UIクラス(<code>MultiButtonUI</code>など)のインスタンスです。補助的なLook & FeelのUIオブジェクトは、返されたオブジェクトの<code>getUIs</code>メソッドを呼び出して、多重UIによって処理されるすべてのUIオブジェクトの完全なリストが含まれた配列を取得できます。最初の要素は、デフォルトのLook & Feelから作成されたUIであることが保証されます。
+	      </p>
+
+<p> 
+<a name="implementation"></a>
+<hr width=100% align=LEFT size=2>
+<font color="#000080" size="+2"><b>多重Look &Feelの実装方法</b></font> 
+
+<p>
+<code>javax.swing.plaf.multi.MultiLookAndFeel</code>で表される多重Look & Feelは、すべての開発者およびユーザーに対して透過的であるように作成されています。 それは「とにかく動作」すべきであり、ユーザーがSwingに補助的なLook & Feelを使用するように指示した場合にのみ使用されます。</p>
+
+            <p>
+              多重Look & Feelが使用されている場合、各コンポーネントに関連付けられたUIオブジェクトの型は、現在使用中の任意の補助的なLook & Feelがそのコンポーネントをサポートするかどうかにより異なります。その場合、コンポーネントのUIオブジェクトは多重UIのインスタンスです。デフォルトLook & Feelのみがコンポーネントをサポートする場合、補助的なLook & Feelがインストールされていないかのように、そのコンポーネントはUIオブジェクトをデフォルトLook & Feelから取得します。 
+
+	      <p>
+	      多重UIオブジェクトは、UIオブジェクトをデフォルトおよび補助的なLook & Feelから取得して維持し、これらのUIを次の方法で参照します。 
+
+<ul type="DISC">
+              <li> デフォルトLook & FeelのUIオブジェクトは常に最初に作成されます。そのあとは、UIオブジェクトが、<code>swing.auxiliarylaf</code>プロパティで指定されている順序で、それぞれの補助的なLook &Feelから作成されます。<br><br></li>
+
+              <li> UIオブジェクトに情報を要求するメソッドが呼び出されると、多重UIオブジェクトはすべてのUIオブジェクトのそのメソッドを呼び出しますが、デフォルトLook & FeelのUIからの結果のみを返します。たとえば、多重UIの<code>getPreferredSize</code>メソッドが呼び出されると、このUIは、デフォルトLook & Feelから取得したUIの<code>getPreferredSize</code>の呼出しの結果のみを返します。また、それぞれの補助的なLook &FeelのUIオブジェクトの<code>getPreferredSize</code>メソッドも呼び出されますが、戻り値は無視されます。 <br><br></li>
+
+              <li> UIオブジェクトからの情報を要求しないメソッドが呼び出されると、多重UIオブジェクトはすべてのUI (デフォルトLook & Feelから取得したUIオブジェクトだけでなく、補助的なLook & Feelから取得したすべてのUIも)でそのメソッドを呼び出します。たとえば、多重UIの<code>installUI</code>メソッドを呼び出すと、多重UIは、デフォルトLook & Feelから取得したUIと、補助的なファクトリから取得したUIで<code>installUI</code>を呼び出します。</li>
+            </ul>
+            <p> すべての場合で、デフォルトLook & Feelから取得したUIオブジェクトが最初に処理され、補助的なLook & Feelは<code>swing.auxiliarylaf</code>プロパティで指定されている順序で処理されます。
+</p>
+
+<p> 
+
+<a name="custom"></a>
+<hr width=100% align=LEFT size=2>
+<font color="#000080" size="+2"><b>カスタム多重Look &Feelの提供方法</b></font> 
+
+            <p>多重Look &Feelの動作が代わりの多重Look &Feelを必要としないほど柔軟になるのが望ましいことですが、Swingでは、ユーザーは使用する別の多重Look &Feelを指定できます。
+</p>
+
+            <p> これを実行するには、ユーザーが<code>$JDKHOME/lib/swing.properties</code>ファイルを変更して<code>swing.plaf.multiplexinglaf</code>プロパティの定義を含めるだけです。 その後、Swingは<code>swing.plaf.multiplexinglaf</code>プロパティを、多重をサポートする<code>LookAndFeel</code>のサブクラスとみなします。
+</p>
+            <p> たとえば、多重Look & Feel (<code>javax.swing.plaf.multi.MultiLookAndFeel</code>)よりもニーズに合う<code>com.myco.SuperMultiLookAndFeel</code>で表される多重Look & Feelをユーザーが持っている場合、ユーザーは次の行を<code>$JDKHOME/lib/swing.properties</code>に含めることができます。
+</p>
+
+<p>
+<code>swing.plaf.multiplexinglaf = com.myco.SuperMultiLookAndFeel</code>
+</p>
+
+<p>
+この文はSwingに<code>javax.swing.plaf.multi.MultiLookAndFeel</code>の代わりに<code>com.myco.SuperMultiLookAndFeel</code>を使用するように指示します。ただし、補助的なLook & Feelの供給者は標準の多重Look & Feelに対して開発しテストしている可能性が高いため、この種類の文を使用する場合は注意してください。
+</p>
+
+</BODY>
+</HTML>

@@ -1,0 +1,4 @@
+■DjUnitでテストを実行したときにjava.lang.VerifyErrorが出た場合
+⇒VM引数に以下を追加して実行すると解消します。
+　
+-XX:-UseSplitVerifier

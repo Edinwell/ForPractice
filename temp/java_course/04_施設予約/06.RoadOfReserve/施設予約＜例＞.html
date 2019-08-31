@@ -1,0 +1,539 @@
+
+
+
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<title>MVCモデル適用　施設予約システム(MVC Reserve System)</title>
+</head>
+
+<body bgcolor="azure">
+<center>
+
+<table border="0" bordercolor="red">
+<tr><td align="center">
+
+<font size="6" color="indigo">MVCモデル適用　施設予約システム</font>
+<br>
+<font size="3" color="indigo">(MVC Reserve System)</font>
+<br>
+
+
+
+<!------------------------------- 年月日 ------------------------------->
+<form action="reserve" method="POST">
+
+	<font size="5"><b>
+		2004年
+		4月
+		<select name="day">
+		
+			<option value="1" >1</option>
+		
+			<option value="2" selected>2</option>
+		
+			<option value="3" >3</option>
+		
+			<option value="4" >4</option>
+		
+			<option value="5" >5</option>
+		
+			<option value="6" >6</option>
+		
+			<option value="7" >7</option>
+		
+			<option value="8" >8</option>
+		
+			<option value="9" >9</option>
+		
+			<option value="10" >10</option>
+		
+			<option value="11" >11</option>
+		
+			<option value="12" >12</option>
+		
+			<option value="13" >13</option>
+		
+			<option value="14" >14</option>
+		
+			<option value="15" >15</option>
+		
+			<option value="16" >16</option>
+		
+			<option value="17" >17</option>
+		
+			<option value="18" >18</option>
+		
+			<option value="19" >19</option>
+		
+			<option value="20" >20</option>
+		
+			<option value="21" >21</option>
+		
+			<option value="22" >22</option>
+		
+			<option value="23" >23</option>
+		
+			<option value="24" >24</option>
+		
+			<option value="25" >25</option>
+		
+			<option value="26" >26</option>
+		
+			<option value="27" >27</option>
+		
+			<option value="28" >28</option>
+		
+			<option value="29" >29</option>
+		
+			<option value="30" >30</option>
+		
+		</select>日
+	</b></font>
+	<input type="submit" name="submitReload" value="更新">
+</form>
+
+<form action="reserve" method="POST">
+	<table border="0">
+		<tr>
+			<td><input type="submit" name="submitPrevMonth" value="前月"></td>
+			<td><input type="submit" name="submitToday" value="[本日]"></td>
+			<td><input type="submit" name="submitNextMonth" value="次月"></td>
+		</tr>
+	</table>
+<br><br>
+
+<!------------------------------- ユーザ ------------------------------->
+
+
+<!-- ログイン済み -->
+	ユーザ：<b>印差　糸子</b>
+	<input type="submit" name="submitLogout" value="ログアウト">
+	<br><br>
+
+<!------------------------------- 予約状況 ------------------------------->
+
+
+
+<table border="1">
+
+	<tr>
+		<th>会議室名</th>
+		
+			<th width="20">9時</th>
+		
+			<th width="20">10時</th>
+		
+			<th width="20">11時</th>
+		
+			<th width="20">12時</th>
+		
+			<th width="20">13時</th>
+		
+			<th width="20">14時</th>
+		
+			<th width="20">15時</th>
+		
+			<th width="20">16時</th>
+		
+			<th width="20">17時</th>
+		
+			<th width="20">18時</th>
+		
+			<th width="20">19時</th>
+		
+			<th width="20">20時</th>
+		
+			<th width="20">21時</th>
+		
+	</tr>
+
+
+	<tr>
+	<th>大講堂</th>
+	
+
+	
+		
+			<td bgcolor="red" width="20">&nbsp;</td>
+		
+	
+		
+			<td bgcolor="red" width="20">&nbsp;</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="A001_11">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="A001_12">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="A001_13">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="A001_14">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="A001_15">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="A001_16">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="A001_17">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="A001_18">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="A001_19">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="A001_20">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="A001_21">
+				
+			</td>
+		
+	
+	</tr>
+
+	<tr>
+	<th>会議室</th>
+	
+
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="B102_9">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="B102_10">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="snow" width="20" align="center">
+				
+					<input type="checkbox" name="cancel"
+					 value="B102_11">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="snow" width="20" align="center">
+				
+					<input type="checkbox" name="cancel"
+					 value="B102_12">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="snow" width="20" align="center">
+				
+					<input type="checkbox" name="cancel"
+					 value="B102_13">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="B102_14">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="B102_15">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="B102_16">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="B102_17">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="B102_18">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="B102_19">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="B102_20">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="B102_21">
+				
+			</td>
+		
+	
+	</tr>
+
+	<tr>
+	<th>談話室</th>
+	
+
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="C304_9">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="C304_10">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="C304_11">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="C304_12">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="C304_13">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="C304_14">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="C304_15">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="C304_16">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="C304_17">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="C304_18">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="C304_19">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="C304_20">
+				
+			</td>
+		
+	
+		
+			<td bgcolor="lightgreen" width="20" align="center">
+				
+					<input type="checkbox" name="reserve"
+					value="C304_21">
+				
+			</td>
+		
+	
+	</tr>
+
+</table>
+
+	<input type="submit" name="submitReserve" value="予約　もしくは　取消">
+</form>
+
+<hr>
+
+ ＜凡例＞
+ <table border="1" cellpadding="5" cellspacing="0"
+        bordercolor="black" bordercolorlight="gray" bordercolordark="dimgray">
+  <tr>
+   <td bgcolor="lightgreen"><font color="blue"><b>緑</b></font></td>
+   <td>空いています。<input type="checkbox">にて予約が可能です</td>
+  </tr><tr>
+   <td bgcolor="red"><font color="blue"><b>赤</b></font></td>
+   <td>他の人に予約されています（予約取消不可能）</td>
+  </tr><tr>
+   <td bgcolor="snow"><font color="blue"><b>白</b></font></td>
+   </td><td>ご自身で予約されています。<input type="checkbox">にて予約取消が可能です</td>
+  </tr>
+ </table>
+
+</center>
+</body>
+</html>

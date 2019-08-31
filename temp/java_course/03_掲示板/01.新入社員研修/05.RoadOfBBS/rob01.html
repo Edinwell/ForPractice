@@ -1,0 +1,356 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<title>～掲示板への道～</title>
+<link rel="stylesheet" type="text/css" href="../../css/main.css">
+</head>
+<body>
+<center>
+<h2>～掲示板への道～</h2>
+<h1>1.パラメータを受信するサーブレット編</h1>
+</center>
+<hr>
+
+<p class="midasi0">最初に作るもの</p>
+まずは、図1のような画面で「名前」と「趣味」を入力した後、「送信ボタン」を押下したら、<br>
+図2のように文字が加工されて表示されるWEBアプリケーションを作成します。<br>
+<br>
+<span class="important">※まだこの時点では日本語対応はしていません。日本語（全角文字）で入力しても、文字化けが発生します。<br>
+日本語対応に関しては、別編で説明します。</span>
+<br><br>
+
+
+<b>図1</b><br>
+<img src="image/index.html.png" alt="1.パラメータを受信するサーブレット編　図1">
+<br><br>
+<b>図2</b><br>
+<img src="image/BBSServlet1.png" alt="1.パラメータを受信するサーブレット編　図2">
+<br><br><br>
+
+<p class="midasi0">何はともあれとりあえず作ってみよう</p>
+<br>
+次の手順に従って、まずは必要なファイルを作成しましょう。<br>
+どういう仕組みで動いているかは後から見ていきます。<br>
+<br>
+<div class="desc1">1. %CATALINA_HOME%\webapps ディレクトリに bbs という名前のディレクトリを作成します。</div>
+<p>
+このディレクトリが掲示板アプリケーションの<span class="important">ドキュメントルート</span>（すべてのファイルを置く場所）になります。
+</p>
+<div class="desc1">2. bbs ディレクトリに index.html ファイルを作成します。</div>
+<p>
+ファイルの中身は以下の通りです。<br>
+<br>
+<span class="filename">%CATALINA_HOME%\webapps\bbs\index.html</span>
+<xmp class="source">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+	<title>掲示板</title>
+</head>
+<body>
+
+<form action="./top" method="GET">
+	名前<input type="text" name="name"><br>
+	趣味<input type="text" name="hobby"><br>
+	<input type="submit" value="送信">
+</form>
+
+</body>
+</html>
+</xmp>
+<br>
+</p>
+<div class="desc1">3. bbs ディレクトリに WEB-INF という名前のディレクトリを作成します。</div>
+<div class="desc1">4. WEB-INF ディレクトリに web.xml という名前のファイルを作成します。</div>
+<p>
+ファイルの中身は、以下の通りです。<br>
+<br>
+<span class="filename">%CATALINA_HOME%\webapps\bbs\WEB-INF\web.xml</span>
+<xmp class="source">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+	<servlet>
+		<servlet-name>servlet_no_namae</servlet-name>
+		<servlet-class>jp.co.insightech.BBSServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>servlet_no_namae</servlet-name>
+		<url-pattern>/top</url-pattern>
+	</servlet-mapping>
+</web-app>
+</xmp>
+<br>
+<span class="important">&lt;servlet&gt; の &lt;servlet-name&gt; と、&lt;servlet-mapping&gt; の &lt;servlet-name&gt;</span> を合わせる必要があります。
+</p>
+
+<div class="desc1">
+5. WEB-INF ディレクトリに classes という名前のディレクトリを作成します。<br>
+</div>
+<p>
+java のクラスファイルはこの classes ディレクトリの中に配置します。<br>
+</p>
+<div class="desc1">
+6. jp.co.insightech パッケージに該当するディレクトリを作成する
+</div>
+<p>
+　classes ディレクトリに jp ディレクトリを<br>
+　jp ディレクトリに co ディレクトリを<br>
+　co ディレクトリに insightech ディレクトリを作成します。
+</p>
+<div class="desc1">
+7. insightech ディレクトリに BBSServlet.java という名前のファイルを作成します。<br>
+</div>
+<p>
+ファイルの中身は以下の通りです。<br>
+<br>
+<span class="filename">%CATALINA_HOME%\webapps\bbs\jp\co\insightech\BBSServlet.java</span>
+<xmp class="source">
+package jp.co.insightech;
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class BBSServlet extends HttpServlet {
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String name = request.getParameter("name");
+		String hobby = request.getParameter("hobby");
+
+		response.setContentType("text/html; charset=MS932");
+
+		PrintWriter out = response.getWriter();
+		out.println("<html><head><title>掲示板</title></head>");
+		out.println("<body><b>");
+		out.println(name);
+		out.println("</b>さんの趣味は<i>");
+		out.println(hobby);
+		out.println("</i>です");
+		out.println("</body></html>");
+		out.close();
+	}
+
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
+}
+</xmp>
+<br>
+</p>
+
+この時点で、次のような構成になっていることを確認してください。
+
+<xmp class="console">
+C:\tomcat\webapps\bbs>tree /F
+フォルダ パスの一覧
+ボリューム シリアル番号は 00007CE4 6377:4DBE です
+C:.
+│  index.html
+│
+└─WEB-INF
+    │  web.xml
+    │
+    └─classes
+        └─jp
+            └─co
+                └─insightech
+                        BBSServlet.java
+</xmp>
+
+これで必要なファイルは出揃いました。<br>
+<br><br>
+<p class="midasi0">コンパイルする</p>
+
+他のファイルは置くだけでよいのですが、java ファイルだけはコンパイルする必要があります。<br>
+コンパイルしないと実行することが出来ません。<br>
+コマンドプロンプトを起動して、次のようにしてコンパイルしましょう。<br>
+<br>
+<xmp class="console">
+C:\>cd c:\tomcat\webapps\bbs\WEB-INF\classes
+
+C:\tomcat\webapps\bbs\WEB-INF\classes>javac jp\co\insightech\*.java
+</xmp>
+すると次のようなエラーメッセージが表示されるはずです。
+<xmp class="console">
+BBSServlet.java:4: パッケージ javax.servlet は存在しません。
+import javax.servlet.*;
+^
+BBSServlet.java:5: パッケージ javax.servlet.http は存在しません。
+import javax.servlet.http.*;
+^
+BBSServlet.java:7: シンボルを見つけられません。
+シンボル: クラス HttpServlet
+public class BBSServlet extends HttpServlet {
+                                ^
+BBSServlet.java:9: シンボルを見つけられません。
+シンボル: クラス HttpServletRequest
+場所    : jp.co.insightech.BBSServlet の クラス
+        public void doGet(HttpServletRequest request, HttpServletResponse response)
+                          ^
+BBSServlet.java:9: シンボルを見つけられません。
+シンボル: クラス HttpServletResponse
+場所    : jp.co.insightech.BBSServlet の クラス
+        public void doGet(HttpServletRequest request, HttpServletResponse response)
+                                                      ^
+BBSServlet.java:10: シンボルを見つけられません。
+シンボル: クラス ServletException
+場所    : jp.co.insightech.BBSServlet の クラス
+                        throws ServletException, IOException {
+                               ^
+BBSServlet.java:28: シンボルを見つけられません。
+シンボル: クラス HttpServletRequest
+場所    : jp.co.insightech.BBSServlet の クラス
+        public void doPost(HttpServletRequest request, HttpServletResponse response)
+                           ^
+BBSServlet.java:28: シンボルを見つけられません。
+シンボル: クラス HttpServletResponse
+場所    : jp.co.insightech.BBSServlet の クラス
+        public void doPost(HttpServletRequest request, HttpServletResponse response)
+                                                       ^
+BBSServlet.java:29: シンボルを見つけられません。
+シンボル: クラス ServletException
+場所    : jp.co.insightech.BBSServlet の クラス
+                        throws ServletException, IOException {
+                               ^
+エラー 9 個
+
+C:\tomcat\webapps\bbs\WEB-INF\classes>
+</xmp>
+<br>
+これは、BBSServletで使用されている <span class="important">HttpServlet クラスや HttpServletRequest クラスが見つからないことが原因です。</span><br>
+HttpServlet クラスや HttpServletRequest クラスは %CATALINA_HOME%\lib の下にある <span class="important">servlet-api.jar</span> の中に入っています。<br>
+<br>
+<img src="image/servlet-api.jar.png">
+<br><br>
+そこで次のいずれかの方法で servlet-api.jar にクラスパスを通すことで、コンパイル時に<br>
+HttpServlet クラスや HttpServletRequest クラスが見つかるようにしてやる必要があるのです。<br>
+<br>
+<a name="option"></a>
+<p class="midasi1">クラスパスを通す方法１　コンパイルオプションで指定する</p>
+コンパイルする際に、<span class="important">-classpathオプション</span>を指定することで、<br>
+クラスパスを設定することができます。<br>
+<xmp class="console">
+C:\tomcat\webapps\bbs\WEB-INF\classes>javac -classpath c:\tomcat\lib\servlet-api.jar jp\co\insightech\*.java
+
+C:\tomcat\webapps\bbs\WEB-INF\classes>
+</xmp>
+<br>
+<a name="classpath"></a>
+<p class="midasi1">クラスパスを通す方法２　環境変数 CLASSPATH で指定する</p>
+毎回オプションを入れるのは面倒ですよね<br>
+<span class="important">環境変数 CLASSPATH</span> を設定すると、いちいちオプションで指定する必要がなくなります。<br>
+<br>
+<img src="image/classpath.png">
+<br><br>
+ここで、<span class="important">.; （カレントディレクトリ）</span>をいれるのを<span class="important">絶対に忘れないでください</span>。<br>
+これを忘れると java コマンドを実行した場合に、カレントディレクトリ、すなわち今いるディレクトリの下にある<br>
+クラスを見つけることが出来ずにClassNotFoundException が発生してしまいます。<br> 
+<br> 
+環境変数の設定を更新した場合は、既に開いているコマンドプロンプトを<span class="important">閉じてください</span>。<br>
+そうしないと、環境変数が反映されません。<br>
+<br>
+環境変数 CLASSPATH を設定したら、もうコンパイルエラーは発生しないはずです。
+<br><br>
+<xmp class="console">
+C:\>cd c:\tomcat\webapps\bbs\WEB-INF\classes
+
+C:\tomcat\webapps\bbs\WEB-INF\classes>javac jp\co\insightech\*.java
+
+C:\tomcat\webapps\bbs\WEB-INF\classes>
+</xmp>
+<br>
+<p class="midasi0">実行する</p>
+
+実行は、Tomcat を起動後、ブラウザで <a href="http://localhost:8080/bbs/index.html" target="_blank">http://localhost:8080/bbs/index.html</a> にアクセスします。<br>
+Tomcat の起動方法を忘れてしまった人は<a target="_blank" href="../04.掲示板開始の前に/05.Java,Tomcat,MySQLインストールマニュアル/index.html">こちら</a>を参照してください。<br>
+<br>
+図1、図2のように動作しましたか？<br>
+うまく動かなかった人は、どこかに間違いがあるはずです。もう一度よく読みなおして修正してください。<br>
+<br>
+<br>
+<p class="midasi0">解説</p>
+
+http://localhost:8080/<span class="important">bbs</span>/index.html にアクセスすると、Tomcat は<br>
+%CATALINA_HOME%\webapps\<span class="important">bbs</span>\index.html の内容をブラウザに返却します。<br>
+index.html の<br>
+<br>
+<xmp class="source">
+<form action="./top" method="GET">
+	名前<input type="text" name="name"><br>
+	趣味<input type="text" name="hobby"><br>
+	<input type="submit" value="送信">
+</form>
+</xmp>
+<br>
+の部分に着目してください。送信ボタンをおすと、<br>
+<br>
+<xmp class="source">
+<form action="./top" method="GET">
+</xmp>
+<br>
+の action で指定している URL「./top」すなわち「http://localhost:8080/<span class="important">bbs/top</span>」に遷移します。<br>
+<br>
+ここで http://localhost:8080/bbs<span class="important">/top</span> は %CATALINA_HOME%\webapps\bbs\web.xml の<br>
+次の部分で指定している <span class="important">url-pattern</span> に合致していますね。<br>
+<br>
+<xmp class="source">
+	<servlet>
+		<servlet-name>servlet_no_namae</servlet-name>
+		<servlet-class>jp.co.insightech.BBSServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>servlet_no_namae</servlet-name>
+		<url-pattern>/top</url-pattern>
+	</servlet-mapping>
+</xmp>
+<br>
+そのため、Tomcat は %CATALINA_HOME%\webapps\bbs\top というファイルを探してその内容を返却する替わりに<br>
+jp.co.insightech.BBSServlet を実行した結果（厳密にはレスポンスに設定された情報）をブラウザに返却します。<br>
+<br>
+この例で実際に返却された内容は次のようなものになります。<br>
+<br>
+<xmp class="source">
+<html><head><title>掲示板</title></head>
+<body><b>
+Wakai
+</b>さんの趣味は<i>
+CollectiongStamps
+</i>です
+</body></html>
+</xmp>
+<br>
+<br>
+次に、図2のアドレスバーの「http://localhost:8080/bbs/top<span class="important">?name=WAKAI&hobby=CollectingStamps</span>」に注目してください。<br>
+<span class="important">?</span> 以降の文字列はリクエストパラメータと言います。<br>
+<br>
+基本的に、WEBアプリケーションは、<span class="important">画面からサーバー（Tomcat） へ何らかの情報を渡して</span>、サーバーでその情報を<br>
+受け取って処理するアプリケーションです。<br>
+<br>
+情報を渡す方法は、<span class="important">１つ</span>しかありません。
+<span class="important">name=WAKAI</span> のようにして、<br>
+<span class="important">パラメータ名</span>（この例では name）と<span class="important">パラメータの値</span>（この例では WAKAI）を渡すのです。<br>
+<br>
+（※　Cookie やその他の Header でも渡せますが、これらはあくまで補助的なものであり、基本はすべてパラメータです。）<br>
+<br>
+パラメータとパラメータの間は <span class="important">&</span> で区切ります。<br>
+<br><br>
+<img src="image/question.gif"> &lt;form&gt; タグの <span class="important">method="GET"</span> の部分を、
+<span class="important">method="POST"</span> にしたらどうなるでしょうか？
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+
+</body>
+</html>

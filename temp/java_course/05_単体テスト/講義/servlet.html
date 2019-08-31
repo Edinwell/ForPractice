@@ -1,0 +1,745 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MVC施設予約の単体テスト</title>
+<link rel="stylesheet" type="text/css" href="../../css/main.css">
+<style TYPE="text/css">
+<!--
+dt {
+	padding-left: 10px;
+}
+
+dt.lv1 {
+	background-color: #99CCFF;
+	font-weight: bold;
+}
+
+dt.lv2 {
+	background-color: #EEEEEE;
+	border-bottom: 2px solid #999999;
+	font-weight: bold;
+	height: 25px;
+}
+
+dd {
+	/*font-size: 10px;*/
+	padding-left: 10px;
+}
+-->
+</style>
+</head>
+
+<body>
+
+	<center>
+		<h2>サーブレットメソッドの単体テスト</h2>
+	</center>
+	<hr>
+
+	<p class="midasi0">サーブレットメソッドの単体テスト</p>
+	
+ここまでユーティリティクラス、DAOクラスのテストケースの作り方を説明してきました。
+<br>
+	<br> 最後に、サーブレットの単体テストを行います。
+	<br> まずは、テストする項目を考えます。
+	<br>
+	<br> サーブレットの「入力」、「出力／結果」項目は以下のようなものでした。
+	<br>
+	<br>
+	<table>
+		<tr>
+			<th>メソッドの種類</th>
+			<th>入力</th>
+			<th>「出力／結果」</th>
+		</tr>
+		<tr>
+			<td>サーブレット メソッド</td>
+			<td>
+				<ul class="no_padding">
+					<li>リクエストパラメータ</li>
+					<li>リクエスト情報</li>
+					<li>セッション情報</li>
+					<li>呼び出しメソッド戻り値</li>
+				</ul>
+			</td>
+			<td>
+				<ul class="no_padding">
+					<li>呼び出しメソッド引数</li>
+					<li>リクエスト情報</li>
+					<li>セッション情報</li>
+					<li>遷移先情報</li>
+					<li>例外</li>
+				</ul>
+			</td>
+		</tr>
+	</table>
+
+	<br> この規則に沿って Servlet の入出力項目を全てピックアップしてみます。
+	<br>
+	<br>
+
+
+	<p class="midasi1">サーブレットメソッドの入力一覧</p>
+
+	「入力」 となるリクエストパラメータや、リクエスト情報、セッション情報は以下のようなコードに注目すると見つかります。
+	<br> ※コードの例ですので、実際の施設予約の Servlet のコードとは対応していません。
+	<br>
+	<h5>リクエストパラメータ</h5>
+
+<xmp class="source">
+String mode = request.getParameter("mode");
+</xmp>
+
+	<h5>リクエスト情報</h5>
+	
+<xmp class="source">
+Object requestInfo = request.getAttribute("info");
+</xmp>
+
+	<h5>セッション情報</h5>
+	
+<xmp class="source">
+Session session = request.getSession();
+Object sessionInfo = session.getAttribute("info");
+</xmp>
+
+	<br> また、Dao メソッドやユーティリティメソッドの戻り値は、以下のようなコードに注目すると見つかります。
+	<br>
+	<h5>ユーティリティメソッドの戻り値</h5>
+	
+<xmp class="source">
+String userId = request.getParameter("userId");
+if (ReserveUtil.isEmpty(userId)) { // <--ここでユーティリティの戻り値を取得している
+    // ... エラー処理
+} else {
+    // ... 正常処理
+}
+</xmp>
+
+	<h5>DAO メソッドの戻り値</h5>
+
+<xmp class="source">
+List list = dao.getReserveList(date);  // <--ここでDAOの戻り値を取得している
+</xmp>
+	<br>
+
+<!--
+	<br> doGet メソッドで用いられているそれぞれについて、一覧形式にしてみました。
+	<br> 「●」 で、テストデータとして使用する予定の値も一緒に挙げています。
+	<br>
+
+
+	<dl style="border: 1px solid #999999;">
+		<dt class="lv1">リクエストパラメータ</dt>
+		<dd>
+			<dl>
+				<dt class="lv2">login</dt>
+				<dd class="lv2">
+					ログインボタンが押下されたか
+					<ul>
+						<li>ログイン</li>
+						<li>null</li>
+					</ul>
+				</dd>
+
+				<dt class="lv2">loginId</dt>
+				<dd class="lv2">
+					ログインするID
+					<ul>
+						<li>1111</li>
+						<li>0000</li>
+						<li>""</li>
+					</ul>
+				</dd>
+
+				<dt class="lv2">logout</dt>
+				<dd class="lv2">
+					ログアウトボタンが押下されたか
+					<ul>
+						<li>ログアウト</li>
+						<li>null</li>
+					</ul>
+				</dd>
+
+				<dt class="lv2">prevMonth</dt>
+				<dd class="lv2">
+					「前月」ボタン
+					<ul>
+						<li>前月</li>
+						<li>null</li>
+					</ul>
+				</dd>
+
+				<dt class="lv2">nextMonth</dt>
+				<dd class="lv2">
+					「次月」ボタン
+					<ul>
+						<li>次月</li>
+						<li>null</li>
+					</ul>
+				</dd>
+
+				<dt class="lv2">nextMonth</dt>
+				<dd class="lv2">
+					「次月」ボタン
+					<ul>
+						<li>次月</li>
+						<li>null</li>
+					</ul>
+				</dd>
+
+				<dt class="lv2">today</dt>
+				<dd class="lv2">
+					「本日」ボタン
+					<ul>
+						<li>本日</li>
+						<li>null</li>
+					</ul>
+				</dd>
+
+				<dt class="lv2">doReserve</dt>
+				<dd class="lv2">
+					「予約 もしくは 取消」ボタン
+					<ul>
+						<li>予約 もしくは 取消</li>
+						<li>null</li>
+					</ul>
+				</dd>
+
+				<dt class="lv2">reserveDatas</dt>
+				<dd class="lv2">
+					チェックされた予約情報の配列
+					<ul>
+						<li>"(roomId)_(time)"の形式の文字列配列</li>
+						<li>null</li>
+					</ul>
+				</dd>
+
+				<dt class="lv2">cancelDatas</dt>
+				<dd class="lv2">
+					チェックされた取消情報の配列
+					<ul>
+						<li>"(roomId)_(time)"の形式の文字列配列</li>
+						<li>null</li>
+					</ul>
+				</dd>
+			</dl>
+		</dd>
+
+		<dt class="lv1">リクエスト情報</dt>
+		<dd>
+			<dl>
+				<dt>特になし</dt>
+			</dl>
+		</dd>
+
+		<dt class="lv1">セッション情報</dt>
+		<dd>
+			<dl>
+				<dt class="lv2">LOGIN_USER</dt>
+				<dd class="lv2">
+					ログインしているユーザ情報
+					<ul>
+						<li>ユーザオブジェクト</li>
+					</ul>
+					ログインしていないときはnullであるが、nullのときは処理に関わらないので必要ない。
+				</dd>
+			</dl>
+		</dd>
+
+		<dt class="lv1">呼び出しメソッド戻り値</dt>
+		<dd>
+			<dl>
+				<dt class="lv2">Calendar
+					ShowReserveServlet.getReserveDate(Request) の戻り値</dt>
+				<dd class="lv2">
+					表示している日付
+					<ul>
+						<li>Calendarオブジェクト</li>
+					</ul>
+				</dd>
+
+				<dt class="lv2">Vector ReserveDao.getRoomList() の戻り値</dt>
+				<dd class="lv2">
+					すべての施設モデルリスト
+					<ul>
+						<li>Roomモデルを含んだVector</li>
+						<li>空のVector</li>
+					</ul>
+				</dd>
+
+				<dt class="lv2">User ShowReserveServlet.login(String) の戻り値</dt>
+				<dd class="lv2">
+					ログインしたユーザ情報
+					<ul>
+						<li>Userオブジェクト</li>
+						<li>null</li>
+					</ul>
+				</dd>
+
+				<dt class="lv2">Vector
+					ShowReserveServlet.getReserveDataList(Request) の戻り値</dt>
+				<dd class="lv2">
+					送信された予約情報を予約モデルのVectorに変換したもの
+					<ul>
+						<li>Reserveモデルを含んだVector</li>
+						<li>空のVector</li>
+					</ul>
+				</dd>
+
+				<dt class="lv2">Vector
+					ShowReserveServlet.getCanselDataList(request) の戻り値</dt>
+				<dd class="lv2">
+					送信されたキャンセル情報を予約モデルのVectorに変換したもの
+					<ul>
+						<li>Reserveモデルを含んだVector</li>
+						<li>空のVector</li>
+					</ul>
+				</dd>
+
+				<dt class="lv2">Vector ReserveDao.getReserveList(Calendar) の戻り値</dt>
+				<dd class="lv2">
+					指定された日付の予約情報のリスト
+					<ul>
+						<li>Reserveモデルを含んだVector</li>
+						<li>空のVector</li>
+					</ul>
+				</dd>
+			</dl>
+		</dd>
+	</dl>
+	列挙することで、テスト方針が立てやすくなります。出力／結果 も同様に一覧にしてみます。
+	<br>
+-->
+	<br>
+
+	<p class="midasi1">サーブレットメソッドの出力／結果一覧</p>
+
+	「出力」 となるリクエスト情報、セッション情報は以下のようなコードに注目すると見つかります。
+	<br>
+
+	<h5>リクエスト情報</h5>
+	
+<xmp class="source">
+request.setAttribute("error.message", "エラーです。");
+</xmp>
+	
+<h5>セッション情報</h5>
+	<xmp class="source">
+Session session = request.getSession();
+session.setAttribute("rs.calendar", calendar);
+</xmp>
+	<br>
+	<br> DAO や ユーティリティメソッドへの引数は、以下のようなコードに注目すると見つかります。
+	<br>
+	<h5>ユーティリティメソッドへの引数</h5>
+	
+<xmp class="source">
+String userId = request.getParameter("userId");
+if (ReserveUtil.isEmpty(userId)) { // <--ここでユーティリティにuserIdを渡している
+    // ... エラー処理
+} else {
+    // ... 正常処理
+}
+</xmp>
+	
+<h5>DAO メソッドへの引数</h5>
+
+<xmp class="source">
+List list = dao.getReserveList(date);  // <--ここでDAOの引数にdateを渡している
+</xmp>
+
+<!--
+
+	<br> 気づかれたかも知れませんが、
+	<br> DAO クラスやユーティリティクラスへの引数や、それらのクラスからの戻り値は、同じコード部分で発生しています。
+	<br> この部分が外部メソッドとの入出力部分となっています。
+	<br>
+	<br> 「入力」 と同じように、一覧形式にしてみます。
+	<br>
+	<dl style="border: 1px solid #999999;">
+		<dt class="lv1">呼び出しメソッド引数</dt>
+		<dd>
+			<dl>
+				<dt class="lv2">User ShowReserveServlet.login(String) への引数</dt>
+				<dd class="lv2">
+					<ul>
+						<li>"1111" (DBに存在するユーザID)</li>
+						<li>"0000" (DBに存在しないユーザID)</li>
+						<li>呼び出されない</li>
+					</ul>
+				</dd>
+
+				<dt class="lv2">void ShowReserveServlet.doReserve(Calendar,
+					User, Vector, Vector) への引数</dt>
+				<dd class="lv2">
+					<ul>
+						<li>日付情報、ログインユーザ情報、予約するためのReserveモデルVector、キャンセルするためのReserveモデルVector<br>
+							後者2つはどちらかのみ空のVectorのことあり。
+						</li>
+						<li>呼び出されない</li>
+					</ul>
+				</dd>
+				<dt class="lv2">Vector ReserveDao.getReserveList(Calendar) への引数</dt>
+				<dd class="lv2">
+					<ul>
+						<li>表示する日付</li>
+					</ul>
+				</dd>
+			</dl>
+		</dd>
+		<dt class="lv1">リクエスト情報</dt>
+		<dd>
+			<dl>
+				<dt class="lv2">ROOM_LIST</dt>
+				<dd class="lv2">
+					<ul>
+						<li>Vector ReserveDao.getRoomList() の戻り値</li>
+					</ul>
+				</dd>
+
+				<dt class="lv2">ERROR_MESSAGE</dt>
+				<dd class="lv2">
+					<ul>
+						<li>ユーザIDが違います</li>
+						<li>null</li>
+					</ul>
+				</dd>
+
+				<dt class="lv2">LOGIN_ID</dt>
+				<dd class="lv2">
+					<ul>
+						<li>ログインしていたUserオブジェクトから取り出したID</li>
+						<li>null</li>
+					</ul>
+				</dd>
+
+				<dt class="lv2">RESERVE_DATE</dt>
+				<dd class="lv2">
+					<ul>
+						<li>表示する日付</li>
+					</ul>
+				</dd>
+
+				<dt class="lv2">RESERVE_LIST</dt>
+				<dd class="lv2">
+					<ul>
+						<li>表示する日付の予約情報</li>
+						<li>空</li>
+					</ul>
+				</dd>
+			</dl>
+		</dd>
+		<dt class="lv1">セッション情報</dt>
+		<dd>
+			<dl>
+				<dt class="lv2">LOGIN_USER</dt>
+				<dd class="lv2">
+					<ul>
+						<li>ログインしたUserオブジェクト</li>
+						<li>null</li>
+					</ul>
+				</dd>
+			</dl>
+		</dd>
+		<dt class="lv1">遷移先情報</dt>
+		<dd>
+			<dl>
+				<dt class="lv2">遷移先情報</dt>
+				<dd class="lv2">
+					<ul>
+						<li>/reserve.jsp</li>
+					</ul>
+				</dd>
+			</dl>
+		</dd>
+		<dt class="lv1">例外</dt>
+		<dd>
+			<dl>
+				<dt class="lv2">実行時の例外</dt>
+				<dd class="lv2">
+					<ul>
+						<li>スタックトレースが出力されること</li>
+					</ul>
+				</dd>
+			</dl>
+		</dd>
+	</dl>
+-->
+<br>
+	このような観点に着目して列挙した「入力」と「出力／結果」 を組み合わせれば、
+	<br>プログラムの処理をカバーした直行表を作成することができます。
+	<br>
+<br>
+
+<!--
+<div class="comment">
+ここまで見てきた ReserveServlet クラスは private なメソッドが多数あり説明が難しくなるので、以下では別のソースを<br>
+元にして直交表を作り、テストを行います。 これを参考にして各自で組み立ててみてください。<br>
+</div>
+	<br>
+	<br>テストをするServletクラスの内容はこのようになります。(処理の部分は省略)<br>
+	<br>
+
+	<xmp class="source">
+	/**
+	 * 処理を実行します。
+	 *
+	 * @param request HttpServletRequest
+	 * @param response HttpServletResponse
+	 * @throws ReserveSystemException システム例外発生時
+	 * @throws IOException 遷移による例外発生時
+	 * @throws ServletException 遷移による例外発生時
+	 *
+	 */
+	private void doProcess(HttpServletRequest request,
+			HttpServletResponse response) throws ReserveSystemException,
+			ServletException, IOException {
+
+		// カレンダーがnullだったら生成して設定
+
+		// mode取得
+		String mode = request.getParameter("mode");
+
+		if ("ymd_today".equals(mode)) {
+			// カレンダー設定
+
+		} else if ("ymd_prev".equals(mode)) {
+			// カレンダー設定
+
+		} else if ("ymd_next".equals(mode)) {
+			// カレンダー設定
+
+		} else if ("ymd_changeDate".equals(mode)) {
+			// day 取得
+			// ReserveUtil.isPositiveNum メソッドの戻り値に応じて次処理を決定
+			// ReserveUtil.isValidDay メソッドの戻り値に応じて日付を設定
+
+		} else if ("logout".equals(mode)) {
+			// ログアウト処理
+
+		} else if ("login".equals(mode)) {
+			// userId 取得
+			// ReserveUtil.isEmpty メソッドの戻り値に応じて次処理を決定
+			// employeeDao.get メソッドの戻り値を設定
+
+		} else if ("update".equals(mode)) {
+			// ログイン状態を取得して次処理を決定
+			// reserves, cancels 取得
+			// ReserveUtil.isValidateReserves メソッドの戻り値に応じて次処理を決定
+			// reserveDao.isUpdatable メソッドの戻り値に応じて次処理を決定
+			// ReserveDao.update メソッドにて更新
+
+		}
+
+		// RoomDao.getList メソッドの戻り値（一覧）を設定
+		// ReserveDao.getList メソッドの戻り値（一覧）を設定
+
+		// 遷移先を設定
+
+	}
+</xmp>
+-->
+
+	<p class="midasi1">サーブレットメソッドの直交表</p>
+
+以下にいくつかの直行表のサンプルを記載します。<br>
+<br>
+細かい点は見る必要ありませんので、<span class="important">入力、出力にどういった項目を挙げるのか</span>という点に着目して確認してください。<br>
+<br>
+	<br> 以下の直交表では、「カレンダー変更」 のためのいくつかの処理、「ログアウト」 の処理、mode
+	値が取得できなかった場合の処理と、
+	<br> 全てのパターンにおいて同じように利用している DAO メソッドからの例外発生処理などを検証しています。
+	<br>
+	<br>
+	<span class="important">ポイント</span>は<br>
+	入出力に挙げる項目と<br>
+	<span class="important">特定のパターンにおいてさらに詳細なケース分けが発生する場合はそのパターンを別紙に分ける</span><br>
+	という点です。<br>
+	<br>
+	<img src="images/6_1.png" border="1" />	<br>
+<br>
+
+	<p class="midasi2">日付変更処理の直行表</p>
+
+	 次の直交表では、「日付変更」 処理を切り出して検証します。
+	<br> このメソッドでは、ユーティリティメソッドを使用するため、直交表を分けました。
+	<br>
+	<br>
+	<img src="images/6_2.png" border="1" />
+	<br>
+	<br>
+
+	<p class="midasi2">ログイン処理の直行表</p>
+
+	次の直交表は、ユーティリティメソッド、DAO メソッドを使用する 「ログイン」 処理を切り出しています。
+	<br> ユーティリティメソッドからの戻り値を使用して、
+	<br> DAO メソッドの呼び出し有無や、セッション内のユーザ情報が正常に制御できていることを検証します。
+	<br> また、既に「ログイン」 状態となっていた場合を想定して、仕様を細かく詰めました。
+	<br>
+	<br>
+
+	<img src="images/6_3.png" border="1" /><br>
+<br>
+
+	<p class="midasi2">更新処理の直行表</p>
+
+	最後の直交表では、ユーティリティメソッド、DAO メソッドを使用している 「更新」 処理を検証します。
+	<br> ログインユーザ情報の有無、送信されたリクエストの妥当性を検査し、
+	<br> さらに DAO メソッドで、他のユーザに更新されていないかを検査して、
+	<br> 全ての場合において問題がない場合にのみ、DAO の更新メソッドを呼び出すことを確認しています。
+	<br>
+	<br>
+	<img src="images/6_4.png" border="1" /><br>
+	<br>
+
+	<p class="midasi1">テストクラスの JavaDoc</p>
+	JavaDoc の記述方法は、今までのテストクラスと変わりません。
+	<br>
+	<br> 簡単なサンプルをひとつ挙げます。
+	<br> 「呼び出しメソッド戻り値」 と、「呼び出しメソッド引数」 の部分に注目してください。
+	<br> また、セッション情報やリクエスト情報で使用するキーで、「定数」 となっているものは{@link}タグで記述しています。
+	<br>
+	<br>
+
+<xmp class="source">
+	/**
+	 * <pre>
+	 * 【概要】
+	 * ・「ymd_next」 が送信された場合、施設予約の日付が「次月」に変更されること.
+	 *
+	 * 【条件】
+	 * リクエストパラメータ
+	 * ・mode : ymd_next
+	 *
+	 * セッション情報
+	 * ・rs.calendar.key : 2008/08/15
+	 *
+	 * 呼び出しメソッド戻り値
+	 * ・{@link RoomDao#getList()} : 施設リスト
+	 * ・{@link ReserveDao#getList(Date)} : 予約リスト
+	 *
+	 * 【実行】
+	 * ・doPost
+	 *
+	 * 【結果】
+	 * 呼び出しメソッド引数
+	 * ・{@link ReserveDao#getList(Date)} : date=2008/09/15
+	 *
+	 * リクエスト情報
+	 * ・{@link ReserveServlet#RESERVES_KEY} : 予約リスト
+	 * ・{@link ReserveServlet#ROOMS_KEY} : 施設リスト
+	 *
+	 * セッション情報
+	 * ・{@link ReserveServlet#CAL_KEY}: 2008/09/15
+	 *
+	 * 遷移先情報
+	 * ・WEB-INF/jsp/reserve.jsp
+	 *
+	 * </pre>
+	 */
+	public void testDoPostWhenModeYMDNext() throws Exception {
+	    fail("まだ実装されていません。");
+	}
+</xmp>
+	<br>
+	<br> 処理が一番複雑になりそうな、「更新」 処理の JavaDoc は以下のような感じになります。
+	<br>
+	<br>
+<div class="comment">
+次のテストケースは、なんだかものすごく複雑に感じると思います。<br>
+これは単体テストとして忠実に、ひとつひとつのメソッドの引数を条件にしたり、戻り値を確認したり<br>
+しているからです。<br>
+<br>
+確かにこのように忠実に行うことも重要なのですが、あまりに複雑になり過ぎると、<br>
+他の人が見た際に、理解できないテストケースとなってしまいます。<br>
+<br>
+そうならないためには、呼び出し先のメソッドも含めて一緒にテストした方が<br>
+ケースとしてすっきりすることもあります。<br>
+</div>
+<br>
+<xmp class="source">
+	/**
+	 * <pre>
+	 * 【概要】
+	 * ・「update」が送信された場合、更新されること.
+	 *
+	 * 【条件】
+	 * リクエストパラメータ
+	 * ・mode : update
+	 * ・reserves : [reserve1, reserve2]
+	 * ・cancels : [cancel1, cancel2]
+	 *
+	 * セッション情報
+	 * ・{@link ReserveServlet#CAL_KEY}} : 2008/08/15
+	 * ・{@link ReserveServlet#USER_KEY}} : User=[id=A, name=山田花子]
+	 *
+	 * 呼び出しメソッド戻り値
+	 * ・{@link ReserveUtil#isValidateReserves(String[])} : 1回目 : true
+	 * ・{@link ReserveUtil#isValidateReserves(String[])} : 2回目 : true
+	 *
+	 * ・{@link ReserveUtil#reserveToModelList(String[])} : 1回目 :
+	 *        [Reserve=[userId=null, roomId=1, reserveDate=2008/8/15, hour=12],
+	 *         Reserve=[userId=null, roomId=1, reserveDate=2008/8/15, hour=13]]
+	 * ・{@link ReserveUtil#reserveToModelList(String[])} : 2回目 :
+	 *        [Reserve=[userId=null, roomId=2, reserveDate=2008/8/15, hour=12],
+	 *         Reserve=[userId=null, roomId=2, reserveDate=2008/8/15, hour=13]]
+	 *
+	 * ・{@link ReserveDao#isUpdatable(List, List, String)} : true
+	 *
+	 * ・{@link RoomDao#getList()} : 施設リスト
+	 * ・{@link ReserveDao#getList(Date)} : 予約リスト
+	 *
+	 * 【実行】
+	 * ・doPost
+	 *
+	 * 【結果】
+	 * 呼び出しメソッド引数
+	 * ・{@link ReserveUtil#isValidateReserves(String[])} : 1回目 : [reserve1, reserve2]
+	 * ・{@link ReserveUtil#isValidateReserves(String[])} : 2回目 : [cancel1, cancel2]
+	 * ・{@link ReserveUtil#reserveToModelList(String[])} : 1回目 : [reserve1, reserve2]
+	 * ・{@link ReserveUtil#reserveToModelList(String[])} : 2回目 : [cancel1, cancel2]
+	 * ・{@link ReserveDao#isUpdatable(List, List, String)} :
+	 *    reserves=[Reserve=[userId=null, roomId=1, reserveDate=2008/8/15, hour=12],
+	 *              Reserve=[userId=null, roomId=1, reserveDate=2008/8/15, hour=13]],
+	 *    cancels =[Reserve=[userId=null, roomId=2, reserveDate=2008/8/15, hour=12],
+	 *              Reserve=[userId=null, roomId=2, reserveDate=2008/8/15, hour=13]],
+	 *    userId  =A
+	 *
+	 * ・{@link ReserveDao#update(List, List)} :
+	 *    reserves=[Reserve=[userId=A, roomId=1, reserveDate=2008/8/15, hour=12],
+	 *              Reserve=[userId=A, roomId=1, reserveDate=2008/8/15, hour=13]]
+	 *    cancels =[Reserve=[userId=A, roomId=2, reserveDate=2008/8/15, hour=12],
+	 *              Reserve=[userId=A, roomId=2, reserveDate=2008/8/15, hour=13]]
+	 *
+	 * ・{@link ReserveDao#getList(Date)} : date=2008/08/15
+	 *
+	 * リクエスト情報
+	 * ・{@link ReserveServlet#RESERVES_KEY} : 予約リスト
+	 * ・{@link ReserveServlet#ROOMS_KEY} : 施設リスト
+	 *
+	 * セッション情報
+	 * ・{@link ReserveServlet#CAL_KEY}: 2008/08/15
+	 *
+	 * 遷移先情報
+	 * ・WEB-INF/jsp/reserve.jsp
+	 * </pre>
+	 */
+	public void testDoPostWhenModeUpdateSuccess() throws Exception {
+		fail("まだ実装されていません。");
+	}
+</xmp>
+	<br>
+	<br> さて、直交表と JavaDoc が出来上がりましたので、JUnit テストケースを作成していきましょう。
+	<br>
+
+	<br>
+	<br>
+
+	<hr>
+	<center>&copy;日本インサイトテクノロジー株式会社</center>
+	<br>
+	<br>
+	<br>
+</body>
+</html>

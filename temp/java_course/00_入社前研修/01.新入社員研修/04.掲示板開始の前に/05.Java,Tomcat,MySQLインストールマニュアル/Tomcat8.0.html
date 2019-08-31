@@ -1,0 +1,113 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="../../../css/main.css">
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+</head>
+<body>
+
+<center>
+<h2>Tomcat8.0のインストール(Java1.8)</h2>
+</center>
+<hr>
+
+<p class="midasi0">Tomcat8.0のインストール</p>
+
+<div class="desc1">１．下記サイトより Tomcatをダウンロードして下さい。</div>
+<ul>
+<a href="http://tomcat.apache.org/download-80.cgi">http://tomcat.apache.org/download-80.cgi</a><br>
+<br>
+<img src="image/tom8Inst1.png"><br><br>
+ここでは、Installerをダウンロードして下さい。<br><br>
+</ul>
+<div class="desc1">２．Installerを実行していきます。</div>
+<ul>
+<img src="image/tom8Inst2.png"><br><br>
+「Next」を押して下さい。<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/tom8Inst3.png"><br><br>
+「I Agree」を押して下さい。<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/tom8Inst4.png"><br><br>
+ここはデフォルトなので、そのまま「Next」を押して下さい。<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/tom8Inst5.png"><br><br>
+Tomcat Manegerにログインする際のID(UserName)、パスワードを設定します。<br>
+ここでは統一して<b>UserName=insight、Password=insight</b>にしておきます。<br>
+その他の項目はデフォルトなので、UserNameとPassswordを入力した後、「Next」を押して下さい。<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/tom8Inst6.png"><br><br>
+JREの参照場所を聞いているので、JREのあるディレクトリを設定します。<br>
+（JREをインストールしていない場合は、先にインストールをして下さい。）<br>
+既にインストールされている場合は自動で参照されるので、<br>
+確認後「Next」を押して下さい。<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/tom8Inst7.png"><br><br>
+ここでは Tomcat のインストール先を設定します。<br>
+デフォルトでは C:\Program Files\Apache Software Foundation\Tomcat 8.0 に設定されていますが、<br>
+下図のように<font color="red"><b>C:\Tomcat 8.0</b></font>にインストールされるように変更しましょう。<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/tom8Inst8.png"><br><br>
+変更後、「Install」を押して下さい。<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/tom8Inst9.png"><br><br>
+デフォルトではチェックがついていますが、<br>
+ここではチェックをはずしてから「Finish」を押して下さい。<br>
+（後に起動確認をするためです。）<br>
+</ul>
+<br>
+
+<div class="desc1">3. Tomcat の起動方法と終了方法</div>
+
+<div class="comment">
+<font color="red">「Windows Vista」で動作させる場合</font><br>
+<br>
+Windows系はTomcatの対応OSであればこのマニュアル通りで動作できるかと思いますが、<br>
+Vistaで動かすと、「unable to open the service 'Tomcat8'」と言うダイアログが出てくると思います。<br>
+この場合、「コントロールパネル」→「ユーザーアカウント」→「ユーザーアカウント制御の有効化または無効化」→ <br>
+ユーザーアカウント制御(UAC)を使ってコンピュータの保護に役立てる のチェックボックスをはずして、<br>
+OKを押して再起動すると動かせるようになります。<br>
+</div>
+<br>
+
+ここから、Tomcatを起動させていきます。<br>
+起動方法は「スタート」→「すべてのプログラム」→「Apache Tomcat 8.0」と進み、「Configure Tomcat」を押下して下さい。<br>
+<br>
+<img src="image/tom8Inst10.png"><br><br>
+<div align="center"><font size=7 color="red">↓</font><br></div><br>
+下図が現れるので「start」を押下して下さい。<br>
+「stop」を押下すると終了します。<br><br>
+<img src="image/tom8Inst11.png"><br><br>
+<br>
+<div align="center"><font size=7 color="red">↓</font><br></div><br>
+起動に成功したかの確認は、「<a href="http://localhost:8080/">http://localhost:8080/</a>」とブラウザに入力して下さい。<br><br>
+<br>
+下記のページが現れれば起動成功です。<br><br>
+<img src="image/tom8Inst12.png"><br><br>
+<br>
+次に、上図の「Manager　App」を押して下さい。<br>
+<br>
+ユーザー名と、パスワードを聞かれるので、前に設定したユーザー名=insight, パスワード=insight<br>
+を入力してログインできることも確認しておいて下さい。下記のページが現れます。<br>
+ユーザー名と、パスワードを忘れてしまった場合は、Tomcat をインストールしたディレクトリ内の「conf」フォルダの「tomcat-users.xml」を開くと書いてあります。<br><br>
+<img src="image/tom8Inst13.png"><br><br>
+<br><br>
+これ以降本ドキュメントでは、Tomcat をインストールしたディレクトリ C:\tomcat 8.0 を <span class="important">%CATALINA_HOME%</span> と記載します。<br>
+<br><br>
+
+</ul>
+<br>
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+
+</body>
+</html>

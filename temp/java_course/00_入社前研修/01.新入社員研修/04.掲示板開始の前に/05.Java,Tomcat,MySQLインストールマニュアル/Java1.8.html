@@ -1,0 +1,93 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="../../../css/main.css">
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+</head>
+<body>
+
+<center>
+<h2>JDK8.0 のインストール</h2>
+</center>
+<hr>
+
+
+<p class="midasi0">JDK(Java SE Development Kit)8.0 のインストール</p>
+
+<div class="desc1"><h3>１．下記サイトより JDK8.0 をダウンロードしてください。</h3></div>
+<ul>
+JDK8.0： <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">
+http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a><br>
+<br>
+<img src="image/java8Inst1.png"><br><br>
+自分のPCのビット数を確認し、ビット数にあったものをダウンロード→実行してください。<br>
+（32bit:Windows x86, 64bit:Windows x64）<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/java8Inst2.png"><br><br>
+そのまま「次」を押して下さい。<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/java8Inst3.png"><br><br>
+そのまま「次」を押して下さい。<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<img src="image/java8Inst4.png"><br><br>
+そのまま「次」を押して下さい。<br>
+<div align="center"><font size=7 color="red">↓</font><br></div>
+<br>
+<ur>
+<img src="image/java8Inst5.png"><br><br>
+インストールが完了したので「閉じる」を押して下さい。<br><br>
+<div class="comment">
+JDKとJREの違いについて<br>
+<br>
+インストール後、C:\Program Files\Javaの中には「jdk・・」と、「jre・・」と２つのフォルダが作成されますが、<br>
+JDK は Java SE Development Kit の略で、JRE は Java Runtime Environment の略です。<br>
+JDK はコンパイラ、JRE は Java のプログラムを実行するための JVM です。<br>
+JVMとはJava Virtual Machineの略で、Java プログラムを実行するための仮想マシンの事。<br>
+ 簡単に説明すると、JVMを入れれば、どんなPC環境下でもJava プログラムを動かすことができます。<br>
+</div>
+<br><br>
+<div class="desc1"><h3>２. 環境変数の設定</h3></div>
+<ul>
+「コントロールパネル」→「システムとセキュリティ」→「システム」→「システムの詳細設定」→「環境変数」と選択して、<br>
+システム環境変数に下記のものを追加していきます。<br><br>
+PATH ：　<font color="red"><b>C:\Program Files\Java\jdk1.8.0_45\bin</b></font><br>
+<br>
+<div class="comment">
+変数値の最後にセミコロンを打って追加します。<br>
+"・・・<font color="red"><b>;</font>C:\Program Files\Java\jdk1.8.0_45\bin</b>"<br>
+元から入ってる変数値は消さないように注意！<br>
+</div>
+<br>
+<img src="image/java8Inst7.png"><br><br>
+<div class="comment">
+既に起動しているコマンドプロンプト等のプログラムは、プログラムを再起動しないと<br>
+設定が反映されません。<br>
+(パソコンを再起動する必要はありません)<br>
+</div>
+</ul><br>
+</ur>
+<div class="desc1"><h3>３．Javaの起動確認<h3></div>
+<ul>
+設定は一通り終了したので実際動かして確認してください。<br>
+下図のような、Javaのサンプルを作成、保存して実行してみます。<br>
+<br>
+<img src="image/java7Inst8.png"><br><br>
+コマンドプロンプトを立ち上げ、コンパイルして実行して、<br>
+実行できることを確認してください。<br>
+<br>
+<img src="image/java7Inst7.png"><br><br>
+
+</ul>
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+
+</body>
+</html>

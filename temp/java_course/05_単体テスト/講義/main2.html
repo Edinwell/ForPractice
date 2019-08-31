@@ -1,0 +1,677 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<title>～JUnit への道～</title>
+<link rel="stylesheet" type="text/css" href="../../css/main.css">
+</head>
+<body>
+
+<center>
+<h2>テスト概論</h2>
+</center>
+<hr>
+<p class="midasi0">～ テストへの道～</p>
+
+ソフトウェアのテストとは、どういうものなのでしょうか？<br>
+<br>
+テストはなんのためにあるのでしょうか？<br>
+<br>
+テストをすることでなにかよいことが生じるのでしょうか？<br>
+<br>
+今回の研修は、そんな疑問に答えていきます。<br>
+<br>
+
+<p class="midasi1">複雑化が進むシステム</p>
+
+
+
+一般紙においても「IT」という単語が現れない日はないと言えるほど、今日、この技術は社会に広く 浸透しています。<br>
+<br>
+インターネット、そしてさまざまなソフトウェア技術の加速度的な発展とともに、<br>
+現在では、 数えきれないほどのプロジェクトにより開発作業が行われています。 <br>
+<br>
+しかし、いくら技術が発展しても、開発の手戻りや致命的なバグの発生といった問題は<br>
+今なおソフトウェア開発の最重要課題として、多くのプロジェクトのメンバーを苦しめています。<br>
+昨今のシステムは、メインフレームで一括集中してアプリケーションを稼働させていた時代に比して、<br>
+複雑な構造を持つと言えるからです。<br>
+<br>
+例えば、J2EEでは、JSPやサーブレット、EJBなどの異なる技術を駆使することで、<br>
+大量のトランザクション処理や信頼性の高い柔軟なシステム構築の実現を図っています。<br>
+<br>
+しかし、こうしたことが原因となって、プログラミング・モデルが複雑化し、<br>
+品質の向上が難しくなるというトレードオフの関係が今日問題となっていきています。<br>
+<br>
+ソフトウェアのテストを効率良く実施し、高品質を確保するにはどうすればよいのかをこれから考えていくことにしましょう。<br>
+<br>
+
+
+<p class="midasi1">開発プロセスの流れ</p>
+
+一般的な開発プロセスは下図のような流れとなります。 </br>
+</br>
+<p><img src="RoadOfTest/developmentprocess/Resized/vmap.png"><p>
+
+</br>
+ソフトウェアの開発プロジェクトにおいては、「開発コストは欠陥除去コストに左右される」 といっても 過言ではなく、<br>
+それぞれのフェーズで、下記のような事を確認します。</br>
+</br>
+単体テスト
+<ul>
+	<li>モジュール単体の機能確認 </li>
+	<li>内部ロジックの確認 </li>
+	<li>条件分岐を網羅していることの確認 </li>
+	<li>例外条件やその処理方法の確認</li>
+</ul>
+
+</br>
+結合テスト 
+<ul>
+	<li>サブシステム内のモジュール間の確認 </li>
+	<li>サブシステム間のインタフェース部分の動作を確認 </li>
+</ul>
+
+
+</br>
+システムテスト
+<ul>
+	<li>新機能テスト（正常／異常／復旧［New Function Testing］）</li>
+	<li>回帰テスト（Regression Testing）</li>
+	<li>負荷テスト（Load/Stress Testing）</li>
+	<li>環境変化に対するテスト（Environment Testing） </li>
+	<li>パフォーマンス測定テスト（Performance Measrement Testing） </li>
+</ul>
+
+
+</br>
+受け入れテスト（運用テスト）
+<ul>
+	<li>実際の稼働環境下において実施の確認 </li>
+	<li>シナリオによる確認</li>
+</ul>
+
+
+</br>
+</br>
+また、これらのテスト工程の流れの例を下記に示します。
+
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>aaa</o:Author>
+  <o:LastAuthor> </o:LastAuthor>
+  <o:LastPrinted>2007-09-12T04:12:22Z</o:LastPrinted>
+  <o:Created>2007-09-12T01:51:48Z</o:Created>
+  <o:LastSaved>2008-09-05T00:59:11Z</o:LastSaved>
+  <o:Version>10.6839</o:Version>
+ </o:DocumentProperties>
+ <o:OfficeDocumentSettings>
+  <o:DownloadComponents/>
+  <o:LocationOfComponents HRef="file:///\\"/>
+ </o:OfficeDocumentSettings>
+</xml><![endif]-->
+<style>
+<!--table
+	{mso-displayed-decimal-separator:"\.";
+	mso-displayed-thousand-separator:"\,";}
+@page
+	{margin:.98in .79in .98in .79in;
+	mso-header-margin:.51in;
+	mso-footer-margin:.51in;}
+tr
+	{mso-height-source:auto;
+	mso-ruby-visibility:none;}
+col
+	{mso-width-source:auto;
+	mso-ruby-visibility:none;}
+br
+	{mso-data-placement:same-cell;}
+.style0
+	{mso-number-format:General;
+	text-align:general;
+	vertical-align:middle;
+	white-space:nowrap;
+	mso-rotate:0;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	color:windowtext;
+	font-size:11.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"ＭＳ Ｐゴシック", monospace;
+	mso-font-charset:128;
+	border:none;
+	mso-protection:locked visible;
+	mso-style-name:標準;
+	mso-style-id:0;}
+td
+	{mso-style-parent:style0;
+	padding-top:1px;
+	padding-right:1px;
+	padding-left:1px;
+	mso-ignore:padding;
+	color:windowtext;
+	font-size:11.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"ＭＳ Ｐゴシック", monospace;
+	mso-font-charset:128;
+	mso-number-format:General;
+	text-align:general;
+	vertical-align:middle;
+	border:none;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	mso-protection:locked visible;
+	white-space:nowrap;
+	mso-rotate:0;}
+.xl24
+	{mso-style-parent:style0;
+	border:.5pt solid windowtext;}
+.xl25
+	{mso-style-parent:style0;
+	border:.5pt solid windowtext;
+	white-space:normal;}
+.xl26
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:.5pt solid windowtext;
+	border-bottom:.5pt solid windowtext;
+	border-left:.5pt solid windowtext;}
+.xl27
+	{mso-style-parent:style0;
+	border:.5pt solid windowtext;
+	background:#CCFFFF;
+	mso-pattern:auto none;}
+.xl28
+	{mso-style-parent:style0;
+	border:.5pt solid windowtext;
+	background:#FFFFCC;
+	mso-pattern:auto none;}
+ruby
+	{ruby-align:left;}
+rt
+	{color:windowtext;
+	font-size:6.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"ＭＳ Ｐゴシック", monospace;
+	mso-font-charset:128;
+	mso-char-type:katakana;
+	display:none;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <x:ExcelWorkbook>
+  <x:ExcelWorksheets>
+   <x:ExcelWorksheet>
+    <x:Name>Sheet1</x:Name>
+    <x:WorksheetOptions>
+     <x:DefaultRowHeight>270</x:DefaultRowHeight>
+     <x:Print>
+      <x:ValidPrinterInfo/>
+      <x:PaperSizeIndex>9</x:PaperSizeIndex>
+      <x:Scale>48</x:Scale>
+      <x:VerticalResolution>0</x:VerticalResolution>
+     </x:Print>
+     <x:PageBreakZoom>60</x:PageBreakZoom>
+     <x:Selected/>
+     <x:ProtectContents>False</x:ProtectContents>
+     <x:ProtectObjects>False</x:ProtectObjects>
+     <x:ProtectScenarios>False</x:ProtectScenarios>
+    </x:WorksheetOptions>
+   </x:ExcelWorksheet>
+  </x:ExcelWorksheets>
+  <x:WindowHeight>8445</x:WindowHeight>
+  <x:WindowWidth>11715</x:WindowWidth>
+  <x:WindowTopX>240</x:WindowTopX>
+  <x:WindowTopY>45</x:WindowTopY>
+  <x:ProtectStructure>False</x:ProtectStructure>
+  <x:ProtectWindows>False</x:ProtectWindows>
+ </x:ExcelWorkbook>
+ <x:ExcelName>
+  <x:Name>Print_Area</x:Name>
+  <x:SheetIndex>1</x:SheetIndex>
+  <x:Formula>=Sheet1!$A$1:$G$12</x:Formula>
+ </x:ExcelName>
+</xml><![endif]-->
+</head>
+
+<body link=blue vlink=purple>
+
+<table x:str border=0 cellpadding=0 cellspacing=0 width=1375 style='border-collapse:
+ collapse;table-layout:fixed;width:1032pt'>
+ <col width=72 style='width:54pt'>
+ <col width=180 style='mso-width-source:userset;mso-width-alt:5760;width:135pt'>
+ <col width=237 style='mso-width-source:userset;mso-width-alt:7584;width:178pt'>
+ <col width=294 style='mso-width-source:userset;mso-width-alt:9408;width:221pt'>
+ <col width=313 style='mso-width-source:userset;mso-width-alt:10016;width:235pt'>
+ <col width=279 style='mso-width-source:userset;mso-width-alt:8928;width:209pt'>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 width=72 style='height:13.5pt;width:54pt'></td>
+  <td width=180 style='width:135pt'></td>
+  <td width=237 style='width:178pt'></td>
+  <td width=294 style='width:221pt'></td>
+  <td width=313 style='width:235pt'></td>
+  <td width=279 style='width:209pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=6 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl27>テスト<ruby>工程<span style='display:none'><rt>コウテイ</rt></span></ruby></td>
+  <td class=xl28 style='border-left:none'><ruby>単体<span style='display:none'><rt>タンタイ</rt></span></ruby>テスト</td>
+  <td class=xl28 style='border-left:none'><ruby>結合<span style='display:none'><rt>ケツゴウ</rt></span></ruby>テスト</td>
+  <td class=xl28 style='border-left:none'>システムテスト</td>
+  <td class=xl28 style='border-left:none'><ruby>運用<span style='display:none'><rt>ウンヨウ</rt></span></ruby>テスト</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl27 style='border-top:none'>テストの<ruby>実施<span style='display:none'><rt>ジッシ</rt></span></ruby><ruby>環境<span
+  style='display:none'><rt>カンキョウ</rt></span></ruby></td>
+  <td class=xl26 style='border-left:none'><ruby>開発<span style='display:none'><rt>カイハツ</rt></span></ruby><ruby>者<span
+  style='display:none'><rt>シャ</rt></span></ruby>のＰＣ</td>
+  <td class=xl26 style='border-left:none'>ＰＣ<ruby>環境<span style='display:none'><rt>カンキョウ</rt></span></ruby></td>
+  <td class=xl26 style='border-left:none'>テスト<ruby>環境<span style='display:none'><rt>カンキョウ</rt></span></ruby></td>
+  <td class=xl26 style='border-left:none'><ruby>本番<span style='display:none'><rt>ホンバン</rt></span></ruby><ruby>環境<span
+  style='display:none'><rt>カンキョウ</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl27 style='border-top:none'>テスト<ruby>実施<span style='display:none'><rt>ジッシ</rt></span></ruby><ruby>者<span
+  style='display:none'><rt>シャ</rt></span></ruby></td>
+  <td class=xl24 style='border-top:none;border-left:none'><ruby>開発<span
+  style='display:none'><rt>カイハツ</rt></span></ruby><ruby>者<span
+  style='display:none'><rt>シャ</rt></span></ruby></td>
+  <td class=xl24 style='border-top:none;border-left:none'>テスト<ruby>担当者<span
+  style='display:none'><rt>タントウシャ</rt></span></ruby></td>
+  <td class=xl24 style='border-top:none;border-left:none'>テスト<ruby>担当者<span
+  style='display:none'><rt>タントウシャ</rt></span></ruby></td>
+  <td class=xl24 style='border-top:none;border-left:none'>テスト<ruby>担当者<span
+  style='display:none'><rt>タントウシャ</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl27 style='border-top:none'>テストの<ruby>対象<span style='display:none'><rt>タイショウ</rt></span></ruby></td>
+  <td class=xl24 style='border-top:none;border-left:none'>クラス<ruby>単体<span
+  style='display:none'><rt>タンタイ</rt></span></ruby>・<ruby>複数<span
+  style='display:none'><rt>フクスウ</rt></span></ruby>のクラス</td>
+  <td class=xl24 style='border-top:none;border-left:none'>サブシステム<ruby>全体<span
+  style='display:none'><rt>ゼンタイ</rt></span></ruby></td>
+  <td class=xl24 style='border-top:none;border-left:none'>サブシステム<ruby>全体<span
+  style='display:none'><rt>ゼンタイ</rt></span></ruby></td>
+  <td class=xl24 style='border-top:none;border-left:none'>システム<ruby>全体<span
+  style='display:none'><rt>ゼンタイ</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl27 style='border-top:none'>モック（スタブ）の<ruby>使用<span
+  style='display:none'><rt>シヨウ</rt></span></ruby></td>
+  <td class=xl24 style='border-top:none;border-left:none'>○</td>
+  <td class=xl24 style='border-top:none;border-left:none'>○</td>
+  <td class=xl24 style='border-top:none;border-left:none'>△（<ruby>一部<span
+  style='display:none'><rt>イチブ</rt></span></ruby><ruby>可<span style='display:
+  none'><rt>カ</rt></span></ruby>）</td>
+  <td class=xl24 style='border-top:none;border-left:none'>×</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl27 style='border-top:none'>テストの<ruby>方法<span style='display:none'><rt>ホウホウ</rt></span></ruby></td>
+  <td class=xl24 style='border-top:none;border-left:none'>JUnitを<ruby>使用<span
+  style='display:none'><rt>シヨウ</rt></span></ruby></td>
+  <td class=xl24 style='border-top:none;border-left:none'>JUnitとキャプチャ＆リプレイ<ruby>型<span
+  style='display:none'><rt>ガタ</rt></span></ruby>ツールを<ruby>使用<span
+  style='display:none'><rt>シヨウ</rt></span></ruby></td>
+  <td class=xl24 style='border-top:none;border-left:none'>キャプチャ＆リプレイ<ruby>型<span
+  style='display:none'><rt>ガタ</rt></span></ruby>ツールを<ruby>使用<span
+  style='display:none'><rt>シヨウ</rt></span></ruby></td>
+  <td class=xl24 style='border-top:none;border-left:none'>キャプチャ＆リプレイ<ruby>型<span
+  style='display:none'><rt>ガタ</rt></span></ruby>ツールを<ruby>使用<span
+  style='display:none'><rt>シヨウ</rt></span></ruby></td>
+ </tr>
+ <tr height=81 style='mso-height-source:userset;height:60.75pt'>
+  <td height=81 style='height:60.75pt'></td>
+  <td class=xl27 style='border-top:none'>テストケースの<ruby>作成<span style='display:
+  none'><rt>サクセイ</rt></span></ruby></td>
+  <td class=xl25 width=237 style='border-top:none;border-left:none;width:178pt'>ホワイトボックステスト<br>
+    ブラックボックステスト</td>
+  <td class=xl24 style='border-top:none;border-left:none'>グレーボックステスト</td>
+  <td class=xl24 style='border-top:none;border-left:none'>ユースケースを<ruby>使<span
+  style='display:none'><rt>ツカ</rt></span></ruby>った<ruby>業務<span
+  style='display:none'><rt>ギョウム</rt></span></ruby>シナリオ</td>
+  <td class=xl25 width=279 style='border-top:none;border-left:none;width:209pt'>オンライン<ruby>系<span
+  style='display:none'><rt>ケイ</rt></span></ruby>の<ruby>業務<span
+  style='display:none'><rt>ギョウム</rt></span></ruby>シナリオ、<br>
+    バッチ<ruby>処理<span style='display:none'><rt>ショリ</rt></span></ruby>、<br>
+    メンテナンス<ruby>系<span style='display:none'><rt>ケイ</rt></span></ruby>の<ruby>処理<span
+  style='display:none'><rt>ショリ</rt></span></ruby>、<br>
+    などシステム<ruby>全体<span style='display:none'><rt>ゼンタイ</rt></span></ruby></td>
+ </tr>
+ <tr height=152 style='mso-height-source:userset;height:114.0pt'>
+  <td height=152 style='height:114.0pt'></td>
+  <td class=xl27 style='border-top:none'>テストで<ruby>検証<span style='display:none'><rt>ケンショウ</rt></span></ruby>する<ruby>品質<span
+  style='display:none'><rt>ヒンシツ</rt></span></ruby></td>
+  <td class=xl25 width=237 style='border-top:none;border-left:none;width:178pt'>・メソッド<ruby>内部<span
+  style='display:none'><rt>ナイブ</rt></span></ruby>ロジックが<ruby>仕様<span
+  style='display:none'><rt>シヨウ</rt></span></ruby>どおりに<ruby>正<span
+  style='display:none'><rt>タダ</rt></span></ruby>しく<ruby>機能<span
+  style='display:none'><rt>キノウ</rt></span></ruby>すること<br>
+    ・<ruby>行<span style='display:none'><rt>ギョウ</rt></span></ruby><ruby>網<span
+  style='display:none'><rt>ラ</rt></span></ruby><ruby>羅<span style='display:
+  none'><rt>モウ</rt></span></ruby>、<ruby>分岐<span style='display:none'><rt>ブンキ</rt></span></ruby><ruby>網<span
+  style='display:none'><rt>ラ</rt></span></ruby><ruby>羅<span style='display:
+  none'><rt>モウ</rt></span></ruby>の<ruby>観点<span style='display:none'><rt>カンテン</rt></span></ruby>から、メソッド<ruby>内<span
+  style='display:none'><rt>ナイ</rt></span></ruby>のコードがテストされていること<br>
+    ・そのクラス<ruby>単体<span style='display:none'><rt>タンタイ</rt></span></ruby>が<ruby>外部<span
+  style='display:none'><rt>ガイブ</rt></span></ruby>に<ruby>提供<span
+  style='display:none'><rt>テイキョウ</rt></span></ruby>するＡＰＩが<ruby>正<span
+  style='display:none'><rt>タダ</rt></span></ruby>しく<ruby>機能<span
+  style='display:none'><rt>キノウ</rt></span></ruby>すること<br>
+    ・コンポーネントのロジック<ruby>単体<span style='display:none'><rt>タンタイ</rt></span></ruby>テスト</td>
+  <td class=xl25 width=294 style='border-top:none;border-left:none;width:221pt'>・サブシステム<ruby>内<span
+  style='display:none'><rt>ナイ</rt></span></ruby><ruby>全体<span style='display:
+  none'><rt>ゼンタイ</rt></span></ruby>でのクラス<ruby>間<span style='display:none'><rt>カン</rt></span></ruby>のインターフェイスの<ruby>整合性<span
+  style='display:none'><rt>セイゴウセイ</rt></span></ruby><br>
+    ・サブシステム<ruby>全体<span style='display:none'><rt>ゼンタイ</rt></span></ruby>を<ruby>通<span
+  style='display:none'><rt>トオ</rt></span></ruby>した<ruby>処理<span
+  style='display:none'><rt>ショリ</rt></span></ruby>の<ruby>流<span
+  style='display:none'><rt>ナガ</rt></span></ruby>れ</td>
+  <td class=xl25 width=313 style='border-top:none;border-left:none;width:235pt'>・<ruby>擬似<span
+  style='display:none'><rt>ギジ</rt></span></ruby><ruby>本番<span style='display:
+  none'><rt>ホンバン</rt></span></ruby><ruby>環境<span style='display:none'><rt>カンキョウ</rt></span></ruby>による、サブシステム<ruby>内<span
+  style='display:none'><rt>ナイ</rt></span></ruby><ruby>全体<span style='display:
+  none'><rt>ゼンタイ</rt></span></ruby>でのクラス<ruby>間<span style='display:none'><rt>カン</rt></span></ruby>のインターフェイスの<ruby>整合性<span
+  style='display:none'><rt>セイゴウセイ</rt></span></ruby><br>
+    ・擬似本番環境による、サブシステム<ruby>全体<span style='display:none'><rt>ゼンタイ</rt></span></ruby>を<ruby>通<span
+  style='display:none'><rt>トオ</rt></span></ruby>した<ruby>処理<span
+  style='display:none'><rt>ショリ</rt></span></ruby>の<ruby>流<span
+  style='display:none'><rt>ナガ</rt></span></ruby>れ</td>
+  <td class=xl25 width=279 style='border-top:none;border-left:none;width:209pt'>・<ruby>本番<span
+  style='display:none'><rt>ホンバン</rt></span></ruby><ruby>環境<span
+  style='display:none'><rt>カンキョウ</rt></span></ruby>による、サブシステム<ruby>内<span
+  style='display:none'><rt>ナイ</rt></span></ruby><ruby>全体<span style='display:
+  none'><rt>ゼンタイ</rt></span></ruby>でのクラス<ruby>間<span style='display:none'><rt>カン</rt></span></ruby>のインターフェイスの<ruby>整合性<span
+  style='display:none'><rt>セイゴウセイ</rt></span></ruby><br>
+    ・本番環境による、サブシステム<ruby>全体<span style='display:none'><rt>ゼンタイ</rt></span></ruby>を<ruby>通<span
+  style='display:none'><rt>トオ</rt></span></ruby>した<ruby>処理<span
+  style='display:none'><rt>ショリ</rt></span></ruby>の<ruby>流<span
+  style='display:none'><rt>ナガ</rt></span></ruby>れ</td>
+ </tr>
+ <![if supportMisalignedColumns]>
+ <tr height=0 style='display:none'>
+  <td width=72 style='width:54pt'></td>
+  <td width=180 style='width:135pt'></td>
+  <td width=237 style='width:178pt'></td>
+  <td width=294 style='width:221pt'></td>
+  <td width=313 style='width:235pt'></td>
+  <td width=279 style='width:209pt'></td>
+ </tr>
+ <![endif]>
+</table>
+
+
+※キャプチャ＆リプレイ型ツールとは、WinRunnerやエンピレックスの「e-Tester」などのツールのことを指します。</br>
+
+
+
+<p class="midasi1">単体テストとは</p>
+それでは、単体テストについて見ていくことにしましょう。
+単体テストには、先に述べたようにホワイトボックステストとブラックボックステストがあり、
+単体テストのツールとしてはJUnitが有名です。
+
+
+<p class="midasi2">ホワイトボックステスト</p>
+
+システム内部の構造を理解した上でそれら一つ一つが意図した通りに動作しているかを確認する
+プログラムのテスト方法です。<br>
+「命令網羅」「判定条件網羅」「条件網羅」「複数条件網羅」「経路組み合わせ網羅」などの方式があります。<br>
+基本的にはプログラム内の全ての命令、全てのルーチンが最低一回は実行され、検証されるようになっています。<br><br>
+つまり、プログラムの全ての部分が、プログラム記述者の意図通りに動作していることを<br>
+確認するテストであり、システムの機能よりも内部構造の整合性を重視したテストとも言えます。<br>
+網羅的なテストであるため珍しい事態に対しても動作確認できるのが利点ですが、<br>
+あくまでプログラム記述者の意図との整合性を確認するだけなので、<br>
+記述者自身に誤解があった場合は対処できないという欠点も持ちます。<br><br>
+これに対して、プログラムの内部構造とは関係なしに、外部から見て仕様書通りの機能を<br>
+持っているのか確認するテストを「ブラックボックステスト」と言います。<br>
+<br>
+<span class="filename">ホワイトボックス例題</span>
+<pre class="source">
+例えば、次のようなプログラムがあったとします。
+
+  1: int abs(int x) {
+  2:     if (x &lt; 0) {
+  3:         x = -x;
+  4:     }
+  5:     return x;
+  6: }
+
+  ・命令網羅
+  命令網羅基準を用いてテストを行う場合は、すべての命令を実行すればＯＫです。
+　上記のabs関数では、x = -1 を用いてテストすれば命令網羅基準に従ってテストできたことになります。
+
+　・ 分岐網羅
+  分岐網羅基準を用いてテストを行う場合は、すべての分岐において、すべての分岐の方向を実行すればOKです。
+　上記のabs関数では、x = 1 と x = -1 を用いてそれぞれテストすれば、分岐網羅基準にしたがってテストできたことにります。
+</pre>
+<br><br>
+
+
+
+
+<p class="midasi2">ブラックボックステスト</p>
+
+システムの内部構造とは無関係に、外部から見た機能を検証するプログラムのテスト方法です。<br>
+入力と出力だけに着目し、様々な入力に対して仕様書通りの出力が得られるかどうかを確認します。<br>
+その間、システム内部でどういった処理が行われているかは一切問題としません。<br>
+<br>
+限界値分析や同値分割などの方式があり、仕様と実際のプログラムとの差を調べることができますが、<br>
+限定された状態でのみ起こるバグなどを完全に取り除くのは難しいとされます。<br>
+<br>
+なお、これとは逆に、プログラムの機能よりも内部構造に着目して行なうテスト方法を<br>
+「ホワイトボックステスト」と言います。<br>
+<br>
+
+<span class="filename">ブラックテスト例題</span>
+<pre class="source">
+例えば、次のような仕様があったとします。
+　入力: 時刻 (0:00-23:59) 
+  出力: 10:00≦入力≦20:00であれば通常料金、それ以外であれば割増料金 
+
+・同値分割
+それぞれの範囲から代表的な値を入力として選びテストを行うので、入力例としては、 8:00、12:00があげられます。
+
+・限界値分析
+入力の範囲を想定される出力ごとに分割し、それぞれの範囲の境界を入力として選びテストを行う。
+入力例として、9:59、10:00、20:00、20:01 があげられます。
+</pre>
+<br><br>
+
+上記の例を見比べてみると、ホワイトボックステストを行っていれば、<br>
+ブラックボックステストもすべて網羅しているのではないかと考えるかもしれませんが、両者は見方がまったく違うものです。<br>
+ホワイトボックステストは、ソースの中身をみてすべてを網羅するテストであるのに対して、ブラックボックステストは、<br>
+中身を隠した状態で、入出力のみに絞って実施するテストになります。<br>
+<br>
+
+
+
+
+
+<p class="midasi1">エラーの種類とテストの種類</p>
+
+ホワイトボックステスト、ブラックボックステストを説明しましたので、 <br>
+今度は、単体テストにおいての、エラーの種類とテストの種類をみていきます。 <br>
+<br>
+エラーの種類とテストの種類を図に表すと下記のようになります。 <br>
+
+<br>
+<img src="RoadOfTest\developmentprocess\Resized/kind_of_errorandtest.png"><br>
+
+<br>
+
+
+図の左側を見るとわかるように、単体テストでは、<br>
+「境界値テスト」「例外処理テスト」「妥当性テスト」の３つを行えばよいことがわかります。
+
+<br>
+
+では、具体的にソースコード例題を見てみる事にしましょう。<br>
+ソースコードは、実際の実装クラス（変換メソッド）とそれをテストするクラスに分かれています。<br>
+
+
+<h5>実装クラス</h5>
+実装クラスは、文字列をint型数値に変換するメソッドをもっています。<br>
+例えば、文字列”１”を引数にとってconvertメソッドをよぶと戻り値iとしてint型の”1”が返ってきます。
+<xmp class="source">
+//実装クラス
+//文字列をint型数値に変換するメソッド
+
+public class Conversion {
+
+	// 変換メソッド
+	public int convert(String convertBefore) {
+		int convertAfter = Integer.parseInt(convertBefore);
+		return convertAfter;
+	}
+
+}
+</xmp>
+
+
+</br>
+</br>
+<h5>テストクラス</h5>
+テストクラスは、実装クラスのconvertメソッドをテストするテストケースを書いていきます。</br>
+仕様に特段の範囲設定がなされていなければ、下記のようになります。</br>
+「境界値テスト」を”制約テスト”と定めていますが、これは、int型の範囲が、</br>
+”2147483647”から”-2147483647”という理由で”制約テスト”と命名しています。
+
+<xmp class="source">
+//テストクラス
+
+import junit.framework.TestCase;
+import kensyu.Conversion;
+
+public class ConversionTest extends TestCase {
+
+	Conversion con;
+	
+	protected void setUp() throws Exception {
+		super.setUp();
+		con = new Conversion();	
+	}
+
+	protected void tearDown() throws Exception {
+		super.tearDown();
+	}
+
+	//境界値テスト【制約テスト（限界値テストがある場合は不要）】
+	public void testConvert_BigRestrictionWithNormalWidth() {	
+		assertEquals(2147483647, con.convert("2147483647"));
+	}
+	
+
+	//境界値テスト【制約テスト（限界値テストがある場合は不要）】
+	public void testConvert_SmallRestrictionWithNormalWidth() {	
+		assertEquals(-2147483647, con.convert("-2147483647"));
+	}
+	
+	
+	//妥当性テスト
+	public void testConvert_AppropriateWithNormalWidth() {	
+		assertEquals(7, con.convert("7"));
+	}
+	
+	
+	//例外テスト
+	public void testConvertCharacterExceptionWithNormalWidth() {			
+		try{
+			con.convert("A");
+			fail();
+		}catch(NumberFormatException e){
+			// テスト成功
+		}
+	}		
+}
+
+
+</xmp>
+
+</br>
+また、設計上の仕様として、convertメソッドは、３～１０の文字を引数に取るという決まりがあれば、
+下記のようになります。</br>
+今度は、「境界値テスト」を”限界値テスト”と定めていますが、これは、設計の範囲が、</br>
+”３”から”１０”という理由で”限界値テスト”と命名しています。
+
+
+
+<xmp class="source">
+//テストクラス
+
+import junit.framework.TestCase;
+import kensyu.Conversion;
+
+public class ConversionTest extends TestCase {
+
+	Conversion con;
+	
+	protected void setUp() throws Exception {
+		super.setUp();
+		con = new Conversion();	
+	}
+
+	protected void tearDown() throws Exception {
+		super.tearDown();
+	}
+
+	
+	//境界値テスト【限界値テスト（制約テストがある場合は不要）】
+	public void testConvert_BigLimitWithNormalWidth() {	
+		assertEquals(10, con.convert("10"));
+	}
+	
+	//境界値テスト【限界値テスト（制約テストがある場合は不要）】
+	public void testConvert_SmallLimitWithNormalWidth() {	
+		assertEquals(3, con.convert("3"));
+	}	
+	
+	//妥当性テスト
+	public void testConvert_AppropriateWithNormalWidth() {	
+		assertEquals(7, con.convert("7"));
+	}
+	
+	
+	//例外テスト
+	public void testConvertCharacterExceptionWithNormalWidth() {			
+		try{
+			con.convert("A");
+			fail();
+		}catch(NumberFormatException e){
+			// テスト成功
+		}
+	}		
+}
+
+
+</xmp>
+
+<br>
+上記の例では「境界値テスト」の部分を「限界値テスト」もしくは「制約テスト」と記載している
+理由としては、</br>
+境界というものが大きく分けて２種類定義できるからです。</br>
+今回は、言語仕様などのシステム的（制約的）に存在する境界を「制約テスト」、</br>
+アプリケーションの仕様上存在する境界を「限界値テスト」と定義しました。</br>
+どちらが必要になってくるのかは仕様次第ですので、ケースバイケースで</br>
+どちちらか一方が必要になると覚えておいてください。
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+
+</body>
+</html>

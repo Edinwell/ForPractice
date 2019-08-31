@@ -1,0 +1,93 @@
+****************************
+*
+*	MVC掲示板
+*
+*	作成者：山田 太郎
+*	作成日：2007/01/31
+*
+****************************
+
+■	製品説明
+
+	・MVCモデルを適用した掲示板です。
+
+■	特徴
+	・MVCモデルを適用。
+
+■	操作説明
+
+	ログインURL
+	http://localhost:8080/bbs_yourname/top
+
+	・掲示板に書き込んだ内容を登録するには、『送信』ボタンを押します。
+	　その時、以下の項目は必須です。
+		名前、メッセージ、パスワード
+		※　パスワードは書き込んだ掲示板の内容を削除するために使用します。
+	　必須項目が入力されていない場合、警告が表示されます。
+	・文字色について、登録した掲示板のメッセージが選択した文字色で表示されます。
+	・書き込んだ内容を削除する場合、該当する内容に一致したパスワードを入力し、
+	　『削除』ボタンを押します。
+　　　※　パスワードが該当データと不一致な場合、削除されません。
+	・登録した掲示板の日付は登録日が表示されます。
+
+■　開発環境
+	OS : Windows XP
+	DB : MySQL
+	WebServer : tomcat6.0.16
+
+■　ディレクトリ構成
+
+		bbs_yourname
+			|
+			+--- bbs.jsp
+			|
+			+--- WEB-INF
+					|
+					+--	classes
+					|		|
+					|		+--	jp
+					|				|
+					|				+--	co
+					|						|
+					|						+--	insightech
+					|								|
+					|								+--	BBSServlet.java
+					|									CharacterEncodingFilter.java
+					|						 			Message.java
+					|						 			MessageDao.java
+					|						 			WebUtils.java
+					+--	lib
+					|		|
+					|		+--	mysql-connector-java-5.1.6-bin.jar
+					|
+					+--	web.xml
+
+■　データベース定義
+	データベース名　：　YOURNAME_BBS
+
+	テーブル名　：　MESSAGE_TABLE
+	キー	項目名				項目名					型
+	○	BBS_ID					ID						integer
+		BBS_NAME				ユーザ名				varchar(20)
+		BBS_MAILADDRESS			メールアドレス			varchar(40)
+		BBS_SUBJECT				件名					varchar(40)
+		BBS_MESSAGE				メッセージ				varchar(60)
+		BBS_WORD_COLOR			文字色					varchar(7)
+		BBS_PASSWORD			削除パスワード			varchar(16)
+		BBS_DATE				投稿日					timestamp
+
+■　DB作成SQL文
+	create database YOURNAME_BBS;
+
+■　テーブル作成SQL文
+	create table MESSAGE_TABLE (
+		BBS_ID integer primary key,
+		BBS_NAME varchar(20),
+		BBS_MAILADDRESS varchar(40),
+		BBS_SUBJECT varchar(40),
+		BBS_MESSAGE varchar(200),
+		BBS_WORD_COLOR varchar(7),
+		BBS_PASSWORD varchar(8),
+		BBS_DATE timestamp
+	);
+

@@ -1,0 +1,125 @@
+﻿<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MVC施設予約の単体テスト</title>
+<link rel="stylesheet" type="text/css" href="../../css/main.css">
+</head>
+
+<body>
+
+<center>
+<h2>テストスイート</h2>
+</center>
+<hr>
+<p class="midasi0">複数のテストクラスを一度にテストする</p>
+さて、ユーティリティクラスから始まった単体テストが、サーブレットクラスまで完了しました。<br>
+各テストにおいて、テスト対象のクラスのカバレッジは、100%になりましたが、<br>
+プロジェクトのテストを全て一度に実行して、全体で100%になっているかどうかを確認する必要があります。<br>
+
+<p class="midasi1">テストスイート</p>
+複数のテストクラスのJUnitを、全て一度に実行するために、テストスイートクラスを作成します。<br>
+テストスイートクラスを作成する場所は特に問いませんが、全てのテストクラスの上位のパッケージ内にあるとわかりやすいです。<br>
+<br>
+[新規] → [その他] → [Java] → [JUnit] → [JUnitテスト・スイート]
+<br>
+<br>
+<img src="images/7_5.png" /><br>
+<br>
+今まで作成した全てのテストクラスを以下のようなコードで指定します。<br>
+<br>
+<xmp class="source">
+package jp.co.insightech;
+
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+
+import jp.co.insightech.dao.ReserveDaoTest;
+
+/**
+ * 掲示板システムテストスイート.
+ *
+ */
+@RunWith(Suite.class)
+@SuiteClasses({ ReserveUtilTest.class, ReserveDaoTest.class, ShowReserveServletTest.class })
+public class AllTests {
+
+}
+</xmp>
+<br>
+作成したテストスイートクラスを右クリック → [実行] → [djUnit] で、実行します。<br>
+<br>
+<img src="images/7_6.png" />
+<br>
+<br>
+<p class="midasi1">カバレッジにて無視するクラス</p>
+カバレッジは、アプリケーションの実装クラスのみで測るため、<br>
+テストクラスや、テストクラス内のインナーモッククラスなどはカバレッジの対象外とする必要があります。<br>
+<br>
+テストクラスそのものは初めからカバレッジ対象から除外されていますが、<br>
+テストスイートクラス、テストクラス内のインナーモッククラス、サーブレット用のモッククラスなどは、<br>
+カバレッジ対象になってしまっています。<br>
+<br>
+<img src="images/09_coverage2.png" alt="images/09_coverage0.png" border="1"><br>
+<br>
+これを防ぐには djUnit の設定を以下のように変更します。<br>
+
+プロジェクトを右クリック → [プロパティ] → [djUnit]<br>
+<br>
+<img src="images/09_coverage0.png" alt="images/09_coverage0.png"><br>
+<br>
+クラス名の指定には、「正規表現」 が使用されています。<br>
+「.*」 は任意の文字列 、「$」 はパターンがここで終了すること、を表しています。<br>
+「.*Test\$.*」 は、XxxxxTest$ZzzzzzMock というインナーモッククラス名にパターンが一致するようになっています。<br>
+以下のパターンを除外するように設定してください。<br>
+<br>
+<table border="1">
+<tr>
+<th>パターン</th>
+<th>意味</th>
+</tr>
+
+<tr>
+<td>.*Test\$.*</td>
+<td>テストクラス内のインナークラス</td>
+</tr>
+
+<tr>
+<td>.*AllTests$</td>
+<td>テストスイートクラス</td>
+</tr>
+
+<tr>
+<td>jp.co.insightech.mock.*</td>
+<td>サーブレット用モックのパッケージ</td>
+</tr>
+
+<tr>
+<td>jp.co.insightech.testcase.*</td>
+<td>サーブレット用モックのパッケージ</td>
+</tr>
+
+</table><br>
+
+テストスイートを実行して、全体のカバレッジが100%になったら終了です。<br>
+<br>
+<img src="images/09_coverage1.png" alt="images/09_coverage1.png" border="1"><br>
+<br>
+もし、カバレッジが97%や、98%になっていた場合は、できるだけ100%にしましょう。<br>
+もし、それがたいして意味のないテストになってしまうような場合でも、100%にすることが重要です。<br>
+<br>
+それは、「100%」という数字にこだわっているからではありません。<br>
+<br>
+100%になっていない場合、どこが通っていないのかをチェックすることになりますが<br>
+残りわずか数%の未通過の部分が残っていることで、<br>
+毎回毎回、対応の必要のないコードの同じ部分を見直さなければならなくなってしまうのは大きな手間となってしまうからです。<br>
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+</body>
+</html>

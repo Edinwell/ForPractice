@@ -1,0 +1,333 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<title>JUnitサンプル例題</title>
+<link rel="stylesheet" type="text/css" href="../../css/main.css">
+</head>
+<body>
+
+<center>
+<h2>JUnit の使い方</h2>
+</center>
+
+<hr>
+
+<p class="midasi0">JUnit とは</p>
+
+JUnit は Java プログラム単体テスト用のフレームワークです｡<br>
+<br>
+全員が共通のテストフレームワークをもつことで、他人のテストプログラムの修正を容易にします。<br>
+また、このフレームワークは、Java での開発に慣れた人なら、<br>
+自然に受け入れられるように設計されています｡<br>
+<br>
+テストプログラムを記述するために､たくさんの知識を習得する必要はありません｡<br>
+数個の規則を学べばよいのです。<br>
+<br>
+では、実際に設定をしながら JUnit の使い方を学んでいきましょう。<br>
+<br>
+
+<p class="midasi1">Eclipse での JUnit 環境設定</p>
+ここでは Eclipse が使えるという前提で JUnit の使い方を学んでいきます。<br>
+
+一般的にはコーディングを行ってから JUnit テストを作成することがほとんどですので、ここでは<br>
+<ul>
+	<li>前提準備</li>
+	<li>ソースコード（実装は間違っている）を書いてみる</li>
+	<li>テストコードを書く</li>
+	<li>テストを実行して失敗させる</li>
+	<li>正しい実装のソースコードを書く</li>
+	<li>テストを成功させる</li>
+</ul>
+という流れで行います。<br>
+<br>
+<div class="comment">
+テストクラスから先に作成するテストファーストという考え方もあります。
+</div>
+<br>
+
+<p class="midasi1">前提準備</p>
+
+まず、研修用に JUNIT という名前の Javaプロジェクトを作成してください。<br>
+<br>
+Package Explorer もしくは Project Explorer 上で右クリックして New > Java Project を選択します。<br>
+New の次に Java Project が表示されていない場合は、一旦 Other を選んで一覧の中から Java Project を選びます。<br>
+<br>
+
+<p class="midasi1">ソースコード（実装は間違っている）を書いてみる</p>
+
+src フォルダに test.junit.sample パッケージを作成して、この package に HellowWorld.java を次の内容で作成してください。<br>
+<br>
+<img src="images/image017.png" width="80%"><br>
+<br>
+このクラスは helloWorld というメソッドを持ちます。<br>
+このメソッドは、呼ばれると文字列 "Hello World" を返します。<br><br>
+<b>本当に返しますか？<br>
+では確認してみましょう。</b><br>
+<font color="red" size=-1>（・・・mainメソッドを定義して呼ぼうなんて考えてはいけません。）</font>
+<br><br>
+
+
+<p class="midasi1">テストコードを書く</p>
+
+それでは簡単な方法でテストを作成していきます。<br>
+<br>
+
+<a name="test_prepare"></a>
+<p class="midasi2">test フォルダの準備</p>
+
+その前に、まずテストコードを格納するフォルダを src とは別に test という名前で作成します。<br>
+テストコードも src フォルダに作成しても良いのですが、一般的には見通しを良くするために test という名前のフォルダを作成し<br>
+テストコードはこちらに格納するようにします。<br>
+<br>
+
+test フォルダを作成するには次のようにします。<br>
+<br>
+まず Package Explorer 上でプロジェクトを右クリックして、Properties を選択します。<br>
+Properties ダイアログが開かれるので、左側の一覧から「Java Build Path」を、右側のタブの中から「Source」タブを選択します。<br>
+<br>
+さらに Source Folder に test フォルダを追加するために「Add Folder...」ボタンを押します。<br>
+<br>
+<img src="images/image001.png" width="80%"><br>
+<br>
+Source Folder に追加するフォルダを選択するダイアログが表示されますが、まだ test フォルダを作成していないので<br>
+「Create New Folder...」ボタンを押します。<br>
+<br>
+<img src="images/image003.png" height="60%"><br>
+<br>
+フォルダの名前に test と入力して Finish ボタンを押すと、次のような画面になるので<br>
+<br>
+<img src="images/image005.png" height="60%"><br>
+<br>
+OK を押すと、次の画面のように Source Folder に test フォルダが追加されるので OK ボタンを押してください。<br>
+<br>
+<img src="images/image007.png" width="80%"><br>
+<br>
+これで test フォルダが作成されました。この中に、テストコードを作成します。<br>
+<br>
+<img src="images/image009.png" width="80%"><br>
+<br>
+<div class="comment">
+ソースフォルダの追加は、プロジェクトを右クリックして<br>
+New → Source Folder から行うこともできます。<br>
+</div>
+<br>
+<p class="midasi2">JUnit ライブラリの準備</p>
+
+JUnit を使用するには、JUnit のライブラリをプロジェクトに追加する必要があります。<br>
+<br>
+JUnit のライブラリをプロジェクトに追加するには、まずは、先ほどと同じようにプロジェクトの Properties ダイアログを表示して<br>
+左側から「Java Build Path」を、右側から「Libraries」タブを選択します。<br>
+<br>
+次に「Add Library...」ボタンを押します。<br>
+<br>
+<img src="images/image011.png" width="80%"><br>
+<br>
+JUnit を選択して Next ボタンを押します。
+<br>
+<img src="images/image013.png" width="80%"><br>
+<br>
+JUnit library version で「JUnit 4」を選択して Finish ボタンを押します。
+<br>
+<img src="images/image015.png" width="80%"><br>
+<br>
+OK を押すと、JUnit のライブラリがプロジェクトに追加されます。<br>
+<br>
+<img src="images/image016.png" width="80%"><br>
+<br>
+
+<p class="midasi2">テストコードを書く</p>
+
+以上でテストコードを作成する準備は終わりました。<br>
+<br>
+テストコード（テストクラス）は自分で一から作成することもできますが、既にテスト対象のソースがある場合は、<br>
+そのソースから自動生成することもできます。<br>
+<br>
+テストコードを自動生成するには、パッケージエクスプローラでテスト対象のクラス（HelloWorld.java）を選択し、<br>
+右クリックして「新規 &gt; JUnitテスト･ケース」を選択します。<br>
+<br>
+<img src="images/image020.png" width="60%"><br>
+<br>
+すると以下の画面が出ます。<br>
+<br>
+<img src="images/image022.png" width="80%"><br>
+<br>
+Source folder を JUNIT/src から JUNIT/test に変更して Next を押下します。<br>
+Package や Name はそのままでかまいません。<br>
+<br>
+<img src="images/image024.png" width="80%"><br>
+<br>
+テストしたいメソッド（ここでは helloWorld）にチェックを入れ、Finish ボタンを押下します。<br>
+<br>
+<img src="images/image026.png" width="80%"><br>
+<br>
+これで test フォルダに HelloWorldTest クラスが作成されました。<br>
+<br>
+<img src="images/image028.png" width="80%"><br>
+<br><p>
+テスト用クラスには以下のようなルールがあります。
+<ul>
+	<li>テスト用クラスのクラス名は、"テスト対象クラス名 + Test" とする。<br>
+        例）テスト対象クラス：HelloWorld の場合、テストクラスは HelloWorldTest</li>
+	<li>テストメソッドのメソッド名は "testXXX" (XXXは対象メソッド名＋テスト内容を意図する名称) とする。<br>
+        例）テスト対象メソッドが getName の場合、テストメソッドは testGetNameYYY となります。（YYY は任意）</li>
+	<li>テストメソッドには @Test アノテーションを付与する。</li>
+</ul>
+
+この中で、必須なのは３番目のルールのみです。<br>
+<br>
+最初の２つのルールは、JUnit3 までの必須ルールだったため今でも名残でこのようにする慣習になっていますが、必須ではありません。<br>
+<br>
+先ほど自動生成したテストメソッドの中身を書き換えてみましょう。<br>
+まず helloWorld メソッドの仕様を確認してみましょう。<br>
+<br>
+このメソッドは<br>
+<b>文字列 "Hello World" を返す。</b><br>
+というのが仕様でした。<br>
+<br>
+そこでテストメソッドは<br>
+<br>
+testHelloWorldReturnedHelloWorld()<br>
+<br>
+と "Hello World" という文字列が返されることを期待して名前を変更しましょう。<br>
+<font color="red" size=-1>※テストメソッド名は、メソッド名からテスト内容が推量できるようなものをつけます。</font><br>
+<br>
+ではテストメソッドを実装します。<br>
+<br>
+<img src="images/image030.png" width="80%"><br>
+<br>
+<br>
+テスト対象クラスのインスタンスを作り、<br>
+テスト対象メソッドを実行し、返り値を取得します。<br>
+そして、その返り値が期待する "Hello World" であることを assertEquals メソッドを使って確認しています。<br>
+<br>
+このように、JUnit のテストケースでは、テスト対象のメソッドを実行して、<br>
+その結果が期待したとおりの結果となることを確認することが基本になります。<br>
+<br>
+assertEquals のような結果を確認するためのメソッドをアサーションメソッドと呼びます。<br>
+これらのアサーションメソッドは、 org.junit.Assert クラスに static メソッドとして実装されているため、<br>
+<br>
+<xmp class="source">
+import static org.junit.Assert.*;
+</xmp>
+<br>
+として、これらのアサーションメソッドを static インポートしています。<br>
+下記は、良く使うアサーションメソッドを抜粋したものになります。<br>
+<br>
+<img src="images/method.png"><br>
+
+
+<p class="midasi1">テストを実行して失敗させる</p>
+
+さて、テストメソッドの実装がすみましたので、テストを実行してみましょう。<br>
+<br>
+テストを実行するには、テストクラスを右クリックして「実行 &gt; JUnitテスト」を選択します。<br>
+<br>
+<p><b>図17 テスト実施</b><br>
+<img src="images/image033.png" alt="図17 テスト実施"><br>
+<br><p>
+実行すると以下のような画面になります。<br>
+<p><b>図18 テスト結果</b><br>
+<img src="images/image035.png" alt="図18 テスト結果"><br>
+<br><p>
+各項目の意味は以下の通りです。<br>
+<br>
+① 実行したテストメソッド/テストクラス内の全テストメソッド<br>
+② エラーが発生したテストメソッド数（テストメソッド内で例外が発生するとエラーとなります。）<br>
+③ テストが失敗したメソッド数<br>
+④ 全テストが成功すると緑で、失敗したメソッドがあると赤になります。（エラーの場合も）<br>
+⑤ テストメソッド名です。テストクラスに複数テストメソッドがある場合は列挙され、<br>
+⑥ 選択すると次に説明する障害トレースがそれぞれのメソッドのものに変わります。<br>
+⑦ 失敗したメソッドのトレースです。（ダブルクリックすると、該当行を表示してくれます。）<br>
+⑧ 失敗した理由です。<br>
+<br>
+さて、障害トレースを見てみましょう。<br>
+失敗した理由は<br>
+<br>
+<xmp class="source">
+junit.framework.ComparisonFailure: expected:<Hello World> but was:<null>
+・・・
+</xmp>
+<br>
+とあります。期待しているのは "Hello World" だけど実際は null だと教えてくれています。<br>
+helloWorld メソッドを見てみると、実際に return null; としているので当然ですね。<br>
+<br>
+
+<p class="midasi1">正しい実装のソースコードを書く</p>
+
+テストが失敗することを確認したので次の段階に進みましょう。<br>
+
+テストが通るような実装をします。<br>
+helloWorld メソッドの return を以下のように修正し、保存して再び実行します。<br>
+<br>
+<xmp class="source">
+public String helloWorld() {
+	return "HelloWorld";
+}
+</xmp>
+<br>
+前回と同じ事を行う場合は以下のボタンを押せば再び実行できます。（ショートカット：ctrl+F11）<br>
+<br>
+<img src="images/image038.png"><br>
+<br>
+さてバーは緑色になりましたか？<br>
+なりませんね。トレースにはなんと出ていますか？<br>
+<br>
+<img src="images/image040.png"><br>
+<br>
+先ほどと違ってまったくわからないですね。<br>
+こういう場合はダブルクリックしてみてください。結果比較の画面が出てくれます。<br>
+<br>
+<img src="images/image042.png"><br>
+<br>
+どうやらスペースが足りないようです。下記のようにもう一度直しましょう。<br>
+<br>
+<xmp class="source">
+public String helloWorld() {
+	return "Hello World";
+}
+</xmp>
+<br>
+
+<p class="midasi1">テストを成功させる</p>
+
+では成功したらどういう画面になるか見てみましょう。<br>
+<br>
+<img src="images/image044.png" alt="図22 成功画面"><br>
+<br>
+バーが緑になり、エラーも失敗も出てないですね。<br>
+<br>
+ちなみにテストメソッドが複数ある場合、階層のタブで見ると成功したメソッドの情報がわかります。<br>
+テストはこのように「テスト → メソッドの実装 → テスト」といったように緑のバーが出るまで繰り返します。<br>
+また、ソースの修正を行う際にはどんな簡単な修正でも必ずテストを行います。<br>
+<br>
+今回は単純に "Hello World" という文字列を返すだけでしたが、<br>
+実際は if 文などにより処理が分岐することが考えられます。<br>
+そのような場合はテストメソッドを複数作る必要があります。<br>
+たとえば、helloWorld メソッドが String の引数をとり、引数で渡した文字列を追加して返すメソッドだった場合、<br>
+<br>
+testHelloWorldValueTakashi<br>
+testHelloWorldValueEmpty<br>
+testHelloWorldNull<br>
+<br>
+などとテストを複数つくり、内容をわかりやすく名前をつけてください。<br>
+コメントも必要なだけ書きます。<br>
+テストメソッドの本文はわかり易さを重視します。<br>
+<br>
+<div class="comment">
+テストメソッドの中には if や for などのロジックはあまり入れるべきではありません。<br>
+（テストメソッドのロジック自体をテストしなければいけなくなるため）
+</div>
+
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+
+</body>
+</html>
+
+

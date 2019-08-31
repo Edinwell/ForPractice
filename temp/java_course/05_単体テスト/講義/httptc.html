@@ -1,0 +1,340 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MVC施設予約の単体テスト</title>
+<link rel="stylesheet" type="text/css" href="../../css/main.css">
+</head>
+
+<body>
+
+<center>
+<h2>サーブレットメソッドのJUnitテスト</h2>
+</center>
+<hr>
+
+<p class="midasi0">サーブレットメソッドの JUnit テスト</p>
+これからサーブレットメソッドのテストを JUnit で実装しますが、この段階で、以下のような疑問がわきます。<br>
+<ol>
+<li>Tomcat を動かさずに、サーブレットのメソッドが実行できるのか</li>
+<li>DAO やユーティリティの実装に依存しないメソッドの呼び出し確認はどのように実行するのか</li>
+</ol>
+
+<p class="midasi1">サーブレットメソッドの実行</p>
+まずは、サーブレットのメソッドを呼び出す方法を考えて見ます。
+<br>
+DAO メソッドのテストの際に、以下のようなコードを記述しました。<br>
+<br>
+<xmp class="source">
+ReserveDao dao = new ReserveDaoCloseCountMock();
+・・・
+Vector roomList = dao.getRoomList();
+</xmp>
+<br>
+サーブレットのテストクラスも同じような感じで実装すればよいのでしょうか。<br>
+<br>
+<xmp class="source">
+ShowReserveServlet servlet = new ShowReserveServlet();
+servlet.doPost(request, response);
+</xmp>
+<br>
+どうやら、new で ShowReserveServlet クラスのインスタンスを作成したとしても HttpServletRequest オブジェクトや、<br>
+HttpServletResponse オブジェクトがないとテスト出来そうにありません。<br>
+ところが、HttpServletRequest はインタフェースでした。<br>
+<br>
+<img src="images/HttpServletRequest.png"><br>
+<br>
+JavaDoc で HttpServletRequest を implements した実装クラスを探してみると、HttpServletRequestWrapper クラスというものが見つかりましたが、<br>
+<br>
+<xmp class="source">
+HttpServletRequest req = new HttpServletRequestWrapper();
+</xmp>
+<br>
+とした時点で、コンパイルエラーでおこられました。<br>
+HttpServletRequestWrapper には空のコンストラクタはなく、コンストラクタの引数に HttpServletRequest が必要なようです。<br>
+<br>
+<img src="images/HttpServletRequestWrapper.png" width="80%"><br>
+<br>
+このように、インスタンスのを生成が容易でない場合に、まず思いつくのはリクエストオブジェクトをモックにするという考えです。<br>
+しかし、サーブレットメソッドで、入力や出力の要となるリクエストオブジェクトですので、作成に多少時間がかかりそうです。<br>
+そこで、今回は、既に作成済みのサーブレット用モッククラス群を使用してテストを実施することにします。<br>
+<br>
+<div class="comment">
+尚、Cuctus というサーバサイド検証用の ツールもあるのですが、導入・設定・使用方法の習得が難しく、<br>
+かつ実際あまり使用されることはないため、今回は使用しません。<br>
+</div>
+<br>
+<p class="midasi1">サーブレットモックの導入</p>
+次のフォルダの中にある「jp」 フォルダをそのまま 「test」 フォルダの中にコピーしてください。<br>
+<br>
+<a href="files/HttpTC">HttpTC</a><br>
+<br>
+コピーした中には以下のようなクラス群が含まれています。<br>
+<br>
+<img src="images/08_HttpTC0.png" height="90%"><br>
+<br>
+導入はこれでおしまいです。<br>
+<br>
+
+<p class="midasi1">モックの利用方法</p>
+
+これらのモッククラスを利用するためには、以下の設定が必要になります。<br>
+<ol>
+<li>自分のサーブレットテストクラスに、HttpTC クラスを継承させる。</li>
+<li>setUp の処理を実装する。</li>
+</ol>
+
+サンプルを示します。<br>
+<br>
+<xmp class="source">
+package jp.co.insightech;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import jp.co.insightech.testcase.HttpTC;
+import jp.co.insightech.testcase.HttpTCHelper;
+
+/**
+ * MVC施設予約サーブレットのテストクラス.
+ *
+ * @see ShowReserveServlet
+ */
+public class ShowReserveServletTest extends HttpTC {
+
+	private ShowReserveServlet servlet;
+
+	/**
+	 * コンストラクタ
+	 */
+	public ShowReserveServletTest() {
+	}
+
+	/**
+	 * セットアップ.
+	 */
+	@Before
+	public void setUp() throws Exception {
+		servlet = new ShowReserveServlet();
+		servlet.init(HttpTCHelper.config);
+		super.setUp();
+	}
+
+	/**
+	 * <pre>
+	 * 【概要】
+	 * ・正しいIDを送信すると、ログインが実施されること.
+	 *
+	 * 【条件】
+	 * リクエストパラメータ
+	 * ・id : 1111
+	 *
+	 * セッション情報
+	 * ・loginUser : null
+	 *
+	 * 【実行】
+	 * ・doGet
+	 *
+	 * 【結果】
+	 * セッション情報
+	 * ・loginUser : User=[id=1111, name="印差 糸子"]
+	 *
+	 * </pre>
+	 */
+	@Test
+	public void testSample() throws Exception {
+		// 条件
+		request.addParameter("loginId", "1111");
+		request.addParameter("login", "ログイン");
+
+		// 実行
+		servlet.doGet(request, response);
+
+		// 結果
+		User user = (User) session.getAttribute("LOGIN_USER");
+		
+		assertEquals("1111", user.getId());
+		assertEquals("印差 糸子", user.getName());
+	}
+
+}
+</xmp>
+<br>
+
+上記のコード中の @Before アノテーションを付けたメソッドは、各テストメソッドの実行前に毎回呼ばれます。<br>
+JUnit3 では、このメソッドは、setUp() という決められたひとつのメソッドのみだったのですが、<br>
+JUnit4 からは、@Before アノテーションさえつければ、何個でもどんなメソッド名でもつけることができるようになりました。<br>
+<br>
+似たような役割のメソッドに次のようなものがあります。<br>
+<br>
+<table>
+<tr>
+<th>JUnit4 のアノテーション</th>
+<th>JUnit3 でのメソッド</th>
+<th>説明</th>
+</tr>
+<tr>
+<td>@Before</td><td>setUp</td><td>各テストメソッドの実行前に毎回呼ばれます。</td>
+</tr>
+<tr>
+<td>@After</td><td>tearDown</td><td>各テストメソッドの実行後に毎回呼ばれます。</td>
+</tr>
+<tr>
+<td>@BeforeClass</td><td>-</td><td>全てのテストメソッドの実行前に１回呼ばれます。</td>
+</tr>
+<tr>
+<td>@AfterClass</td><td>-</td><td>全てのテストメソッドの実行後に１回呼ばれます。</td>
+</tr>
+</table>
+<br>
+さて、上記のコードの説明に戻ります。セットアップメソッドの中で他の処理を行ってもかまいませんが、<br>
+必ず、親クラスのセットアップを呼び出すようにしてください。  <br>
+<br>
+設定が終わると、HttpTC クラスがフィールドに既に持っている<br>
+ 「request」、「response」 モックオブジェクトをそのまま使用できるようになります。<br>
+<br>
+これらのモックを利用した具体的なテストコードとして、<br>
+リクエストパラメータで、「loginId=1111」「login=ログイン」 が「method=Get」で送信され、サーブレットのdoGet() が実行された場合に、<br>
+結果として、セッション内にユーザオブジェクトが格納されることをテストしています。<br>
+<br>
+HttpTC クラスを利用することで、リクエスト情報やセッション情報に対して、直感的なテストが実施できるようになります。<br>
+<br>
+
+<p class="midasi1">実装に依存しないメソッドの呼び出し確認</p>
+さて、次に、ユーティリティメソッドや、DAOメソッドの呼び出し方法について考えます。<br>
+サーブレットが、これらのメソッドを直接呼び出さずに
+<ul>
+<li>メソッドに正しい引数を渡されること</li>
+<li>メソッドの戻り値を正しく処理していること</li>
+</ul>
+を確認するためには、DBUnit のテストで実施したような、クローズ回数をカウントするようなモックを作成すればいいという考えが浮かびます。<br>
+<br>
+<div class="comment">
+ここから先はユーティリティメソッドや、DAOメソッドの呼び出しに Mock を使うための思考実験です。<br>
+しばらく思考してうまくいかないことを確認した後、Virtual Mock Object という違う方針に切り替えます。
+</div>
+<br>
+getReserveList() メソッドをオーバーライドした DAO のモックを以下のように作成します。<br>
+<br>
+<xmp class="source">
+	/**
+	 * ReserveDao のモッククラス
+	 */
+	class ReserveDaoMock extends ReserveDao {
+
+		private Calendar argCal;
+		private int callCount;
+
+		@Override
+		public Vector getReserveList(Calendar cal) throws Exception {
+
+			// 引数を保存
+			argCal = cal;
+
+			// 呼び出し回数をインクリメント
+			callCount++;
+
+			// 戻り値は固定
+			Vector result = new Vector();
+			return result;
+		}
+	}
+</xmp>
+<br>
+戻り値は固定で、引数や呼び出し回数を後から取得できるようなつくりになっています。<br>
+サーブレットコード内で呼び出している DAO と差し替えます。<br>
+サーブレットメソッド内では以下のような修正が必要になるでしょう。<br>
+<br>
+もともと、new していた DAO を、<br>
+<br>
+<xmp class="source">
+	ReserveDao dao = new ReserveDao();
+</xmp>
+<br>
+getReserveDao() というメソッドで取得するように変更。<br>
+<br>
+<xmp class="source">
+	ReserveDao dao = this.getReserveDao();
+</xmp>
+<br>
+この getReserveDao() メソッドをサーブレットテスト内のサーブレットのモッククラスでオーバーライドして、<br>
+DAO のモッククラスを返却するようにする、という手順になるでしょう。<br>
+<br>
+次にユーティリティクラスのメソッド呼び出しですが、以下のような static メソッドの呼び出しはそもそもオーバーライドできません。<br>
+<br>
+<xmp class="source">
+	String userId = request.getParameter("userId");
+	if (ReserveUtil.isEmpty(userId)) {
+	    // ... エラー処理
+	} else {
+	    // ... 正常処理
+	}
+</xmp>
+<br>
+対応としてひとつ考えられるのは、同じシグネチャをもつメソッドを、サーブレット内に定義するという方法です。<br>
+直接ユーティリティメソッドを呼び出していた部分は、そのメソッドの呼び出しに変更します。<br>
+そして、そのメソッドをサーブレットテスト内のサーブレットモックでオーバーライドして、引数、戻り値を変更します。<br>
+<br>
+<pre class="source">
+	String userId = request.getParameter("userId");
+	if (this.isEmpty(userId)) {
+	    // ... エラー処理
+	} else {
+	    // ... 正常処理
+	}
+</pre>
+<br>
+<pre class="source">
+	/**
+	 * 指定された文字列が空かどうかを判断します。
+	 * @param value 指定された文字列
+	 * @return 空の場合 true それ以外の場合 false
+	 */
+	protected boolean isEmpty(String value) {
+		return ReserveUtil.isEmpty(value);
+	}
+</pre>
+<br>
+<pre class="source">
+	/**
+	 * ReserveServlet のモッククラス
+	 */
+	class ReserveServletMock extends ReserveServlet {
+
+		private String argValue;
+
+		@Override
+		protected boolean isEmpty(String value) {
+
+			// 引数を保存
+			argValue = value;
+
+			// 戻り値は固定
+			return false;
+		}
+	}
+</pre>
+<br>
+このように、サーブレットを修正、モッククラスを作成すれば、実際のクラスに依存しないテストが実施できます。<br>
+<br>
+しかし、サーブレットメソッド内では、たくさんのメソッドの引数や戻り値を使用しています。<br>
+JUnit でこれらを全て検証するためには、<br>
+ユーティリティクラスへの委譲メソッドや、専用のモッククラスをたくさん追加する必要がありそうです。<br>
+前回の終わりで見た JavaDoc のテスト仕様を思うと、他の方法も検討してみたほうがよさそうです。<br>
+<br>
+そこで、今回は VMO （Virtual Mock Objects : バーチャルモックオブジェクト） という、djUnit の機能を利用して、<br>
+現在のコードを修正することなく、そしてモックを作成することもなく、同じようなテストができる方法を採用することにします。<br>
+
+
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+</body>
+</html>

@@ -1,0 +1,378 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html lang="ja" xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja">
+<head>
+<meta http-equiv="Content-Type" content=
+"text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href=
+"technotes/css/jdk_index_style.css" />
+<title>Java Platform Standard Edition 8ドキュメント</title>
+<link rel="stylesheet" type="text/css" href="technotes/css/guide.css" />
+</head>
+<body>
+<!-- STATIC HEADER -->
+
+<!-- header start -->
+<div id="javaseheader">
+<div id="javaseheaderlogo">
+<img alt="Java ロゴ" src="images/javalogo.gif" />
+</div>
+<div id="javaseheaderindex">
+
+<a href="index.html">ドキュメントの目次</a>
+</div>
+<div class="clear"></div>
+</div>
+
+<!-- header end -->
+
+
+<h1>Java Platform Standard Edition 8ドキュメント</h1>
+<div class="a1"><a class="skiplink" href="#javasemaincontent">Java SEドキュメントをスキップ<br />ナビゲーション・リンク</a></div>
+<div id="pageNav">
+<div class="relatedLinks"><img alt="新機能アイコン" height="30" src="images/res.gif" style="float: right;" width="30" />
+<h2 class="relatedLinksHeader">新機能</h2>
+<table border="0" cellpadding="0" cellspacing="0" summary="" width="100%">
+<tr>
+<td bgcolor="#999999"><img alt="" height="5" src="images/spacer.gif" width="1" /></td>
+</tr>
+</table>
+<ul>
+<li><a href="https://blogs.oracle.com/thejavatutorials/tags/jdk8">ドキュメントの更新</a></li>
+<li><a href="http://www.oracle.com/technetwork/java/javase/8train-relnotes-latest-2153846.html">JDK 8リリース・ノート</a></li>
+</ul>
+</div>
+<!-- ***************************************************** -->
+<div class="relatedLinks"><img alt="チュートリアルおよびトレーニング・アイコン" height="30" src="images/training_smaller.gif" style="float: right;" width="30" />
+<h2 class="relatedLinksHeader">チュートリアルおよびトレーニング</h2>
+<table border="0" cellpadding="0" cellspacing="0" summary="" width="100%">
+<tr>
+<td bgcolor="#999999"><img alt="" height="5" src="images/spacer.gif" width="1" /></td>
+</tr>
+</table>
+<ul>
+<li><a href="http://docs.oracle.com/javase/tutorial/">Javaチュートリアル</a></li>
+<li><a href="http://education.oracle.com/java_training/">Javaトレーニング</a></li>
+</ul>
+</div>
+<!-- **************************************************** -->
+<div class="relatedLinks"><img alt="詳細情報アイコン" height="28" src="images/moreinfo.png" style="float: right;" width="28" />
+<h2 class="relatedLinksHeader">詳細情報</h2>
+<table border="0" cellpadding="0" cellspacing="0" summary="" width="100%">
+<tr>
+<td bgcolor="#999999"><img alt="" height="5" src="images/spacer.gif" width="1" /></td>
+</tr>
+</table>
+<ul>
+<li><a href="http://www.oracle.com/technetwork/java/javase/jdk8-naming-2157130.html">Java SE 8の名前とバージョン番号</a></li>
+<li><a href="http://www.oracle.com/technetwork/java/javase/documentation/whitepapers-jsp-139357.html"> Java SEホワイト・ペーパー</a></li>
+<li><a href="legal/docaccessibility.html">ドキュメントのアクセシビリティについて</a></li>
+<li><a href="http://docs.oracle.com/javase/specs/index.html">仕様</a></li>
+<li><a href="http://docs.oracle.com/javase/8/docs/webnotes/install/install_overview.html">インストール手順</a></li>
+<li><a href="http://www.oracle.com/technetwork/java/javase/certconfig-2095354.html ">認証済みのシステム構成</a></li>
+<li><a href="http://www.oracle.com/technetwork/java/javase/8-compatibility-guide-2156366.html ">互換性ガイド</a></li>
+<li><a href="http://www.oracle.com/technetwork/java/javase/8-known-issues-2157115.html">既知の問題</a></li>
+
+<li><a href="http://www.oracle.com/technetwork/java/javase/jdk8-adoption-guide-2157601.html ">JDK 8導入ガイド</a></li>
+
+<li><a href="http://docs.oracle.com/javase/8/docs/technotes/guides/tsgdesktop/index.html">デスクトップ・テクノロジのトラブルシューティング</a></li>
+
+<li><a href="http://docs.oracle.com/javase/8/docs/technotes/guides/tsgvm/index.html">HotSpot仮想マシンのトラブルシューティング</a></li>
+
+<li><a href="http://docs.oracle.com/javase/8/docs/technotes/samples/aboutCodeSamples.html"> テスト/サンプル・アプリケーションおよびコードについて</a></li>
+</ul>
+</div>
+<!-- ************************************************* -->
+<div class="relatedLinks"><img alt="ダウンロード・アイコン" height="30" src="images/dwnld.jpg" style="float: right;" width="30" />
+<h2 class="relatedLinksHeader">ダウンロード</h2>
+<table border="0" cellpadding="0" cellspacing="0" summary="" width="100%">
+<tr>
+<td bgcolor="#999999"><img alt="" height="5" src="images/spacer.gif" width="1" /></td>
+</tr>
+</table>
+<ul>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html"> Java SEダウンロード</a></li>
+<li><a href="http://www.oracle.com/technetwork/java/javase/documentation/jdk8-doc-downloads-2133158.html">JDK 8ドキュメント</a></li>
+</ul>
+</div>
+<!-- ************************************************* -->
+<div class="relatedLinks"><img alt="リソース・アイコン" height="30" src="images/resources.png" style="float: right;" width="30" />
+<h2 class="relatedLinksHeader">リソース</h2>
+<table border="0" cellpadding="0" cellspacing="0" summary="" width="100%">
+<tr>
+<td bgcolor="#999999"><img alt="" height="5" src="images/spacer.gif" width="1" /></td>
+</tr>
+</table>
+<ul>
+<li><a href="http://www.oracleimg.com/us/technologies/java/java-se-suite-394230.html"> Oracle Java SE AdvancedおよびOracle Java SE Suite</a></li>
+<li><a href="http://openjdk.java.net/">OpenJDK</a></li>
+<li><a href="http://bugs.java.com/">Bug Database</a></li>
+</ul>
+</div>
+<!-- ************************************************* -->
+<div class="relatedLinks"><img alt="その他のテクノロジ・アイコン" height="20" src="images/othrtech.png" style="float: right;" width="20" />
+<h2 class="relatedLinksHeader">その他のテクノロジ</h2>
+<table border="0" cellpadding="0" cellspacing="0" summary="" width="100%">
+<tr>
+<td bgcolor="#999999"><img alt="" height="5" src="images/spacer.gif" width="1" /></td>
+</tr>
+</table>
+<ul>
+<li><a href="http://docs.oracle.com/javaee/">Java EE</a></li>
+<li><a href="http://docs.oracle.com/javame/">Java ME</a></li>
+<li><a href="http://docs.oracle.com/javase/8/javafx/">JavaFX</a></li>
+<li><a href="http://glassfish.java.net/">GlassFish</a></li>
+<li><a href="http://netbeans.org/">NetBeans</a></li>
+</ul>
+</div>
+</div>
+<!-- class="pageNav" -->
+<div id="content">
+<div class="feature"><!-- ################################### -->
+<!-- END OF SIDE PANEL -->
+<!-- ################################### -->
+<p><a id="javasemaincontent" name="javasemaincontent"></a> Oracleには、Java Platform Standard Edition (Java SE) 8を実装する製品として、Java SE Development Kit (JDK) 8およびJava SE Runtime Environment (JRE) 8という2つの製品があります。</p>
+<p>JDK 8はJRE 8のスーパー・セットで、JRE 8のすべての機能に加えて、アプレットやアプリケーションの開発に必要なコンパイラおよびデバッガなどのツールを備えています。JRE 8は、Javaプログラミング言語で記述されたアプレットやアプリケーションを実行するためのライブラリ、Java仮想マシン(JVM)、その他のコンポーネントを提供します。JREには、標準および非標準Javaコンポーネントなど、Java SE仕様では要求されていないコンポーネントも含まれます。</p>
+<p>次の概念図に、OracleのJava SE製品のコンポーネントを示します。</p>
+<p><a href="technotes/guides/desc_jdk_structure.html">Java概念図の説明</a></p>
+<!-- ################################### -->
+<!-- START OF TABLE -->
+<!-- ################################### -->
+<table cellpadding="0" cellspacing="0" class="table" summary="">
+<!-- Row 1 of 9 -->
+<tr valign="top">
+<td class="tdleftside" rowspan="9"><a class="atext" href="technotes/guides/index.html#jre-jdk">JDK</a></td>
+<td rowspan="2">&nbsp;</td>
+<td class="tdhead" title="Javaプログラミング言語"><a class="ahead" href="technotes/guides/language/index.html"><b>Java言語</b></a></td>
+<!-- Java Language -->
+<td>
+<table class="tablerows" summary="">
+<tr>
+<td class="tdbody" bgcolor="#BDBEC0"><a class="atext" href="technotes/guides/language/index.html">Java言語</a></td>
+</tr>
+</table>
+</td>
+<td rowspan="5">&nbsp;</td>
+<td rowspan="4">&nbsp;</td>
+</tr>
+<!-- Row 2 of 9 -->
+<tr valign="top">
+<td class="tdhead" title="ツールとツールAPI"><a class="ahead" href="technotes/tools/index.html"><b>ツールと<br />ツールAPI</b></a></td>
+<td>
+<table class="tablerows" summary="">
+<tr>
+<td bgcolor="#A3B8CB" class="tdbody" title="Javaランタイム起動ツール">
+<a class="atext" href="technotes/tools/windows/java.html">java</a></td>
+<td bgcolor="#A3B8CB" class="tdbody" title="Javaコンパイラ"><a class="atext" href="technotes/guides/javac/index.html">javac</a></td>
+<td bgcolor="#A3B8CB" class="tdbody" title="Javaドキュメント・ジェネレータ"><a class="atext" href="technotes/guides/javadoc/index.html">javadoc</a></td>
+<td bgcolor="#A3B8CB" class="tdbody" title="Java Archiveツール">
+<a class="atext" href="technotes/guides/jar/index.html">jar</a></td>
+<td bgcolor="#A3B8CB" class="tdbody" title="Javaクラス・ファイルのディスアセンブラ"><a class="atext" href="technotes/tools/windows/javap.html">javap</a></td>
+<td bgcolor="#A3B8CB" class="tdbody" title="スクリプト・ツール">
+<a class="atext" href="technotes/tools/index.html#scripting">スクリプト</a></td>
+</tr>
+<tr>
+<td bgcolor="#A3B8CB" class="tdbody" title="セキュリティ・ツール">
+<a class="atext" href="technotes/tools/index.html#security">セキュリティ</a></td>
+<td bgcolor="#A3B8CB" class="tdbody" title="モニタリングおよび管理ツール"><a class="atext" href="technotes/tools/index.html#monitor">モニタリング</a></td>
+<td bgcolor="#A3B8CB" class="tdbody" title="jconsole"><a class="atext" href="technotes/tools/index.html#jconsole">JConsole</a></td>
+<td bgcolor="#A3B8CB" class="tdbody" title="Java VisualVM"><a class="atext" href="technotes/guides/visualvm/index.html">VisualVM</a></td>
+<td bgcolor="#A3B8CB" class="tdbody" title="Java Mission Control">
+<a class="atext" href="technotes/guides/jmc">JMC</a></td>
+<td bgcolor="#A3B8CB" class="tdbody" title="Java Flight Recorder">
+<a class="atext" href="technotes/guides/jfr">JFR</a></td>
+</tr>
+<tr>
+<td bgcolor="#A3B8CB" class="tdbody" title="Java Platform Debugger Architecture"><a class="atext" href="technotes/guides/jpda/index.html">JPDA</a></td>
+<td bgcolor="#A3B8CB" class="tdbody" title="Java Virtual Machine Tool Interface"><a class="atext" href="technotes/guides/jvmti/index.html">JVM TI</a></td>
+<td bgcolor="#A3B8CB" class="tdbody" title="インタフェース定義言語およびRMI-IIOPツール"><a class="atext" href="technotes/tools/index.html#idl">IDL</a></td>
+<td bgcolor="#A3B8CB" class="tdbody" title="Remote Method Invocationツール"><a class="atext" href="technotes/tools/index.html#rmi">RMI</a></td>
+<td bgcolor="#A3B8CB" class="tdbody" title="Java DB"><a class="atext" href="http://docs.oracle.com/javadb/index_jdk8.html">Java DB</a></td>
+<td bgcolor="#A3B8CB" class="tdbody" title="配備、Plug-in、およびWeb Startツール"><a class="atext" href="technotes/tools/index.html#deployment">配備</a></td>
+</tr>
+<tr>
+<td bgcolor="#A3B8CB" class="tdbody" colspan="2" title="国際化ツール"><a class="atext" href="technotes/tools/index.html#intl">国際化</a></td>
+<td bgcolor="#A3B8CB" class="tdbody" colspan="2" title="Java Web Servicesツール"><a class="atext" href="technotes/tools/index.html#webservices">Web Services</a></td>
+<td bgcolor="#A3B8CB" class="tdbody" colspan="2" title="トラブルシューティング・ツール"><a class="atext" href="technotes/tools/index.html#troubleshoot">トラブルシューティング</a></td>
+</tr>
+</table>
+</td>
+</tr>
+<!-- Row 3 of 9 -->
+<tr valign="top">
+<td class="tdleftside" rowspan="7" title="Java Runtime Environment"><a class="atext" href="technotes/guides/index.html#jre-jdk">JRE</a></td>
+<td class="tdhead" title="配備用テクノロジ"><a class="ahead" href="technotes/guides/jweb/index.html"><b>配備</b></a></td>
+<td>
+<table class="tablerows" summary="">
+<tr>
+<td bgcolor="#ED9B4F" class="tdbody" title="Java Web Start">
+<a class="atext" href="technotes/guides/javaws/index.html">Java Web Start</a></td>
+<td bgcolor="#ED9B4F" class="tdbody" title="ブラウザ用Java Plug-In"><a class="atext" href="technotes/guides/jweb/applet/applet_dev_guide.html">アプレット/Java Plug-in</a></td>
+</tr>
+</table>
+</td>
+</tr>
+<!-- Row 4 of 9 -->
+<tr valign="top">
+<td class="tdhead" rowspan="2" title="ユーザー・インタフェース・プログラミング">
+<a class="ahead" href="technotes/guides/index.html#userinterface"><b>ユーザー・インタフェース<br />ツールキット</b></a></td>
+<td>
+<table class="tablerows" summary="">
+<tr>
+<td bgcolor="#E76F00" class="tdbody" title="JavaFX"><a class="atext" href="http://docs.oracle.com/javase/8/javafx/">JavaFX</a></td>
+</tr>
+</table>
+</td>
+</tr>
+<!-- Row 5 of 9 -->
+<tr valign="top">
+<td>
+<table class="tablerows" summary="">
+<tr>
+<td bgcolor="#E76F00" class="tdbody" title="グラフィカル・ユーザー・インタフェース・コンポーネント"><a class="atext" href="technotes/guides/swing/index.html">Swing</a></td>
+<td bgcolor="#E76F00" class="tdbody" title="2Dグラフィックス、テキスト、およびイメージ"><a class="atext" href="technotes/guides/2d/index.html">Java 2D</a></td>
+<td bgcolor="#E76F00" class="tdbody" title="Abstract Window Toolkit"><a class="atext" href="technotes/guides/awt/index.html">AWT</a></td>
+<td bgcolor="#E76F00" class="tdbody" colspan="2" title="ユーザー・インタフェース用ユーザー補助機能"><a class="atext" href="technotes/guides/access/index.html">Accessibility</a></td>
+</tr>
+<tr>
+<td bgcolor="#E76F00" class="tdbody" title="ドラッグ&ドロップによるデータ転送"><a class="atext" href="technotes/guides/dragndrop/index.html">ドラッグ&ドロップ</a></td>
+<td bgcolor="#E76F00" class="tdbody" title="Input Method Framework"><a class="atext" href="technotes/guides/imf/index.html">インプット・メソッド</a></td>
+<td bgcolor="#E76F00" class="tdbody" title="イメージ入出力API"><a class="atext" href="technotes/guides/imageio/index.html">Image I/O</a></td>
+<td bgcolor="#E76F00" class="tdbody" title="印刷サービスAPI">
+<a class="atext" href="technotes/guides/jps/index.html">印刷サービス</a></td>
+<td bgcolor="#E76F00" class="tdbody" title="MIDI API"><a class="atext" href="technotes/guides/sound/index.html">「サウンド」</a></td>
+</tr>
+</table>
+</td>
+<td class="tdrightside" rowspan="4" title="Java SE API。その他のリンクについては、APIドキュメントのセクションを参照してください。">
+<a class="atext" href="api/index.html">Java SE<br /> API</a></td>
+</tr>
+<!-- Row 6 of 9 -->
+<tr valign="top">
+<td class="tdhead" title="統合ライブラリ"><a class="ahead" href="technotes/guides/index.html#integration"><b>統合<br />ライブラリ</b></a></td>
+<td>
+<table class="tablerows" summary="">
+<tr>
+<td bgcolor="#B2BC00" class="tdbody" title="CORBAインタフェース定義言語API"><a class="atext" href="technotes/guides/idl/index.html">IDL</a></td>
+<td bgcolor="#B2BC00" class="tdbody" title="Java Database Connectivity API"><a class="atext" href="technotes/guides/jdbc/index.html">JDBC</a></td>
+<td bgcolor="#B2BC00" class="tdbody" title="Java Naming and Directory Interface API"><a class="atext" href="technotes/guides/jndi/index.html">JNDI</a></td>
+<td bgcolor="#B2BC00" class="tdbody" title="Remote Method Invocation API"><a class="atext" href="technotes/guides/rmi/index.html">RMI</a></td>
+<td bgcolor="#B2BC00" class="tdbody" title="IIOP上のRMIインタフェース"><a class="atext" href="technotes/guides/rmi-iiop/index.html">RMI-IIOP</a></td>
+<td bgcolor="#B2BC00" class="tdbody" title="Scripting for the Java Platform"><a class="atext" href="technotes/guides/scripting/index.html">スクリプト</a></td>
+</tr>
+</table>
+</td>
+<td class="tdrightside" rowspan="3" title="コンパクト・プロファイル">
+<a class="atext" href="technotes/guides/compactprofiles/index.html">コンパクト・<br />プロファイル</a></td>
+</tr>
+<!-- Row 7 of 9 -->
+<tr valign="top">
+<td class="tdhead" title="java.langおよびjava.util以外の基本ライブラリ"><a class="ahead" href="technotes/guides/index.html#otherbase"><b>その他の基本<br />ライブラリ</b></a></td>
+<td>
+<table class="tablerows" summary="">
+<tr>
+<td bgcolor="#C69200" class="tdbody" title="Java BeansコンポーネントAPI"><a class="atext" href="technotes/guides/beans/index.html">Beans</a></td>
+<td bgcolor="#C69200" class="tdbody" title="Security API"><a class="atext" href="technotes/guides/security/index.html">セキュリティ</a></td>
+<td bgcolor="#C69200" class="tdbody" title="オブジェクト直列化">
+<a class="atext" href="technotes/guides/serialization/index.html">直列化</a></td>
+<td bgcolor="#C69200" class="tdbody" title="パッケージ拡張機能メカニズム"><a class="atext" href="technotes/guides/extensions/index.html">拡張機能メカニズム</a></td>
+</tr>
+<tr>
+<td bgcolor="#C69200" class="tdbody" title="Java Management Extensions"><a class="atext" href="technotes/guides/jmx/index.html">JMX</a></td>
+<td bgcolor="#C69200" class="tdbody" nowrap="nowrap" title="Java API for XML Processing"><a class="atext" href="technotes/guides/xml/index.html">XML JAXP</a></td>
+<td bgcolor="#C69200" class="tdbody" title="ネットワークAPI">
+<a class="atext" href="technotes/guides/net/index.html">ネットワーク機能</a></td>
+<td bgcolor="#C69200" class="tdbody" title="推奨標準オーバーライド・メカニズム"><a class="atext" href="technotes/guides/standards/index.html">優先メカニズム</a></td>
+</tr>
+<tr>
+<td bgcolor="#C69200" class="tdbody" title="Java Native Interface">
+<a class="atext" href="technotes/guides/jni/index.html">JNI</a></td>
+<td bgcolor="#C69200" class="tdbody" title="日時"><a class="atext" href="technotes/guides/datetime/index.html">日時</a></td>
+<td bgcolor="#C69200" class="tdbody" title="入出力API">
+<a class="atext" href="technotes/guides/io/index.html">入出力</a></td>
+<td bgcolor="#C69200" class="tdbody" title="アプリケーションの国際化"><a class="atext" href="technotes/guides/intl/index.html">国際化</a></td>
+</tr>
+</table>
+</td>
+</tr>
+<!-- Row 8 of 9 -->
+<tr valign="top">
+<td class="tdhead" title="java.langライブラリとjava.utilライブラリ">
+<a class="ahead" href="technotes/guides/index.html#langutil"><b>langおよびutil<br />基本ライブラリ</b></a></td>
+<td>
+<table class="tablerows" summary="">
+<tr>
+<td bgcolor="#FFC726" class="tdbody" colspan="5" title="java.langパッケージとjava.utilパッケージ"><a class="atext" href="technotes/guides/lang/index.html">langとutil</a></td>
+</tr>
+<tr>
+<td bgcolor="#FFC726" class="tdbody" title="Mathクラス"><a class="atext" href="technotes/guides/math/index.html">Math</a></td>
+<td bgcolor="#FFC726" class="tdbody" title="Collections Framework">
+<a class="atext" href="technotes/guides/collections/index.html">Collections</a></td>
+<td bgcolor="#FFC726" class="tdbody" title="参照オブジェクトAPI">
+<a class="atext" href="api/java/lang/ref/package-summary.html">参照オブジェクト</a></td>
+<td bgcolor="#FFC726" class="tdbody" colspan="2" title="正規表現"><a class="atext" href="api/java/util/regex/package-summary.html">正規表現</a></td>
+</tr>
+<tr>
+<td bgcolor="#FFC726" class="tdbody" title="Logging API"><a class="atext" href="technotes/guides/logging/index.html">ロギング</a></td>
+<td bgcolor="#FFC726" class="tdbody" title="JVM監視および管理"><a class="atext" href="technotes/guides/management/index.html">管理</a></td>
+<td bgcolor="#FFC726" class="tdbody" title="インストゥルメンテーション">
+<a class="atext" href="technotes/guides/instrumentation/index.html">インストゥルメンテーション</a></td>
+<td bgcolor="#FFC726" class="tdbody" colspan="2" title="並行処理ユーティリティ"><a class="atext" href="technotes/guides/concurrency/index.html">並行処理ユーティリティ</a></td>
+</tr>
+<tr>
+<td bgcolor="#FFC726" class="tdbody" title="リフレクションAPI">
+<a class="atext" href="technotes/guides/reflection/index.html">リフレクション</a></td>
+<td bgcolor="#FFC726" class="tdbody" title="パッケージのバージョンID"><a class="atext" href="technotes/guides/versioning/index.html">バージョン管理</a></td>
+<td bgcolor="#FFC726" class="tdbody" title="Preferences API">
+<a class="atext" href="technotes/guides/preferences/index.html">Preferences API</a></td>
+<td bgcolor="#FFC726" class="tdbody" title="Java Archiveファイル形式"><a class="atext" href="technotes/guides/jar/index.html">JAR</a></td>
+<td bgcolor="#FFC726" class="tdbody" title="zipファイル形式およびgzipファイル形式"><a class="atext" href="api/java/util/zip/package-summary.html">ZIP</a></td>
+</tr>
+</table>
+</td>
+</tr>
+<!-- Row 9 of 9 -->
+<tr valign="top">
+<td class="tdhead" title="Java仮想マシン"><a class="ahead" href="technotes/guides/vm/index.html"><b>Java仮想マシン</b></a></td>
+<td>
+<table class="tablerows" summary="">
+<tr>
+<td class="tdbody" bgcolor="#C5D5A9"><a class="atext" href="technotes/guides/vm/index.html">Java HotSpot ClientおよびServer VM</a></td>
+</tr>
+</table>
+</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</table>
+<!-- ################################### -->
+<!-- END OF TABLE -->
+<!-- ################################### --></div>
+<!-- id="content" -->
+<!-- commenting out JDK 7-specific links; will replace with corresponding JDK 8 links as we get closer
+<div class="story">
+<h2><a name="NewFeature" id="NewFeature" class="notHref"></a>What's
+New in Documentation</h2>
+<p>This section will contain information about new features in the
+Java platform.</p>
+</div>
+-->
+<!-- class="feature" --></div>
+
+<!--  footer start -->
+<div id="javasefooter">
+<div class="hr">
+<hr /></div>
+<div id="javasecopyright">
+<img alt="Oracle and/or its affiliates" border="0" height="29" id="oraclelogofooter" name="oraclelogofooter" src="images/oraclelogo.gif" width="100" /> <a href="legal/cpyr.html">Copyright ©</a> 1993, 2014, Oracle and/or its affiliates. All rights reserved.</div>
+<div id="javasecontactus">
+<a href="http://docs.oracle.com/javase/feedback.html">連絡先</a>
+</div>
+</div>
+<!-- footer end -->
+
+<!-- STATIC FOOTER -->
+
+</body>
+</html>

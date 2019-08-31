@@ -1,0 +1,175 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MVC施設予約の単体テスト</title>
+<link rel="stylesheet" type="text/css" href="../../css/main.css">
+</head>
+
+<body>
+
+<center>
+<h2>おわりに</h2>
+</center>
+<hr>
+<p class="midasi0">画面の追加</p>
+さて、単体テストは終わりましたが、<br>
+最初にお伝えしたとおり、このMVC施設予約は、未完成で画面が作成されていませんでした。<br>
+<br>
+単体テストは JSP や、サーバに依存しないで実行できることがお分かりいただけたと思います。<br>
+<br>
+JSP を追加する際には、Servlet 以降の全ての施設予約の機能はきちんと動作することが保証されていますので、<br>
+それにあわせた画面を作成するだけになります。<br>
+
+<br>
+JSP 側で知っていればよいのは、サーブレットで処理されるパラメータと、セッションやリクエストに格納されている情報だけです。<br>
+
+<!--
+また、今回のサーブレットはシステム例外として、ServletException をスローしますので、500エラーのための HTM Lページを準備することにします。<br>
+その他のセキュリティ対策として、コンテキストルートへ直接アクセスされた場合に使用する「index.html」、「reserve.jsp」のWEB-INF以下への移動、
+404 エラーのためのHTMLページを準備することにします。<br>
+<br>
+
+<p class="midasi1">JSP、HTML の追加</p>
+最初に、使用する JSP や HTML ファイルを以下の構成で作成します。<br>
+MVC施設予約のための JSP は、「WEB-INF/jsp」以下に、その他の直接アクセスされて良い HTML ファイルは、<br>
+WEB-INF の外に出してあります。<br>
+reserve.jsp は、MVC施設予約のサンプルHTMLをそのままコピーしてきて、上にJSPの宣言を追加しました。<br>
+<br>
+<xmp class="source">
+<%@page contentType="text/html; charset=MS932"%>
+</xmp>
+<br>
+<img src="images/10_jsps.png" alt="images/10_jsps.png"><br>
+<br>
+その他各 HTML ファイルの内容は以下のようになっています。<br>
+<h4>index.html</h4>
+<xmp class="source">
+<meta http-equiv="refresh" content="0; url=http://localhost:8080/reserve/show">
+</xmp>
+<h4>500.html</h4>
+<xmp class="source">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=MS932">
+<title>MVC施設予約</title>
+</head>
+<body>
+<h4>ただいま、システムが込み合っております。</h4>
+<h4>ご迷惑をおかけいたしますが、しばらくしてから、再度読み込んでください。</h4>
+</body>
+</html>
+</xmp>
+<h4>404.html</h4>
+<xmp class="source">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=MS932">
+<title>MVC施設予約</title>
+</head>
+<body>
+<h4>指定されたページは存在しません。</h4>
+</body>
+</html>
+</xmp>
+
+<p class="midasi1">web.xml の修正</p>
+サーブレット、フィルターに関する設定、500、404対応エラーページに関する設定を記述します。<br>
+<br>
+<xmp class="source">
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+  version="3.1">
+
+	・・・Filter と Servlet の設定・・・
+
+	<error-page>
+		<error-code>500</error-code>
+		<location>/error/500.html</location>
+	</error-page>
+
+	<error-page>
+		<error-code>404</error-code>
+		<location>/error/404.html</location>
+	</error-page>
+
+</web-app>
+</xmp><br>
+<br>
+一度起動して画面を確認しておきましょう。<br>
+http://localhost:8080/MVCReserve/<br>
+HTMLそのままの画面が表示されます。<br>
+-->
+
+<p class="midasi1">仕様修正の発生</p>
+
+<!--
+例えば、画面作成中に、以下の対応が必要になったとします。<br>
+<ol>
+<li>画面の制御用に、ユーティリティメソッドが必要</li>
+<li>過去に予約・キャンセルができないという仕様が漏れている</li>
+<li>ログインで誤った処理をした場合にも、エラーメッセージを出力したい</li>
+</ol>
+
+<h4>画面の制御用に、ユーティリティメソッドが必要</h4>
+<p>
+この対応は比較的容易です。以下のメソッドを ReserveUtils に追加し、直交表、JUnit テストをそれぞれ追加しました。<br>
+<ul>
+<li>public static String escapeNull(Object o)</li>
+<li>public static boolean isPassed(Calendar calendar)</li>
+</ul>
+</p>
+
+<h4>過去に予約・キャンセルができないという仕様が漏れている</h4>
+<p>
+想定していた予約・キャンセル可能期間は、2000/01/01 ～ 9999/12/31 でした。<br>
+一見影響が大きそうですが、直交表を検討すると、サーブレットでは、予約やキャンセルの可否判断に依存するテストはしていませんので、<br>
+ReserveUtils に isValidReserve というメソッドを追加し、過去の日付を排除する処理を行えばよさそうです。<br>
+<br>
+直交表を全面的に修正し、JavaDoc、テストを修正後に、メソッドの修正を実施します。<br>
+</p>
+
+<h4>ログインで誤った処理をした場合にも、エラーメッセージを出力したい</h4>
+<p>
+ユーザID入力をミスした場合に対するエラーメッセージも追加する必要があることに気が付きました。<br>
+<br>
+見直してみると、ユーザIDの入力ミスに対する処理のテストは既に実施済みでした。<br>
+現在あるテストに、「エラーメッセージが出力される」という項目を追加することで対応できそうです。<br>
+直交表、テストクラス共に、現在あるテストケースへ項目を追加し、サーブレットメソッドの修正を実施します。<br>
+</p>
+<br><br>
+-->
+開発では「仕様追加」、「仕様修正」がよく発生します。<br>
+このような場合に JUnit で緻密に作成したテストの本領が発揮されます。<br>
+JUnit を使用したテストケースには、修正を行う時期には忘れてしまっているような前提条件や、例外ケースが規定されているため、<br>
+追加・修正後に、全ての JUnit テストを実行することによって、影響発生の有無を、簡単に確認することができるからです。<br>
+逆に、いい加減に作成した JUnit では、バグは発見できません。<br>
+<br>
+仕様の追加・修正が発生した場合には、単体テストを見直し、テストケースを修正することから始めてください。<br>
+<br>
+<p class="midasi1">さいごに</p>
+手順化された「テスト」や「テスト仕様書」はなぜ必要なのでしょうか？<br>
+それは私たちが「開発のプロ」であるからです。<br>
+<br>
+自宅で趣味で作成するようなアプリケーションには、端的にいうと、そのようなテストの必要はありません。<br>
+そこが「アマチュア」と「プロ」の境界です。<br>
+「アマチュア」は、好きなことを好きなようにできる世界です。<br>
+「プロ」は、一定のガイドラインに沿って開発をし、品質を保証しなければいけない世界です。<br>
+どちらが優れているというわけではなく、別の次元に存在しています。<br>
+<br>
+MVC施設予約という小さなアプリケーションの単体テストを通して、<br>
+開発と同じもしくはそれ以上の時間が、単体テストにはかかること<br>
+単体テストは、納品物であり「商品」であることが少しでもわかっていただければ幸いです。<br>
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+</body>
+</html>

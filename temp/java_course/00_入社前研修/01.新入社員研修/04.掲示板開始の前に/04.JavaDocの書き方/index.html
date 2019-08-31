@@ -1,0 +1,577 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="ja">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+	<title>JavaDocの書き方</title>
+	<link rel="stylesheet" type="text/css" href="../../../css/main.css">
+</head>
+<body>
+<a name="top"/>
+<center>
+<h2>JavaDocの書き方</h2>
+</center>
+
+<hr>
+<a name="first"/>
+<p class="midasi0">はじめに</p>
+このドキュメントを読むにあたっては、<br>
+<ol>
+	<li>Javaのコードが書ける</li>
+	<li>メソッドについて、戻り値や引数などを理解しており自分で作成できる</li>
+    <li>Java プラットフォーム API 仕様を見たことがある</li>
+    <li>基本的なHTMLタグに関しての知識がある</li>
+</ol>
+ことを前提とします。<br>
+<br>
+どのプログラミング言語でも共通ですが、プログラムの可読性を挙げるためにコメントを利用します。 <br>
+このドキュメントではJavaでのコメントの書き方および、JavaDocの書き方を説明します。<br>
+
+
+<p class="midasi1">Javaで使用するコメント</p>
+
+Javaのコメントの記述方法は、以下の表のように使用用途によって分けられます。<br><br>
+
+<table>
+<tr>
+<td>//</td>
+<td>通常は一行のみのコメントを記述する際に使用する</td>
+</tr>
+<td>/*   */</td>
+<td>通常はブロックで記述するコメントなどに使用する</td>
+</tr>
+<td>/**  */</td>
+<td>JavaDoc生成用に使用する</td>
+</tr>
+</table>
+
+<br>
+まずは、これらを使用したソースコードサンプルを見てみましょう。<br>
+コメントのある部分に注意して一通り眺めてみてください。<br>
+<br>
+<xmp class="source">/**
+ * <pre>
+ * 環境変数設定クラス.
+ * 
+ * デフォルトの設定ファイルを ホスト名を使用して
+ * 環境ごとの設定ファイルで動的に上書きする仕組みを提供します
+ * </pre>
+ * 
+ * @author RobertMeda
+ * @version v 1.4
+ */
+public final class Environment {
+
+    /** プロパティ  */
+    public static Properties props;
+
+    /**
+     * コンストラクタ
+     */
+    public Environment() {
+    }
+
+    /**
+     * 初期化処理.
+     * 
+     * @throws UnknownHostException ホストが見つからなかった場合
+     */
+    public static void init() throws UnknownHostException {
+
+        // 上書きするファイルの接尾辞
+        String suffix = null;
+        props = new Properties();
+        initEnvironment("environments.Application", false);
+        suffix = initEnvironment("environments.Environment", true);
+
+        if (suffix != null) {
+            initEnvironment("environments.Environment_" + suffix, false);
+        }
+    }
+
+    /**
+     * 初期化処理.
+     * 
+     * @param bundleName バンドルファイル名
+     * @param defaults デフォルトの設定ファイルかどうか
+     * @return 上書きする場合、上書きファイルの接尾辞
+     * @throws UnknownHostException ホストが見つからなかった場合
+     */
+    public static String initEnvironment(String bundleName, boolean defaults)
+            throws UnknownHostException {
+
+        /*
+            指定されたバンドルファイルから読み込んだキーと値ををプロパティに保存し、
+            指定されたバンドルファイルがデフォルトファイルである場合、
+            かつキーが「env」で始まり、値が実行ホスト名と一致する場合は、
+            設定を上書きするためのファイルの接尾辞を返却します。
+        */
+        String suffix = null;
+        String hostName = null;
+        if (defaults) {
+            hostName = InetAddress.getLocalHost().getHostName().trim()
+                    .toLowerCase();
+        }
+
+        ResourceBundle rb = ResourceBundle.getBundle(bundleName);
+        Enumeration keys = rb.getKeys();
+
+        while (keys.hasMoreElements()) {
+            String key = (String) keys.nextElement();
+            String value = rb.getString(key);
+
+            props.setProperty(key, value);
+            if (defaults && suffix == null && key.startsWith("env.")
+                    && !"".equals(value)
+                    && hostName.startsWith(value.toLowerCase())) {
+                suffix = key.substring(4, 7);
+            }
+        }
+        return suffix;
+    }
+
+    /**
+     * 値を取得します.
+     * 
+     * @param name キー
+     * @return 値
+     */
+    public static String getString(String name) {
+        return props.getProperty(name);
+    }
+
+    /**
+     * 値を取得します.
+     * 
+     * @param name キー
+     * @param defaultValue デフォルト値
+     * @return 値
+     */
+    public static String getString(String name, String defaultValue) {
+        String str = getString(name);
+
+        if (str == null) {
+            return defaultValue;
+        }
+        return str;
+    }
+        // --- 以下省略
+
+}
+</xmp>
+<br>
+メソッドのブロック内で「//」や「/*  */」等のコメントが使用されています。<br>
+これらのコメントは、ソースコードの記述を補助する役割で使用される通常のコメントです。<br>
+<br>
+クラスの宣言部分を見てみましょう。「/**」～「*/」というコメントが使用されています。<br>
+これはJavaDoc用のコメントです。間にある「*」は、必須ではありませんが、慣例として次のように記述されます。<br>
+
+<pre style="border: 1px solid black;">
+<span style="color:red;">/**</span>
+ * 環境変数設定クラス.
+ *
+ * &lt;pre&gt;
+ * デフォルトの設定ファイルを ホスト名を使用して
+ * 環境ごとの設定ファイルで動的に上書きする仕組みを提供します
+ * &lt;/pre&gt;
+ * <span style="color:red;">@author RobertMeda</span>
+ * <span style="color:red;">@version v 1.4</span>
+ <span style="color:red;">*/</span>
+public final class Environment {
+
+</pre>
+
+JavaDoc用のコメントは、記述する場所が以下のように決まっています。<br>
+
+<ol>
+<li>クラス宣言</li>
+<li>フィールド宣言</li>
+<li>コンストラクタ宣言</li>
+<li>メソッド宣言</li>
+</ol>
+<br>
+
+
+<p class="midasi0">JavaDocの書き方</p>
+
+それではそれぞれの宣言部分でのJavaDoc用コメントの記述方法についてさらに見ていきましょう。
+
+<p class="midasi1">JavaDocコメントの記述方法</p>
+
+JavaDocコメント記述方法には基本的に以下のルールがあります。
+<ol>
+<li>「/**」で始まり「*/」で終わる。</li>
+<li>クラス、フィールド、コンストラクタ、メソッドの宣言文の直前に記述する。</li>
+<li>@で始まる文字列（タグ）でパラメーターや戻り値の説明を記述する。</li>
+<li>&lt;h1&gt;や&lt;p&gt;のようなHTML用のタグが使用できる。</li>
+<li>1行目（概要）は、.（ピリオド）で終了させる。概要には最初のピリオドまでの文言が使用させる。</li>
+</ol>
+
+<ol>
+<li>クラス宣言</li>
+<pre style="border: 1px solid black;background-color:#DDFFFF;">
+    <span style="color:red;">/**</span>
+     * <span style="color:red;">&lt;h1&gt;環境変数設定クラス.&lt;/h1&gt;</span>
+     * 
+     * &lt;pre&gt;
+     * デフォルトの設定ファイルを ホスト名を使用して
+     * 環境ごとの設定ファイルで動的に上書きする仕組みを提供します
+     * &lt;/pre&gt;
+     * 
+     * <span style="color:red;">@author RobertMeda</span>
+     * <span style="color:red;">@version 1.4</span>
+     <span style="color:red;">*/</span>
+    public final class Environment {
+</pre>
+<p>
+クラス宣言部分のコメントには、<br>
+クラスの説明と、@authorタグを使用した「著者の説明」、@versionタグを使用したプログラムバージョンを記述します。<br>
+最初にリリースされたものであればバージョンは1.0となります。<br>
+また、クラスの説明部分に改行を入れた場合でも、このコメントを使用して出力したJavaDocでは改行が無視されてしまいます。<br>
+改行を入れたり、文章を整えたい場合は&lt;br&gt;タグや&lt;p&gt;タグ、&lt;h1&gt;など、HTMLタグを適宜使用してください。<br>
+</p>
+
+<li>フィールド宣言</li>
+<pre style="border: 1px solid black;background-color:#DDFFFF;">
+    <span style="color:red;">/** プロパティ. */</span>
+    public static Properties props;
+</pre>
+フィールド宣言部分のコメントは、一行でフィールドの説明を記述します。
+<br><br>
+<li>コンストラクタ宣言</li>
+<pre style="border: 1px solid black;background-color:#DDFFFF;">
+    <span style="color:red;">/**</span>
+     * <span style="color:red;">コンストラクタ.</span>
+     <span style="color:red;">*/</span>
+    public Environment() {
+    }
+</pre>
+コンストラクタ宣言部分のコメントは、コンストラクタの説明を記述します。<br>
+たいていの場合、コンストラクタで行っている処理は変数の初期化処理ぐらいで、他に説明するような<br>
+大層な処理もやっていないでしょうから、そのような場合は、この例のように「コンストラクタ」とだけずばり<br>
+そのまま記述しておけば問題ありません。<br>
+<br>
+コンストラクタに引数がある場合は、@paramタグ、例外宣言がある場合は@throwsタグを使用します。<br>
+<pre style="border: 1px solid black;background-color:#DDFFFF;">
+    <span style="color:red;">/**</span>
+     * <span style="color:red;">コンストラクタ.</span>
+     * 
+     * <span style="color:red;">@param className クラス名</span>
+     * <span style="color:red;">@throws InstantiationException インスタンス生成失敗時</span>
+     <span style="color:red;">*/</span>
+    public Environment(String className) throws InstantiationException {
+    }
+</pre>
+<br>
+
+<li>メソッド宣言</li>
+<pre style="border: 1px solid black;background-color:#DDFFFF;">
+    <span style="color:red;">/**</span>
+     * <span style="color:red;">&lt;h1&gt;初期化処理.&lt;/h1&gt;</span>
+     * 
+     * <span style="color:red;">@param bundleName バンドルファイル名</span>
+     * <span style="color:red;">@param defaults デフォルトの設定ファイルかどうか</span>
+     * <span style="color:red;">@return 上書きする場合、上書きファイルの接尾辞</span>
+     * <span style="color:red;">@throws UnknownHostException ホストが見つからなかった場合</span>
+     <span style="color:red;">*/</span>
+    public static String initEnvironment(String bundleName, boolean defaults)
+            throws UnknownHostException {
+</pre>
+メソッド宣言部分のコメントは、メソッドの説明を記述します。<br>
+メソッドの説明部分の改行は出力される JavaDoc では無視されますので、<br>
+改行を入れたり、文章を整えたい場合は&lt;br&gt;タグや&lt;p&gt;タグ、&lt;h1&gt;など、HTMLタグを適宜使用してください。<br>
+メソッドに引数や戻り値がある場合は、@param タグと @return タグにてメソッドの引数や戻り値の説明を記述します。<br>
+<br>
+また例外の宣言がある場合は、@throws タグにて例外の説明を記述します。<br>
+引数や戻り値がない場合のメソッドの場合は、以下のようになります。<br>
+<pre style="border: 1px solid black;background-color:#DDFFFF;">
+    <span style="color:red;">/**</span>
+     * <span style="color:red;">情報を出力します.</span>
+     * 
+     <span style="color:red;">*/</span>
+    public void printInfo() {
+</pre>
+
+</ol>
+<br>
+
+
+
+
+<br>
+JavaDoc用のタグ（@から始まるもの）の種類はたくさんありますが、研修で使用するタグは以下の通りです。<br>
+実際のプロジェクトでも、これ以外のタグを使用することはあまりないので、これらが使いこなせれば問題ありません。<br>
+これらのタグについてはご自分で作成したソースコード内では全て記述するようにしてください。<br><br>
+<table border="1">
+	<tr>
+		<th>タグ</th>
+		<th>文法</th>
+		<th>説明</th>
+		<th>一般的な使用箇所</th>
+	</tr>
+	<tr>
+		<td>@author</td>
+		<td>@author  著者</td>
+		<td>実装者の名前を記述します</td>
+		<td>クラス宣言</td>
+	</tr>
+	<tr>
+		<td>@version</td>
+		<td>@version  バージョン</td>
+		<td>コードのバージョンを記述します</td>
+		<td>クラス宣言</td>
+	</tr>
+	<tr>
+		<td>@param</td>
+		<td>@param  引数名  引数の説明</td>
+		<td>引数の説明を記述します</td>
+		<td>メソッド、コンストラクタ宣言</td>
+	</tr>
+	<tr>
+		<td>@return</td>
+		<td>@return  戻り値の説明</td>
+		<td>戻り値の説明を記述します</td>
+		<td>メソッド宣言</td>
+	</tr>
+	<tr>
+		<td>@throws</td>
+		<td>@throws 例外クラス名  説明(例外発生の条件等)</td>
+		<td>宣言されている例外の説明を記述します</td>
+		<td>メソッド、コンストラクタ宣言</td>
+	</tr>
+</table>
+<br>
+@param タグや @throws タグは引数名や、例外クラス名の後ろにスペース区切りで説明を記述することに注意しましょう。<br>
+
+その他のタグなど、JavaDoc の記述方法詳細に関しては、<a href="http://docs.oracle.com/javase/jp/8/docs/technotes/guides/javadoc/index.html">JavaDoc テクノロジのドキュメント</a>の説明をご覧下さい。<br>
+<br><br>
+
+<p class="midasi1">JavaDocの出力</p>
+
+さて、ここまではJavaDocの記述方法を解説してきました。<br>
+しかし、JavaDoc用のコメントはソースコードを見やすくするためだけのものではなく、
+その名の通りJavaDocを生成するためにあります。<br>
+そこで最後に、JavaDocコメントから、JavaDocを生成してみましょう。<br>
+Javaではドキュメントを出力するために、javadoc.exeコマンド（javac.exeやjava.exeと同じフォルダにあります）があり、これを使用します。<br>
+以下のサンプルでは、Javaのbinフォルダにパスが通っていることを前提として進めます。
+
+<p>
+<h4>単体の*.javaファイルのJavaDocを出力する</h4>
+JavaDocは、<br>
+<br>
+<xmp class="source">>javadoc Javaファイル
+</xmp><br>
+と、対象のJavaファイル名を指定してコマンドを実行することで簡単に生成できます。<br>
+しかし、JavaDocは大量のHTMLファイルで構成されているため、そのまま出力すると大変なことになります。<br><br>
+そこで、JavaDocの出力先ディレクトリを指定して生成することにします。<br>
+コマンドラインから、JavaDoc生成元のJavaファイルと、生成先のフォルダを指定します。<br>
+<br>
+<xmp class="source">>javadoc -d 出力先フォルダ Javaファイル
+</xmp>
+<br>
+では実行してみます。<br>
+現在のディレクトリには予め「Environment.java」ファイルを置いて、「javadoc」フォルダを作成してあります。<br>
+（この「javadoc」フォルダ内に、生成されたJavaDocが格納されます。）<br>
+<pre style="background-color:#FFFFCC;color:#333333;border: 1px solid black;">
+
+---- + (カレントディレクトリ)
+     |
+     + ----- Environment.java
+     + ----- javadoc/
+
+</pre>
+研修生の皆さんが実行する場合は、「Environment.java」ファイルの代わりに自分で作った java ファイルを置き、<br>
+「javadoc」フォルダを作成してから、同じようにコマンドを実行してみてください。<br>
+<pre style="background-color:black;color:white;">
+C:\Documents and Settings\okameg\デスクトップ>javadoc -d javadoc Environment.java
+ソースファイル Environment.java を読み込んでいます...
+Javadoc 情報を構築しています...
+標準 Doclet バージョン 1.6.0_05
+全パッケージとクラスの階層ツリーを作成しています...
+javadoc\Environment.html の生成
+javadoc\package-frame.html の生成
+javadoc\package-summary.html の生成
+javadoc\package-tree.html の生成
+javadoc\constant-values.html の生成
+全パッケージとクラスのインデックスを作成しています...
+javadoc\overview-tree.html の生成
+javadoc\index-all.html の生成
+javadoc\deprecated-list.html の生成
+全クラスのインデックスを作成しています...
+javadoc\allclasses-frame.html の生成
+javadoc\allclasses-noframe.html の生成
+javadoc\index.html の生成
+javadoc\help-doc.html の生成
+javadoc\stylesheet.css の生成
+ :
+</pre>
+
+実行が終了したら、「javadoc」フォルダに生成されたファイルの中から「index.html」をブラウザで開いてみます。<br><br>
+※ 下の図は、古い version の JavaDoc になります。<br>
+<img src="image/javadoc1.gif" /><br>
+<br>
+Java プラットフォーム API 仕様と同じようなAPIが生成されました。
+
+<br>
+<br>
+<h4>フォルダに入っている全てのJavaコードのJavaDocを生成する</h4>
+
+複数のJavaファイルを「*」ワイルドカードで指定して、JavaDocを生成することができます。<br>
+<br>
+<xmp class="source">>javadoc -d 出力先フォルダ *.java
+</xmp>
+
+<br>
+現在のディレクトリには、「src」という名前のフォルダがあり、その中に複数のJavaファイルが格納されています。
+<pre style="background-color:#FFFFCC;color:#333333;border: 1px solid black;">
+
+---- + (カレントディレクトリ)
+     |
+     + ----- src/ ----- +
+                        + -----ListSampleApp.java
+                        + -----MapSample.java
+                        + -----Person.java
+                        + -----PersonComparator.java
+                        + -----PersonListApp.java
+                        + -----PersonListSampleApp.java
+
+</pre>
+このファイル群の JavaDoc を生成するには、次のようにコマンドを実行します。<br>
+<pre style="background-color:black;color:white;">
+>javadoc -d javadoc -sourcepath src src\*.java
+</pre>
+※ 下の図は、古い version の JavaDoc になります。<br>
+<img src="image/javadoc2.gif" /><br>
+<br>
+複数のファイルのJavaDocが生成されました。<br>
+コマンドの一番最後の引数、ファイル名の指定はコマンドを実行するディレクトリからJavaファイルへの相対パス、または絶対パスを指定します。
+
+<br>
+<br>
+<h4>指定したパッケージ内のJavaコード全てのJavaDocを生成する</h4>
+
+指定したパッケージ内のすべてのJavaDocを出力する方法です。<br>
+ソースフォルダへの実行ディレクトリからの相対パスまたは、絶対パスを指定し、パッケージ名を指定します。<br>
+実行ディレクトリがパッケージのルートの部分にあたる場合は、ソースフォルダの指定はしなくてもかまいません。
+<br>
+<br>
+
+<xmp class="source">>javadoc -d 出力先フォルダ -sourcepath ソースフォルダ パッケージ名1 パッケージ名2...
+</xmp>
+
+<br>
+現在のディレクトリには、「java」という名前のソースフォルダがあり、<br>
+その中にパッケージ「org.insightech.basic.dao」から「org.insightech.testcase.djunit」まで、74のパッケージがが格納されています。<br>
+<pre style="background-color:#FFFFCC;color:#333333;border: 1px solid black;">
+
+---- + (カレントディレクトリ)
+     |
+     + ----- java/
+               + -- org/ （パッケージのルート）
+                      + -- insightech/
+                             + -- basic/
+                             |      + -- dao/
+                             |             + -- BasicFileInfoModelDao.java
+                             |             + -- BasicModelDao.java
+                             |             + -- file/
+                             |             |      + -- BasicFileInfoModelFileDaoImpl.java
+                             |             + -- hibernate/
+                             |                    + -- BasicFileInfoModelDaoImpl.java
+                             |                    + -- BasicModelDaoImpl.java
+                             + -- common/
+                             :      + -- commandexec/
+                             :             + -- ProcessExec.java
+                             :             :         :
+</pre>
+では実行してみます。
+<br>
+<br>
+<div style="background-color:black;color:white;width:800px;font-size:12px;">
+>javadoc -d javadoc -sourcepath java org.insightech.basic.dao org.insightech.basic.dao.file org.insightech.basic.dao.hibernate org.insightech.basic.model org.insightech.basic.model.search org.insightech.basic.service org.insightech.basic.service.impl org.insightech.common.commandexec org.insightech.common.context org.insightech.common.context.workspace org.insightech.common.context.workspace.impl org.insightech.common.dao org.insightech.common.dao.hibernate org.insightech.common.exception org.insightech.common.io org.insightech.common.io.csv org.insightech.common.io.filefilter org.insightech.common.mail org.insightech.common.model org.insightech.common.model.search org.insightech.common.operationlog org.insightech.common.operationlog.springaop org.insightech.common.service org.insightech.common.service.aop org.insightech.common.service.impl org.insightech.common.service.mail org.insightech.common.servicelocator org.insightech.common.servicelocator.impl org.insightech.common.util org.insightech.ext.dao org.insightech.ext.dao.file org.insightech.ext.dao.hibernate org.insightech.ext.model org.insightech.ext.model.search org.insightech.ext.service org.insightech.ext.service.impl org.insightech.ext.service.mail.impl org.insightech.standard.dao org.insightech.standard.dao.hibernate org.insightech.standard.model org.insightech.standard.model.search org.insightech.standard.service org.insightech.standard.service.impl org.insightech.standard.service.mail.impl org.insightech org.insightech.basic.dao.file org.insightech.basic.dao.hibernate org.insightech.basic.model org.insightech.basic.model.search org.insightech.common.commandexec org.insightech.common.context org.insightech.common.context.workspace org.insightech.common.context.workspace.impl org.insightech.common.dao.hibernate org.insightech.common.exception org.insightech.common.io org.insightech.common.io.csv org.insightech.common.io.filefilter org.insightech.common.mail org.insightech.common.model org.insightech.common.model.search org.insightech.common.operationlog org.insightech.common.service.impl org.insightech.common.servicelocator.impl org.insightech.common.util org.insightech.ext.dao.file org.insightech.ext.dao.hibernate org.insightech.ext.service.impl org.insightech.ext.service.mail.impl org.insightech.standard.model org.insightech.standard.service.impl org.insightech.standard.service.mail.impl org.insightech.testcase org.insightech.testcase.djunit 
+</div>
+<br>
+実行結果ではなく、コマンドがこのように長くなります。<br>
+多少わかりづらいですが、すべてのパッケージ名を連ねています。<br>
+<br>
+
+※ 下の図は、古い version の JavaDoc になります。<br>
+<img src="image/javadoc3.gif" /><br>
+<br>
+パッケージも含んだJavaDocが生成されました。<br>
+このように引数が大量になり、コマンドライン入力では苦しい場合は、<br>
+javadocコマンドに引き渡すオプションやソースファイル情報をテキストファイルに記述しておき、<br>
+<br>
+<xmp class="source">>javadoc @ファイル名
+</xmp>
+<br>
+のように指定することもできます。<br>
+<br>
+この他にも便利な引数がたくさんあります。一覧を見るには、-help オプションをつけて実行します。<br>
+<br>
+<xmp class="source">>javadoc -help
+</xmp>
+<br>
+<pre style="background-color:black;color:white;">
+C:\Documents and Settings\okameg\デスクトップ\src\app>javadoc -help
+使用法: javadoc [options] [packagenames] [sourcefiles] [@files]
+-overview <file>          HTML ファイルから概要ドキュメントを読み込む
+-public                   public クラスとメンバのみを示す
+-protected                protected/public クラスとメンバを示す (デフォルト)
+-package                  package/protected/public クラスとメンバを示す
+-private                  すべてのクラスとメンバを示す
+-help                     コマンド行オプションを表示して終了する
+-doclet <class>           代替 doclet を介して出力を生成する
+-docletpath <path>        doclet クラスファイルを探す場所を指定する
+-sourcepath <pathlist>    ソースファイルのある場所を指定する
+-classpath <pathlist>     ユーザクラスファイルのある場所を指定する
+-exclude <pkglist>        除外するパッケージリストを指定する
+-subpackages <subpkglist> 再帰的にロードするサブパッケージを指定する
+-breakiterator            BreakIterator で最初の文を計算する
+-bootclasspath <pathlist> ブートストラップクラスローダによりロードされた
+                          クラスファイルの位置をオーバーライドする
+-source <release>         指定されたリリースとソースの互換性が提供される
+-extdirs <dirlist>        拡張機能がインストールされた位置をオーバーライドする
+-verbose                  Javadoc の動作についてメッセージを出力する
+-locale <name>            en_US や en_US_WIN などの使用するロケール
+-encoding <name>          ソースファイルのエンコーディング名
+-quiet                    状態メッセージを表示しない
+-J<flag>                  <flag> を実行システムに直接渡す
+
+標準の doclet により提供されるもの:
+-d <directory>                    出力ファイルの転送先ディレクトリ
+-use                              クラスとパッケージの使用ページを作成する
+-version                          @version パラグラフを含める
+-author                           @author パラグラフを含める
+-docfilessubdirs                  doc-file サブディレクトリを再帰的にコピーする
+-splitindex                       1 字ごとに 1 ファイルに索引を分割する
+-windowtitle <text>               ドキュメント用のブラウザウィンドウタイトル
+-doctitle <html-code>             概要ページにタイトルを含める
+　: (以下省略)
+　:
+</pre>
+
+</p>
+
+<p class="midasi0">おわりに</p>
+
+<p>
+コメントを全く記述しないと、例えそれが自分の書いたプログラムでも後から読み直す際にわかりづらいものです。<br>
+また、逆に大量のコメントはソースを追う時に邪魔になります。<br>
+ソースから容易に読み取れる部分のコメントは省きつつ、必要最小限のコメントを入れるようにしましょう。<br>
+コメントを書く必要のない程わかりやすいコードに修正できるかどうかを、常に考えてコーディングするのがベストです。
+
+<br><br>
+また、「コメントだから自分がわかればいい」程度の考えで、<br>
+ふざけたコメントや、口語、絵文字のコメントを入れるのは、開発のプロとしては失格です。<br>
+「コメントは後続の開発者の目に触れるもの」との認識をもって、わかりやすいコメントを入れるように常に心がけましょう。
+</p>
+
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+</body>
+</html>

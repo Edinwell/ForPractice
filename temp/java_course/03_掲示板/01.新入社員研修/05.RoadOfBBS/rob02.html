@@ -1,0 +1,371 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<title>～掲示板への道～</title>
+<link rel="stylesheet" type="text/css" href="../../css/main.css">
+</head>
+<body>
+<center>
+<h2>～掲示板への道～</h2>
+<h1>2.日本語の文字化けを回避編</h1>
+</center>
+<hr>
+
+<br>
+前ページの<a href="rob01.html">パラメータを受信するサーブレット編</a>
+では、日本語（全角文字）で試すと文字化けが発生していたと思います。
+<br>
+これを回避しましょう。<br>
+<br>
+<p class="midasi0">何故文字化けが発生するのか</p>
+まず、何故文字化けが発生するのかを考えましょう。<br>
+次の図を見てください<br>
+<br><br>
+<img src="image/mojibake.PNG">
+<br><br>
+名前に「若井」と入力すると<br>
+<br>
+MS932の文字セット（<span class="important">現在のページの文字セット</span>）によって<br>
+「若」→「%8E%E1」<br>
+「井」→「%88%E4」<br>
+という変換が行われ、この16進数が Tomcat に渡されます。<br>
+<br>
+Tomcat は受け取った16進数を戻す際に、<span class="important">何も指定されていない</span>と、<br>
+<span class="important">ISO8859-1</span>の文字セットを使って変換してしまいます。<br>
+<br>
+ISO8859-1の文字セットには、「%8E%E1」に該当する文字はないため、「??」に変換されてしまいます。<br>
+<br>
+文字化けの完成です。<br>
+<br>
+文字化けを防ぐには、Tomcat に受け取った16進数を戻す際に使用すべき正しい文字セットを<br>
+<span class="important">教えてあげる必要がある</span>のです。<br>
+<br><br>
+<p class="midasi0">文字化け対策をする</p>
+文字化けの仕組みが分かったところで、対策を施しましょう<br>
+Tomcat に受け取った16進数を戻す際に使用すべき正しい文字セットを教えてあげるには、次のメソッドを使用します。<br>
+<br>
+<xmp class="source">
+request.setCharacterEncoding("正しい文字セット");
+</xmp>
+<br>
+今の場合は、正しい文字セットは「MS932」ですので、文字化け対策を施した BBSServlet.java は次のようになります。<br>
+<br>
+<span class="filename">%CATALINA_HOME%\webapps\bbs\jp\co\insightech\BBSServlet.java</span>
+<xmp class="source">
+package jp.co.insightech;
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class BBSServlet extends HttpServlet {
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+</xmp>
+<xmp class="modified_source">
+		request.setCharacterEncoding("MS932");
+</xmp>
+<xmp class="source">
+		String name = request.getParameter("name");
+		String hobby = request.getParameter("hobby");
+
+		response.setContentType("text/html; charset=MS932");
+
+		PrintWriter out = response.getWriter();
+		out.println("<html><head><title>掲示板</title></head>");
+		out.println("<body><b>");
+		out.println(name);
+		out.println("</b>さんの趣味は<i>");
+		out.println(hobby);
+		out.println("</i>です");
+		out.println("</body></html>");
+		out.close();
+	}
+
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
+}
+</xmp>
+<br>
+
+ただし、この変更だけでは、まだ十分ではありません。<br>
+Tomcat の場合は、<span class="important">POST</span> で送信されたパラメータには<br>
+<br>
+<xmp class="source">
+request.setCharacterEncoding("正しい文字セット"); 
+</xmp>
+<br>
+で指定された文字セットを<span class="important">適用してくれる</span>のですが、<span class="important">GET で送信されたパラメータには、適用してくれません</span>。<br>
+（GETで送信されたパラメータにも適用させる方法は<a href="#setCharacterEncodingByGet">こちら</a>を参照してください。）<br>
+<br>
+そこで、ここではパラメータを POST で送信するように index.html を修正します。<br>
+<br>
+<span class="filename">%CATALINA_HOME%\webapps\bbs\index.html</span>
+<xmp class="source">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+	<title>掲示板</title>
+</head>
+<body>
+</xmp>
+<xmp class="modified_source">
+<form action="./top" method="POST">
+</xmp>
+<xmp class="source">
+	名前<input type="text" name="name"><br>
+	趣味<input type="text" name="hobby"><br>
+	<input type="submit" value="送信">
+</form>
+
+</body>
+</html>
+</xmp>
+<br>
+<br>
+<img src="image/question.gif"> String の getBytes メソッドも確認してください。<br>
+<img src="image/question.gif"> いろいろな文字セットが存在します。調査しておきましょう。
+<br>
+<br>
+<br>
+
+<p class="midasi0">Filter を使用する</p>
+
+文字化けを回避するには、どのようなサーブレットでも、処理を行う前に<br>
+<br>
+<xmp class="source">
+request.setCharacterEncoding("正しい文字セット"); 
+</xmp>
+<br>
+を実行する必要があります。このようなコードを全てのサーブレットに記述するのは手間ですし、
+処理が見難くなってしまいます。<br>
+<br>
+そこでこのような処理は <span class="important">Filter</span> を作成し、そちらで行うようにします。<br>
+Filter は次の図のように、Servlete の処理が行われる前に実行されます。<br>
+<br>
+<img src="image/Filter.png">
+<br>
+それでは、次の手順に従って、Filter を作成してください。
+<br><br>
+<div class="desc1">1. web.xml に Filter の定義を追加する</div>
+<p>
+修正後の web.xml の中身は、以下の通りです。<br>
+<br>
+<span class="filename">%CATALINA_HOME%\webapps\bbs\web.xml</span>
+<xmp class="source">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+</xmp>
+<xmp class="modified_source">
+	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>jp.co.insightech.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>MS932</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+</xmp>
+<xmp class="source">
+	<servlet>
+		<servlet-name>servlet_no_namae</servlet-name>
+		<servlet-class>jp.co.insightech.BBSServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>servlet_no_namae</servlet-name>
+		<url-pattern>/top</url-pattern>
+	</servlet-mapping>
+</web-app>
+</xmp>
+<br>
+<span class="important">&lt;filter&gt; の &lt;filter-name&gt; と、&lt;filter-mapping&gt; の &lt;filter-name&gt;</span> を合わせる必要があります。
+</p>
+
+<div class="desc1">
+2. insightech ディレクトリに CharacterEncodingFilter.java という名前のファイルを作成します。<br>
+</div>
+<p>
+ファイルの中身は以下の通りです。<br>
+<br>
+<span class="filename">%CATALINA_HOME%\webapps\bbs\jp\co\insightech\CharacterEncodingFilter.java</span>
+<xmp class="source">
+package jp.co.insightech;
+
+import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+
+/**
+ * 文字エンコードフィルタ。
+ */
+public class CharacterEncodingFilter implements Filter {
+
+	/**
+	 * エンコード指定の初期化パラメータ名。
+	 */
+	private static final String INIT_PARAMETER_ENCODING = "encoding";
+
+	/**
+	 * デフォルトのエンコード。
+	 */
+	private static final String DEFAULT_ENCODING = "MS932";
+
+	/**
+	 * 文字エンコード。
+	 */
+	private String encoding;
+
+	/**
+	 * 初期化処理。
+	 * 初期パラメータ指定により文字エンコードを決定します。
+	 * 
+	 * @throws ServletException
+	 *             初期化が失敗した場合。
+	 */
+	public void init(FilterConfig config) throws ServletException {
+		// 文字エンコード指定
+		this.encoding = config.getInitParameter(INIT_PARAMETER_ENCODING);
+		if (this.encoding == null) {
+			this.encoding = DEFAULT_ENCODING;
+		}
+	}
+
+	public void destroy() {
+		this.encoding = null;
+	}
+
+	/**
+	 * リクエストのエンコーディングがセットされていない場合、
+	 * 初期化パラメータ encoding で指定されたエンコーディングを
+	 * リクエストにセットします。
+	 * 
+	 * @param servletRequest
+	 *            ServletRequest
+	 * @param servletResponse
+	 *            ServletResponse
+	 * @param chain
+	 *            FilterChain
+	 * @throws IOException
+	 * @throws ServletException
+	 */
+	public void doFilter(ServletRequest servletRequest,
+			ServletResponse servletResponse, FilterChain chain)
+			throws IOException, ServletException {
+
+		// HTTP要求に文字エンコード指定がない場合のみ
+		if (servletRequest.getCharacterEncoding() == null) {
+			servletRequest.setCharacterEncoding(encoding);
+		}
+
+		chain.doFilter(servletRequest, servletResponse);
+	}
+}
+</xmp>
+<br>
+
+なお、フィルターを使うようにしたため、BBSServlet.java では、もはや、request.setCharacterEncoding("MS932");<br>
+をやる必要はなくなりましたので、この処理は削除します。<br>
+<br>
+<span class="filename">%CATALINA_HOME%\webapps\bbs\jp\co\insightech\BBSServlet.java</span>
+<xmp class="source">
+package jp.co.insightech;
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class BBSServlet extends HttpServlet {
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+</xmp>
+<xmp class="modified_source">
+</xmp>
+<xmp class="source">
+		String name = request.getParameter("name");
+		String hobby = request.getParameter("hobby");
+
+		response.setContentType("text/html; charset=MS932");
+
+		PrintWriter out = response.getWriter();
+		out.println("<html><head><title>掲示板</title></head>");
+		out.println("<body><b>");
+		out.println(name);
+		out.println("</b>さんの趣味は<i>");
+		out.println(hobby);
+		out.println("</i>です");
+		out.println("</body></html>");
+		out.close();
+	}
+
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
+}
+</xmp>
+<br>
+
+
+</p>
+
+コンパイルして、実行してみてください。<br>
+日本語を送信しても、文字が化けなくなりましたか？<br>
+<br><br>
+<img src="image/question.gif"> web.xml の &lt;filter&gt; タグと、&lt;filter-mapping&gt; 内の記述は何を設定しているのか調べておきましょう。<br>
+<br><br>
+
+<a name="setCharacterEncodingByGet"></a>
+<p class="midasi0">GETで送信されたパラメータにも request.setCharacterEncoding を適用させるには</p>
+
+GETで送信されたパラメータにも request.setCharacterEncoding を適用させるには %CATALINA_HOME%\conf\server.xml の<br>
+<br>
+<xmp class="source">
+<Connector port="8080" protocol="HTTP/1.1" 
+           connectionTimeout="20000" 
+           redirectPort="8443" 
+/>
+</xmp>
+<br><br>
+の部分を次のように変更します。
+<br><br>
+<xmp class="source">
+<Connector port="8080" protocol="HTTP/1.1" 
+           connectionTimeout="20000" 
+           redirectPort="8443" 
+</xmp>
+<xmp class="modified_source">
+           useBodyEncodingForURI="true"
+</xmp>
+<xmp class="source">
+/>
+</xmp>
+<br>
+これで、GET で日本語のパラメータを送信しても、文字が化けなります<br>
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+
+</body>
+</html>

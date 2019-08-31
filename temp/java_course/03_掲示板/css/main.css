@@ -1,0 +1,249 @@
+@charset "utf-8";
+
+body {
+	font-family : メイリオ,arial;
+	font-size: 1.0em;
+	line-height: 150%;
+	margin: 0;
+	padding: 10px 50px 10px 50px;
+}
+
+.desc1 {
+	font-weight: bold;
+	padding: 5px 40px 15px 0px;
+}
+
+.important {
+	font-weight: bold;
+    color: red;
+}
+
+p {
+	padding: 0px 5px 5px 10px;
+}
+
+.midasi0 { 
+	padding: 5px 5px 5px 10px;
+	font-size: 20pt; 
+	background-color: #FFAA98; 
+	color: #FFFFFF; 
+	width:100%;
+}
+
+.midasi1 {
+	padding: 5px 5px 5px 10px;
+	font-size: 20pt;
+	background-color: #AABBFF;
+	color: #FFFFFF;
+	width:100%;
+}
+
+.midasi2 {
+	padding: 5px 5px 5px 10px;
+	font-size: 20pt;
+	background-color: #007B2F;
+	color: #FFFFFF;
+	width:100%;
+}
+
+
+.console {
+  width: 700px;
+  background-color: black;
+  color: white;
+  padding: 10px 10px 10px 10px;
+}
+
+.source {
+  width: 900px;
+  background-color: #EEFFFF;
+  color: black;
+  padding: 0px 10px 10px 10px;
+  border: 1px solid #777777;
+  margin: 0px 0px 0px 0px;
+  border-collapse: collapse;
+}
+
+.modified_source {
+  width: 900px;
+  background-color: #FFCCCC;
+  color: black;
+  padding: 0px 10px 10px 10px;
+  border: 1px solid #777777;
+  margin: 0px 0px 0px 0px;
+  border-collapse: collapse;
+}
+
+.db {
+	border: solid 1px black;
+	width: 600px;
+}
+
+.db TH {
+	background-color: #111111;
+	color: white;
+	text-align: center;
+	font-size: 0.9em;
+}
+
+.db TD {
+	background-color: #DDFFDD;
+	color: black;
+	width: 200px;
+	font-size: 0.9em;
+}
+
+.filename {
+	font-weight: bold;
+	background-color: #DDDDDD;
+}
+
+.env TH {
+	background-color: #335533;
+	color: white;
+}
+
+.env TD {
+	background-color: #DDFFDD;
+	color: black;
+}
+
+.mokuji li {
+	padding: 10px 10px 10px 10px;
+}
+
+.siyou  {
+	border: 0px;
+}
+
+.siyou td {
+	border: 0px;
+	color: black;
+	padding: 0px 0px 0px 50px;
+	line-height: 200%;
+}
+
+.cource {
+	border: 1px solid #AAAAAA;
+	empty-cells: show;
+	border-collapse: collapse;
+}
+
+.cource TH {
+	border: 1px solid #AAAAAA;
+	background-color: #001C7B;
+	color: white;
+	text-align: center;
+	font-size: 0.9em;
+	padding: 5px 5px 5px 5px;
+}
+
+.cource TH.month {
+	width: 70px;
+}
+
+.cource TH.name {
+	width: 400px;
+}
+
+.cource TD {
+	border: 1px solid #AAAAAA;
+	background-color: #FFFFFF;
+	color: black;
+	font-size: 0.9em;
+	padding: 5px 5px 5px 5px;
+}
+
+.cource TD.target{
+	border: 1px solid #AAAAAA;
+	background-color: #FFB7B7;
+	color: black;
+	font-size: 0.9em;
+}
+
+.cource TD.name{
+	border: 1px solid #AAAAAA;
+	background-color: #F0ECFF;
+	color: black;
+	font-size: 0.9em;
+}
+
+.comment {
+	background-color: #FFEEEE;
+	border: 1px outset #CCCCCC;
+	padding: 5px 5px 5px 5px;
+	width: 900px;
+	font-size: 0.9em;
+}
+
+.cource_list {
+	border-collapse: collapse;
+	border: solid 1px #AAAAAA;
+}
+
+.cource_list TH {
+	border: solid 1px #AAAAAA;
+	background-color: #111111;
+	color: white;
+	text-align: center;
+	font-size: 0.9em;
+	padding: 5px 5px 5px 5px;
+}
+
+.cource_list TD {
+	border: solid 1px #AAAAAA;
+	background-color: #DDFFDD;
+	color: black;
+	font-size: 0.9em;
+	padding: 10px 10px 10px 10px;
+	line-height: 150%;
+}
+.bold {
+	font-weight: bold;
+}
+
+.breakdown {
+	margin-top:5px;
+	font-size: 0.8em;
+	color:#3399CC;
+}
+
+table {
+	border: 1px #777777 solid;
+	border-collapse: collapse;
+}
+
+th {
+	font-weight: normal;
+	border: 1px #777777 solid;
+	color: white;
+	background-color: #005C7B;
+	padding: 5px 20px 5px 20px;
+}
+
+td {
+	border: 1px #777777 solid;
+	color: black;
+	padding: 5px 20px 5px 20px;
+}
+
+ul {
+	line-height:200%;
+}
+
+img {
+    vertical-align:middle;
+}
+
+.top {
+	border-bottom:none;
+}
+
+.middle {
+	border-top:none;
+	border-bottom:none;
+}
+
+.bottom {
+	border-top:none;
+}

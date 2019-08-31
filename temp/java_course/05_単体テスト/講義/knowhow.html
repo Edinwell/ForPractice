@@ -1,0 +1,349 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<title>テストケース作成時のワンポイントアドバイス</title>
+<link rel="stylesheet" type="text/css" href="../../css/main.css">
+</head>
+<body>
+
+
+
+<hr>
+
+<p class="midasi0">テストケース作成時のワンポイントアドバイス</p>
+
+テストケースを作成するにあたり、躓く可能性があるポイントを見ていきましょう。
+
+<p class="midasi1">例外の扱い方</p>
+
+
+以下のクラスに対して、テストクラスを作成してください。<br>
+
+<br>
+<xmp class="source">
+public class SampleUtil {
+
+	/**
+	 * String型数値を渡すとintの値を返す.
+	 *
+	 * @param intStr 数字の文字列
+	 * @return intとしての値
+	 * @see java.lang.Integer#parseInt(String)
+	 */
+	public static int getIntValue(String intStr) {
+		return Integer.parseInt(intStr);
+	}
+
+}
+
+</xmp>
+
+
+</br>
+
+
+できましたでしょうか？疑問に思ったことはありませんでしたか？<br>
+<br>
+例えば、文字列「A」などを引数に渡した場合には、ドキュメントに書いていない NumberFormatException が発生します。<br>
+<br>
+そもそも、「A」などの文字列を引数に渡した場合にメソッドから例外が投げられるのが正しいのでしょうか？<br>
+それとも、数字に出来ない場合には固定で 0 を返すべきだったのでしょうか？<br>
+<br>
+こういう振る舞いについて疑問に思ったら設計書を確認してください。<br>
+設計時にはまったく考えていなかったことがテストでわかることもあります。<br>
+<br>
+この問題で例外が発生することが正しいと仮定すると、下記のコメントのようになります。<br>
+<br>
+
+<xmp class="source">
+public class SampleUtil {
+
+	/**
+	 * 数字を渡すとintの値を返す.
+	 *
+	 * @param intStr 数字の文字列
+	 * @return intとしての値
+	 * @throws NumberFormatException 文字列が構文解析可能な整数型を含まない場合
+	 * @see java.lang.Integer#parseInt(String)
+	 */
+	public static int getIntValue(String intStr) {
+		return Integer.parseInt(intStr);
+	}
+
+}
+</xmp>
+
+<br>
+
+<p>
+こうしておけば、NumberFormatException が発生することが正しい動作だとわかり、<br>
+テスト対象とすることが出来ます。<br>
+<br>
+また、テストメソッドは以下のようになると思います。<br>
+<br>
+
+<xmp class="source">
+	@Test
+	public void testGetIntValue1() {
+		int result = SampleUtil.getIntValue("1");
+		assertEquals(1, result);
+	}
+
+	@Test
+	public void testGetIntValueA() {
+		try {
+			int result = SampleUtil.getIntValue("A");
+			fail("例外が発生しなかった");
+		} catch(NumberFormatException e) {
+
+		} catch(Exception e) {
+			fail("異なる例外が発生");
+		}
+	}
+
+	@Test
+	public void testGetIntValueNotIntValue() {
+		try {
+			int result = SampleUtil.getIntValue("1.1");
+			fail("例外が発生しなかった");
+		} catch(NumberFormatException e) {
+
+		} catch(Exception e) {
+			fail("異なる例外が発生");
+		}
+	}
+
+	@Test
+	public void testGetIntValueEmpty() {
+		try {
+			int result = SampleUtil.getIntValue("");
+			fail("例外が発生しなかった");
+		} catch(NumberFormatException e) {
+
+		} catch(Exception e) {
+			fail("異なる例外が発生");
+		}
+	}
+</xmp>
+
+<br>
+
+ここでのポイントは、
+<ul>
+<li>通り道で失敗したら"fail"を書く</li>
+<li>例外時のケーススタディーをどの程度想定して書くか</li>
+</ul>
+という２点です。<br>
+<br>
+「例外時のケーススタディーをどの程度想定して書くか」という点についてもう少し詳しく説明します。<br>
+<br>
+「文字列が構文解析可能な整数型を含まない場合」という例外に対して<br>
+今回は「A」と「1.1」「空文字」の３ケースを行いましたが、<br>
+人によっては「A」だけをテストすれば十分であると考えるかもしれません。<br>
+<br>
+ただし、今回のようにAPIを呼んでいる場合などで、この値だったらどういう結果になるのか？<br>
+と疑問に思った場合には、<br>
+振る舞いが明確でない入力値に対する結果を確認するためにテストを行うという考え方は重要です。<br>
+<br>
+例えば、さすがに「A」だったら例外だろうけど、ひょっとして「1.1」だったら切捨てが行われるのでは？と<br>
+疑問に思った場合には上記のようにテストに含めてもいいと思います。<br>
+もちろんテストケースを増やした分だけ時間もかかってしまいますので、<br>
+どこまでテストするのかというのは、時間とのおりあいをつけて考える必要があります。<br>
+<br>
+テストでは、ロジックをみてその全ての条件を確認するだけではなく、<br>
+この値は想定していないのではないか？などと考えるのもバグを炙り出す上では重要になってきます。<br>
+その結果として、メソッドの正しさが保証されるわけです。<br>
+
+
+
+<p class="midasi1">テストできないコードとは</p>
+
+テストを行うにあたり、実装を修正しなければならないケースもでてきます。<br>
+
+
+以下のようなメソッドのテストを考えてみましょう。<br>
+<br>
+
+<xmp class="source">
+package test.junit.sample;
+
+public class SampleUtil {
+
+	/**
+	 * システムの現在日付のlong値に引数で渡された値を追加する.
+	 * @param value 加算する値
+	 * @return 計算結果
+	 */
+	public long addToSystemTimestamp (long value) {
+		return System.currentTimeMillis() + value;
+	}
+}
+</xmp>
+
+<br>
+テストメソッドのイメージが湧きましたでしょうか？<br>
+<br>
+このテストのように、テストの度に値が変わってしまうような場合は、下記のように実装を変更することで
+テストしやすくなります。<br>
+<p>
+
+<xmp class="source">
+public class SampleUtil {
+
+	/**
+	 * 日付のlong値に引数で渡された値を追加する.
+	 *
+	 * @param timeMillis 日付のlong値
+	 * @param value
+	 *            加算する値
+	 * @return 計算結果
+	 */
+	public long addToTimeMillis(long timeMillis, long value) {
+		return timeMillis + value;
+	}
+
+}
+
+</xmp>
+
+
+
+
+</br>
+結論としては、元のコードのようにセンスがないコードはテストできません。</br>
+上記の例のように、もしテストが書けない状況になった場合は、実装の変更を検討してみてください。<br>
+<br>
+<div class="comment">
+とはいうものの、実装の変更は許可されない場合や、センスがないわけではないけれども、テストがし難いコード<br>
+というのもあります。<br>
+<br>
+このような場合は、リフレクションや Virtual Mock Object などを使い無理やりテストをしたりします。<br>
+</div>
+</br>
+</br>
+
+<p class="midasi1">Mockとは</p>
+テストを行うときに、仮のクラスを作らないとテストできない場合がでてきます。その "仮のクラス" の総称を "Mock" といいます。<br>
+どんなときに使わなければならなくなるかと言うと、
+
+<ul>
+	<li>実オブジェクトは決定されていない振る舞いを持つ。  </li>
+	<li>実オブジェクトは設定するのが難しい。 </li>
+	<li>実オブジェクトはトリガーするのが難しい振る舞いを持つ。  </li>
+	<li>実オブジェクトは遅い。</li>
+	<li>実オブジェクトはユーザインタフェースである。</li>
+	<li>実オブジェクトはコールバックを使う。  </li>
+	<li>実オブジェクトはまだ存在しない。 </li>
+</ul>
+などの時に用いるものだと一般的には言われています。<br>
+上記だとまだイメージがつかみにくいと思うので、下記の図をみてみましょう。<br>
+
+<br>
+<br>
+
+<img src="images/testclass.gif"><br>
+
+上記図のように例えばサーブレットをテストするクラスがあった場合、そのサーブレットから呼ばれる DAO のクラスができあがっていれば、<br>
+Mock を作らずに上記図のように素直にテストケースを書いていけるかと思います。<br>
+<br>
+しかしながら、もし DAO のクラスがまだ作っれていない、<br>
+もしくは DAO のクラスで故意に例外を発生させたい状況がでてくるかと思います。<br>
+そのような場合は、下記の図のように DAO の Mock クラスを作ってサーブレットをテストするようにテストケースを書きます。<br>
+<br>
+<img src="images/testmock.gif"><br>
+<br>
+つまり、テストをするのに必要な条件として、書く必要があるクラスのことを”Mock"と呼ぶと覚えておいてください<br>
+
+<br>
+
+<p class="midasi1">private コンストラクタのテスト</p>
+
+Mock を使ってもテストできないコードというのもまだあります。<br>
+private コンストラクタです。<br>
+<br>
+通常 JUnit では、private メソッドを直接テストすることはありません。<br>
+外部に公開されている public メソッドのテストの中で、private メソッドを間接的にテストします。<br>
+<br>
+しかし、private コンストラクタは別です。<br>
+<br>
+private コンストラクタというのは、外部から勝手に new されて<br>
+自由にオブジェクトを作らせないようにするために記述されるので、もちろんテストケースからも呼び出すことは<br>
+出来ず、従って普通の方法でテストすることは出来ません。<br>
+<br>
+そこでテストクラスに次のようなメソッドを作成し、このメソッドを利用して、コンストラクタが private であることを確認します。<br>
+<br>
+<xmp class="source">
+	/**
+	 * <pre>
+	 * 引数で指定されたクラスのデフォルトコンストラクタのアクセス修飾子が
+	 * private であることを確認します.
+	 * </pre>
+	 *
+	 * @param targetClass
+	 *            確認対象のクラス
+	 */
+	public static void asertPrivateConstructor(Class<?> targetClass) {
+		try {
+			Constructor<?> constructor = targetClass
+					.getDeclaredConstructor((Class[]) null);
+
+			int modifiers = constructor.getModifiers();
+
+			if (!Modifier.isPrivate(modifiers)) {
+				throw new AssertionFailedError(
+						"The default constructor is not private of class："
+								+ targetClass.getName());
+			} else {
+				constructor.setAccessible(true);
+				constructor.newInstance((Object[]) null);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new AssertionFailedError(
+					"There is no default constructor of class："
+							+ targetClass.getName());
+		}
+
+	}
+</xmp>
+<br>
+
+使い方はこのような感じです<br>
+<br>
+<xmp class="source">
+	/**
+	 * <pre>
+	 * 【概要】
+	 * ・BBSUtil クラスのコンストラクタが private であること.
+	 * </pre>
+	 */
+	@Test
+	public void testXXXUtilHasPrivateConstructor() {
+		asertPrivateConstructor(BBSUtil.class);
+	}
+</xmp>
+<br>
+このメソッドでは、リフレクションという機構を使用しています。<br>
+リフレクションは通常のアプリケーションで使用することは滅多にありませんし、<br>
+むしろ使ってはいけません。<br>
+Struts や Spring のようなフレームワークを作る際に使用します。<br>
+<br>
+従って、現段階でリフレクションを理解する必要はありません。上記のようなメソッドを使うことで<br>
+private コンストラクタであることを確かめられるということだけ覚えておいてください。<br>
+<br>
+
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+
+</body>
+</html>
+
+
+

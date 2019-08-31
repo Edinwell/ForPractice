@@ -1,0 +1,247 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MVC施設予約の単体テスト</title>
+<link rel="stylesheet" type="text/css" href="../../css/main.css">
+
+</head>
+<body>
+<center>
+<h2>DAO メソッドの単体テスト</h2>
+</center>
+
+
+
+<hr>
+<p class="midasi0">DAO メソッドの単体テスト</p>
+
+ユーティリティクラスのテストを通して、ひと通り JUnit を 使いこなせるようになってきました。<br>
+また、コード・カバレッジを使用して、テストの網羅率を調べ、テストの品質をさらによくする方法も見てきました。<br>
+<br>
+次は、DAO の単体テストです。<br>
+<br>
+<p class="midasi1">DAO メソッドの直交表</p>
+
+以下は、施設予約の施設取得の直交表です。<br>
+全件取得を行うメソッドでは、以下の点に留意してテスト項目を考える必要があります。<br>
+<ol>
+<li>返却されるオブジェクトが List 等 の順序付けられた集合の場合は、ソート条件による順序も検証する。</li>
+<li>DB が空の状態でのテストも実施する。</li>
+</ol>
+
+<br>
+<img src="images/5_0.png" width="80%"/><br>
+<br>
+この直交表では、
+<ul>
+<li>データベースに３件のデータがある場合、IDの順番に格納したリストが取得できること</li>
+<li>データベースが空の場合、空のリストが取得できること</li>
+<li>内部のメソッドで例外が発生した場合に、スローされること</li>
+</ul>
+の３つのテスト項目が挙げられています。
+<br>
+<br>
+<p class="midasi1">DAO テストの自動化</p>
+
+単体テスト仕様書がひととおり完成した時点で、これらの単体テストを JUnit でテストするために、<br>
+直交表と対応する JavaDoc とテスト用の空メソッドを、作成してみることにします。<br>
+<br>
+DAO のメソッドの単体テスト仕様書には、「引数」と「戻り値」の他に、「DB の状態」という項目があります。<br>
+テストを実行する際には、「実行前」の DB の状態を、直交表の「入力」に記述されている通りに構築し、<br>
+「実行後」の DB の状態を、直交表の「出力」通りであることを確認する必要があります。<br>
+<br>
+施設取得メソッドのテストのうちの１つは、以下のような、JavaDoc コード、メソッド名の単体テストとなるでしょう。
+<br>
+<br>
+<xmp class="source">
+	/**
+	 * <pre>
+	 * 【概要】
+	 * ・施設テーブルの全てのレコードを表す Room モデルが、
+	 *  ID順にリストに格納され返却されること.
+	 *
+	 * 【条件】
+	 * ・DBの状態 : ROOMテーブル
+	 *   ID=1, NAME=大講堂
+	 *   ID=3, NAME=談話室
+	 *   ID=2, NAME=会議室
+	 *
+	 * 【実行】
+	 * ・{@link ReserveDao#getRoomList()}
+	 *
+	 * 【結果】
+	 * ・戻り値 : 以下の順に Room モデルを格納したリスト
+	 *  Room : id=1, name=大講堂
+	 *  Room : id=2, name=会議室
+	 *  Room : id=3, name=談話室
+	 *
+	 * ・コネクションがクローズされること
+	 *
+	 * </pre>
+	 */
+	@Test
+	public void testGetRoomListWhenExistRecord() {
+		fail("まだ実装されていません。");
+	}
+</xmp>
+<br>
+
+また、予約登録のテストのうちの１つは以下のような感じになるでしょう。
+<br>
+<br>
+<xmp class="source">
+	/**
+	 * <pre>
+	 * 【概要】
+	 * ・登録が１件の場合、登録されること.
+	 *
+	 * 【条件】
+	 * ・引数 : reserve
+	 *              date : 2008/08/15
+	 *              time : 11
+	 *              room : id = 1
+	 *              user : id = 1111
+	 *
+	 * ・DBの状態 : RESERVEテーブル
+	 *              USER_ID=1111, ROOM_ID=2, RESERVE_DATE=2008-08-15, HOUR=11
+	 *              USER_ID=1111, ROOM_ID=1, RESERVE_DATE=2008-08-15, HOUR=10
+	 *              USER_ID=0106, ROOM_ID=1, RESERVE_DATE=2008-08-15, HOUR=9
+	 *              USER_ID=0106, ROOM_ID=3, RESERVE_DATE=2008-08-15, HOUR=9
+	 *              USER_ID=0106, ROOM_ID=1, RESERVE_DATE=2008-08-16, HOUR=9
+	 *
+	 * 【実行】
+	 * ・{@link ReserveDao#register(Reserve))}
+	 *
+	 * 【結果】
+	 * ・DBの状態 : RESERVEテーブル
+	 *              USER_ID=1111, ROOM_ID=2, RESERVE_DATE=2008-08-15, HOUR=11
+	 *              USER_ID=1111, ROOM_ID=1, RESERVE_DATE=2008-08-15, HOUR=10
+	 *              USER_ID=0106, ROOM_ID=1, RESERVE_DATE=2008-08-15, HOUR=9
+	 *              USER_ID=0106, ROOM_ID=3, RESERVE_DATE=2008-08-15, HOUR=9
+	 *              USER_ID=0106, ROOM_ID=1, RESERVE_DATE=2008-08-16, HOUR=9
+	 *              USER_ID=1111, ROOM_ID=1, RESERVE_DATE=2008-08-15, HOUR=11
+	 *
+	 * ・コネクションがクローズされること
+	 * </pre>
+	 */
+	@Test
+	public void testResisterWithOneReserve() {
+		fail("まだ実装されていません。");
+	}
+</xmp>
+<br>
+<br>
+このままどんどん JUnit のメソッドを作成していってもよいのですが、<br>
+ここで、実際のテスト実装手順を頭の中で検討してみましょう。<br>
+
+<ol class="image">
+<li>コマンドラインから SQL を発行して「入力」の DB の状態を構築（実行前）
+<li>JUnit テストを実行して「登録」を実施
+<li>コマンドラインから SQL を発行して、実際の DB の状態を取得（実行後）
+<li>取得した実際の DB の状態が、期待結果である「出力」の DB の状態と同じであることを検証。</li>
+</ol>
+
+この手順は手動ですね。<br>
+JUnit は「自動」であることが基本ですから、この手順は論外です。<br>
+<br>
+それでは、DAO の他のメソッドを利用すればよいのでしょうか。JUnit のテストメソッドの中を以下のように実装します。<br>
+
+<ol class="image">
+<li>DAO の「削除」「登録」メソッドを実行して、「入力」の DB の状態を構築 (実行前)</li>
+<li>DAO の「登録」メソッドを実施</li>
+<li>DAO の「全予約取得」メソッドを実行して、実際の DB の状態を取得 (実行後)</li>
+<li>取得した実際の DB の状態が、期待結果である「出力」の DB の状態と同じであることを検証。</li>
+</ol>
+<br>
+少なくとも、「自動化」はできました。<br>
+<br>
+しかし、この DAO の「全予約取得」「登録」「削除」メソッドはどのように保証されるのでしょうか。<br>
+また、現在、指定された日付の予約を取得するメソッドはあっても、「全予約取得」メソッドなどはまだありません。<br>
+テストのために新たなメソッドを作らなければいけないというのも本末転倒な話です。<br>
+<br>
+実際の開発の際にも、このような問題が発生することがあります。<br>
+そのような時は、「自分がぶつかるような問題は、既に誰かが解決方法を見つけているはずだ」と考え、<br>
+自分で作成するよりは、既に確立されている解決策を調査・検討する必要があります。<br>
+<br>
+ここでは、その解決策のひとつである DBUnit というテストツールを使用することにします。<br>
+DBUnit は、JUnit の仕様にそって作成されているたくさんの便利なツールのなかのひとつです。<br>
+<br>
+「入力」の DB の状態や、期待結果の「出力」の DB の状態を表す、<br>
+XML や エクセル、CSV 等のさまざまなデータ形式からの読み込みを自動的に行い、<br>
+実際のデータベースへの登録や、実際のデータベースとの突合せを実施してくれます。<br>
+<br>
+今回は、「FlatXmlDataSet」という XML 形式でのデータを使用する方法を採用します。<br>
+<br>
+単体テスト中の「DB の状態」という項目は全て XML から読み込んだデータを使用します。<br>
+そのため、上記で書いたような JUnit の JavaDoc コメントは、以下のように書き換えられます。<br>
+<br>
+<xmp class="source">
+	/**
+	 * <pre>
+	 * 【概要】
+	 * ・施設テーブルの全てのレコードを表す Room モデルが、
+	 *  ID順にリストに格納され返却されること.
+	 *
+	 * 【条件】
+	 * ・DBの状態 : init/init.xml
+	 *
+	 * 【実行】
+	 * ・{@link ReserveDao#getRoomList()}
+	 *
+	 * 【結果】
+	 * ・戻り値 : 以下の順にRoomモデルを格納したリスト
+	 *  Room : id=1, name=大講堂
+	 *  Room : id=2, name=会議室
+	 *  Room : id=3, name=談話室
+	 *
+	 * ・コネクションがクローズされること
+	 *
+	 * </pre>
+	 */
+	@Test
+	public void testGetListWhenExistRecord() {
+		fail("まだ実装されていません。");
+	}
+</xmp>
+<br>
+<xmp class="source">
+	/**
+	 * <pre>
+	 * 【概要】
+	 * ・登録が１件の場合、登録されること.
+	 *
+	 * 【条件】
+	 * ・引数 : reserve
+	 *              date : 2008/08/15
+	 *              time : 11
+	 *              room : id = 1
+	 *              user : id = 1111
+	 * ・DBの状態 : init/init.xml
+	 *
+	 * 【実行】
+	 * ・{@link ReserveDao#register(Reserve))}
+	 *
+	 * 【結果】
+	 * ・DBの状態 : result/result_oneReserve.xml
+	 * ・コネクションがクローズされること
+	 * </pre>
+	 */
+	@Test
+	public void testUpdateWithOneReserve() {
+		fail("まだ実装されていません。");
+	}
+</xmp>
+<br>
+「DB の状態」の部分が読み込みを実施する XMLファイル名になっています。<br>
+この XMLファイルの書き方を、次項にて解説します。<br>
+
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+</body>
+</html>

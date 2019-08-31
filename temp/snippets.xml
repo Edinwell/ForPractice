@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<folders>
+	<folder>
+		<title>VSN</title>
+		<snippets>
+			<snippet>
+				<title>monthly rep by PJ</title>
+				<content>PJ：
+　業務：
+　・
+　・
+　・</content>
+			</snippet>
+			<snippet>
+				<title>社員番号</title>
+				<content>1947007_星野 弘貴
+2108001_石田 耕平
+2141107_金 駿
+2149608_姜 承奎
+2177502_李 亜菁
+2257808_山下 翼</content>
+			</snippet>
+		</snippets>
+	</folder>
+	<folder>
+		<title>Terminal</title>
+		<snippets>
+			<snippet>
+				<title>run WP docker</title>
+				<content>docker run -d -p 80:80 --name=wp tutum/wordpress</content>
+			</snippet>
+			<snippet>
+				<title>Lower volume ffmpeg</title>
+				<content>for item in `find . -name &quot;*.MP4&quot;`; do ffmpeg -i $item -af &quot;volume=0.1&quot; -c:v copy -c:a aac -b:a 192k ~/out_mp4/$item; done</content>
+			</snippet>
+		</snippets>
+	</folder>
+</folders>

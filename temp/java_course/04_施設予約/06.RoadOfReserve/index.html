@@ -1,0 +1,186 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>～施設予約への道～</title>
+<link rel="stylesheet" type="text/css" href="../../css/main.css">
+</head>
+<body>
+
+<div>
+	<div class="header_center">
+		<h2>～施設予約への道～</h2>
+	</div>
+	<div class="header_left">
+		<a href="../index.html"><div class="back_button"></div></a>
+	</div>
+</div>
+
+<hr>
+
+<p class="midasi0">この研修のゴール</p>
+この研修のゴールは、下記の「要求される施設予約の仕様・機能」にて示された機能を満たすMVC施設予約を作成することです。<br>
+<br>
+この資料「～施設予約への道～」は「～掲示板への道～」と違って、細かい説明はありません。<br>
+いままでMVC掲示板作成で身に着けた技術を応用すれば充分作れるはずです。<br>
+MVC施設予約を作成し、最終的に完成した施設予約を提出してください。<br>
+
+<br>
+提出物に対するチェックに関しては、<a href="../100.評価基準/index.html" target="top_main">チェックポイント</a>をご覧ください。
+
+<br><br>
+
+<p class="midasi0">要求される施設予約の仕様・機能</p>
+施設予約システムの仕様を、画面例で説明します。
+<br><br>
+
+<table class="siyou">
+<tr><td>
+<font color=red size=5><b>1.初期画面</b></font><br>
+<img src="./reserve/reserve01.gif"><br>
+初期画面です。<br>
+社員番号を入力して、ログインボタンを押下します。
+社員番号はデータベースで社員情報テーブルから照会します。
+<br><br>
+</td></tr><tr><td>
+<font color=red size=5><b>2.ログイン</b></font><br>
+<img src="./reserve/reserve02.gif"><br>
+ログインしました。<br>
+施設を予約可能な表示になります。
+<br><br>
+
+</td></tr><tr><td>
+<font color=red size=5><b>3.予約手続き</b></font><br>
+<img src="./reserve/reserve03.gif"><br>
+大講堂を9時から12時まで予約しようとチェックをつけ、
+予約ボタンを押下します。
+<br><br>
+</td></tr><tr><td>
+<font color=red size=5><b>4.予約完了</b></font><br>
+<img src="./reserve/reserve04.gif"><br>
+予約を完了しました。<br>
+<br>
+</td></tr><tr><td>
+<font color=red size=5><b>5.予約取消し手続き</b></font><br>
+<img src="./reserve/reserve05.gif"><br>
+実のところ、大講堂は２時間で済むので、11時のは取り消すことにしました。
+予約取消ボタンを押下します。
+<br><br>
+</td></tr><tr><td>
+<font color=red size=5><b>6.完了</b></font><br>
+<img src="./reserve/reserve06.gif"><br>
+意図したとおりに予約が出来ました。ログアウトボタンを押下します。
+<br><br>
+</td></tr><tr><td>
+<font color=red size=5><b>7.ログアウト</b></font><br>
+<img src="./reserve/reserve07.gif"><br>
+ログアウトしました。<br>
+若井社員のPC上では、若井社員の社員番号「0106」が残っています。
+<br><br>
+
+</td></tr><tr><td>
+<font color=red size=5><b>8.別の人も利用</b></font><br>
+<img src="./reserve/reserve08.gif"><br>
+印差社員も、自分のPC上で予約をしてみたいと思います。
+印差社員の社員番号は「1111」です。
+<br><br>
+
+</td></tr><tr><td>
+<font color=red size=5><b>9.ログイン</b></font><br>
+<img src="./reserve/reserve09.gif"><br>
+印差社員もログインしました。<br>
+すでに大講堂は他の社員（＝若井社員）によって9時から10時まで予約が取られています。
+<br><br>
+
+</td></tr><tr><td>
+<font color=red size=5><b>10.予約手続き</b></font><br>
+<img src="./reserve/reserve10.gif"><br>
+印差社員は会議室を利用することにします。
+<br><br>
+
+</td></tr><tr><td>
+<font color=red size=5><b>11.予約完了</b></font><br>
+<img src="./reserve/reserve11.gif"><br>
+印差社員が予約した部分は、印差社員のみ予約取り消しは出来ますが、<br>
+他者の予約した部分は取消すことは出来ません。
+<br><br>
+
+</td></tr><tr><td>
+<font color=red size=5><b>12.予約不可能</b></font><br>
+<img src="./reserve/reserve12.gif"><br>
+過去の日付(1999年になってます)の予約は出来ません。意味がないからです。<br>
+ただしそれでも表示のみは出来ます。過去の予約状況を確認したい場合に対応してます。
+</td></tr>
+</table>
+
+<p>
+ということで、基本的な仕様は以上のようにしてください。<br>
+尚、<span class="important">予約対象の施設ですが、データベースを変更するのみで増減可能とします</span>。<br>
+予約可能な時間帯は変更可能であることが望ましいですが、９時～２１時の固定でも構いません。<br>
+<br>
+<!--
+画面デザインは任意です。もっとシンプルでもかまいません。<br>
+ただし、年月日の指定機能は当然必須です。年と月もセレクトボックスでかまいません。<br>
+要は、-->
+<b>誰が、何年何月何日の何時から何時まで、どの施設を予約できるか</b>が
+この施設予約システムです。<br>
+予約ができる（空室である）か、（埋まっているので）できないか。
+そして自分の予約は取り消せるが、他者の予約は取り消せない。<br>
+そこがポイントです。<br>
+
+<p>
+このスクリーンショットの<a href="施設予約＜例＞.html" target="_blank">HTMLファイルをダウンロード</a>できます。
+
+<p class="midasi0">この研修の進め方</p>
+<p>
+初めに施設予約で必要となるデータベースを設計して、一度ご提出ください。<br>
+データベース設計に問題がなければ、画面仕様に沿って開発を進めていただきます。<br>
+データベース設計提出時のフォーマットに関しては、
+<ol>
+<li>テーブル名</li>
+<li>カラム名</li>
+<li>型（長さ）</li>
+<li>制約</li>
+</ol>
+がわかればどのような形式でも構いません。掲示板の提出マニュアルを参考にしてください。
+</p>
+
+<p class="midasi0">研修課題提出の際のご注意</p>
+
+<p>
+基本的にMVC掲示板の提出時と同じです。<br>
+アプリケーションのフォルダごと圧縮ファイルにまとめていただき、マニュアルを添付して提出してください。
+
+</p>
+<br>
+
+<p class="midasi0">追加課題</p>
+
+<ul>
+<li>Serializable と Session</li>
+<li>DB設計正規化</li>
+<li>主キーと主キーの型</li>
+<li>外部キー</li>
+<li>DATE型、TIME型、INT型</li>
+<li>NOT NULL制約</li>
+<li>HttpSession の無効化</li>
+<li>セッションフィクセ―ション</li>
+<li>正しい日付かのチェック</li>
+<li>Session と戻るボタン</li>
+<li>hidden による Request パラメータの持ち回り</li>
+<li>オブジェクト指向なデータの持ち方</li>
+<li>空のテーブルセルの表示（&amp;nbsp;）</li>
+<li>物理削除と論理削除</li>
+</ul>
+
+<br>
+<br>
+
+<hr>
+<center>&copy;日本インサイトテクノロジー株式会社</center>
+<br>
+<br>
+<br>
+
+
+</body>
+</html>
